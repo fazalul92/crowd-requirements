@@ -1,4 +1,4 @@
-package edu.ncsu.mas.platys.multiparty_privacy.configuration;
+package edu.ncsu.mas.platys.crowdre.configuration;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;

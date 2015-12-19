@@ -1,8 +1,8 @@
-package edu.ncsu.mas.platys.multiparty_privacy.dao;
+package edu.ncsu.mas.platys.crowdre.dao;
 
 import org.springframework.stereotype.Repository;
 
-import edu.ncsu.mas.platys.multiparty_privacy.model.TurkerPresurveyResponse;
+import edu.ncsu.mas.platys.crowdre.model.TurkerPresurveyResponse;
 
 @Repository("turkerPresurveyResponseDao")
 public class TurkerPresurveyResponseDaoImpl extends AbstractDao<Integer, TurkerPresurveyResponse>

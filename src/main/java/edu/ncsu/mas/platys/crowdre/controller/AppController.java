@@ -1,4 +1,4 @@
-package edu.ncsu.mas.platys.multiparty_privacy.controller;
+package edu.ncsu.mas.platys.crowdre.controller;
 
 import java.util.Locale;
 
@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import edu.ncsu.mas.platys.multiparty_privacy.model.Turker;
-import edu.ncsu.mas.platys.multiparty_privacy.model.TurkerPresurveyResponse;
-import edu.ncsu.mas.platys.multiparty_privacy.service.TurkerPresurveyResponseService;
+import edu.ncsu.mas.platys.crowdre.model.Turker;
+import edu.ncsu.mas.platys.crowdre.model.TurkerPresurveyResponse;
+import edu.ncsu.mas.platys.crowdre.service.TurkerPresurveyResponseService;
 
 @Controller
 @RequestMapping("/")

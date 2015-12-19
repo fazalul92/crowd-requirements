@@ -1,4 +1,4 @@
-package edu.ncsu.mas.platys.multiparty_privacy.configuration;
+package edu.ncsu.mas.platys.crowdre.configuration;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;

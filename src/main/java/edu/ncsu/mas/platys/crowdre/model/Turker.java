@@ -1,4 +1,4 @@
-package edu.ncsu.mas.platys.multiparty_privacy.model;
+package edu.ncsu.mas.platys.crowdre.model;
 
 public class Turker {
 

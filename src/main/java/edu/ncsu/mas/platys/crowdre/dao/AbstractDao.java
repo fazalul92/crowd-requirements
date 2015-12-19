@@ -1,4 +1,4 @@
-package edu.ncsu.mas.platys.multiparty_privacy.dao;
+package edu.ncsu.mas.platys.crowdre.dao;
 
 import java.io.Serializable;
 

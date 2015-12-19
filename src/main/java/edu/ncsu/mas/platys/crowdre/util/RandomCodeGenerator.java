@@ -1,4 +1,4 @@
-package edu.ncsu.mas.platys.multiparty_privacy.util;
+package edu.ncsu.mas.platys.crowdre.util;
 
 import java.util.Random;
 

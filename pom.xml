@@ -2,10 +2,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>edu.ncsu.mas.platys</groupId>
-	<artifactId>multiparty-privacy</artifactId>
+	<artifactId>crowd-requirements</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>multiparty-privacy</name>
+	<name>crowd-requirements</name>
 
 	<properties>
 		<springframework.version>4.0.6.RELEASE</springframework.version>
@@ -138,7 +138,7 @@
 
 	</dependencies>
 	<build>
-		<finalName>multiparty-privacy</finalName>
+		<finalName>crowd-requirements</finalName>
 		<pluginManagement>
 			<plugins>
 				<plugin>
@@ -155,7 +155,7 @@
 					<version>2.4</version>
 					<configuration>
 						<warSourceDirectory>src/main/webapp</warSourceDirectory>
-						<warName>multiparty-privacy</warName>
+						<warName>crowd-requirements</warName>
 						<failOnMissingWebXml>false</failOnMissingWebXml>
 					</configuration>
 				</plugin>
