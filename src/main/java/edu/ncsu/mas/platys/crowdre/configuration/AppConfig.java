@@ -14,7 +14,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "edu.ncsu.mas.platys.multiparty_privacy")
+@ComponentScan(basePackages = "edu.ncsu.mas.platys.crowdre")
 public class AppConfig extends WebMvcConfigurerAdapter {
   @Override
   public void addResourceHandlers(ResourceHandlerRegistry registry) {

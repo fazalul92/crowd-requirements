@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan({ "edu.ncsu.mas.platys.multiparty_privacy.configuration" })
+@ComponentScan({ "edu.ncsu.mas.platys.crowdre.configuration" })
 @PropertySource(value = { "classpath:application.properties" })
 public class HibernateConfiguration {
 
@@ -30,7 +30,7 @@ public class HibernateConfiguration {
     LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
     sessionFactory.setDataSource(dataSource());
     sessionFactory.setPackagesToScan(
-        new String[] { "edu.ncsu.mas.platys.multiparty_privacy.model" });
+        new String[] { "edu.ncsu.mas.platys.crowdre.model" });
     sessionFactory.setHibernateProperties(hibernateProperties());
     return sessionFactory;
   }
