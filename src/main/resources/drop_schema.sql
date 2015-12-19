@@ -1,0 +1,1 @@
+DROP TABLE turker_presurvey_response;
