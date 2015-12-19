@@ -24,7 +24,11 @@ CREATE TABLE spotcheck_question (
 */
 
 /*New Schema*/
+DROP DATABASE IF EXISTS `crowd_requirements_development`;
+
 CREATE DATABASE `crowd_requirements_development` /*!40100 DEFAULT CHARACTER SET utf8 */;
+
+USE `crowd_requirements_development`;
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -40,13 +44,13 @@ CREATE TABLE `users` (
 
 
 CREATE TABLE `creativity_questions` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL  AUTO_INCREMENT,
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `creativity_questions_users` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL  AUTO_INCREMENT,
   `creativity_question_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
@@ -60,13 +64,13 @@ CREATE TABLE `creativity_questions_users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `personality_questions` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL  AUTO_INCREMENT,
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `personality_questions_users` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `personality_question_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
@@ -80,13 +84,13 @@ CREATE TABLE `personality_questions_users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `postsurvey_questions` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `description` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `postsurvey_questions_users` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `postsurvey_question_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
@@ -100,13 +104,13 @@ CREATE TABLE `postsurvey_questions_users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `presurvey_questions` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `presurvey_questions_users` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `presurvey_question_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
@@ -118,4 +122,5 @@ CREATE TABLE `presurvey_questions_users` (
   CONSTRAINT `FK_presurvey_questions_user_presurvey_questions` FOREIGN KEY (`presurvey_question_id`) REFERENCES `presurvey_questions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_presurvey_questions_user_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
