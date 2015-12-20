@@ -16,9 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import edu.ncsu.mas.platys.crowdre.model.Turker;
-import edu.ncsu.mas.platys.crowdre.model.TurkerPresurveyResponse;
-import edu.ncsu.mas.platys.crowdre.service.TurkerPresurveyResponseService;
+import edu.ncsu.mas.platys.crowdre.model.User;
+import edu.ncsu.mas.platys.crowdre.model.PresurveyResponse;
+import edu.ncsu.mas.platys.crowdre.service.PresurveyResponseService;
+import edu.ncsu.mas.platys.crowdre.service.UserService;
 
 @Controller
 @RequestMapping("/")
@@ -32,7 +33,10 @@ public class AppController {
   private Environment env;
 
   @Autowired
-  TurkerPresurveyResponseService presurveyResponseService;
+  UserService userService;
+
+  @Autowired
+  PresurveyResponseService presurveyResponseService;
     
   private static final String PAGE_SIGNIN = "signin";
   private static final String PAGE_SIGNIN_FAILURE = "signin_failure";
@@ -52,25 +56,31 @@ public class AppController {
     
   @RequestMapping(value = { "/", "/" + PAGE_SIGNIN }, method = RequestMethod.GET)
   public String showSignIn(ModelMap model) {
-    model.addAttribute(ATTR_TURKER, new Turker());
+    model.addAttribute(ATTR_TURKER, new User());
     return PAGE_SIGNIN;
   }
 
   @RequestMapping(value = { "/", "/" + PAGE_SIGNIN }, method = RequestMethod.POST)
-  public String processSignIn(@ModelAttribute(ATTR_TURKER) Turker turker,
+  public String processSignIn(@ModelAttribute(ATTR_TURKER) User user,
       final RedirectAttributes redirectAttributes) {
-    redirectAttributes.addFlashAttribute(ATTR_MTURK_ID, turker.getMturkId());
-    switch (isMturkIDValid(turker.getMturkId())) {
+    
+    redirectAttributes.addFlashAttribute(ATTR_MTURK_ID, user.getMturkId());
+    
+    switch (isMturkIDValid(user.getMturkId())) {
     case MTURK_ID_VALID:
+      userService.saveResponse(user);
       return PAGE_REDIRECT_PRESURVEY;
+      
     case MTURK_ID_COMPLETED:
       redirectAttributes.addFlashAttribute(ATTR_SIGN_FAILURE_REASON,
           "You can only submit one response to this survey; "
           + "you have already submitted a response to this survey in this or a previous batch.");
       return PAGE_REDIRECT_SIGNIN_FAILURE;
+      
     case MTURK_ID_INVALID:
       redirectAttributes.addFlashAttribute(ATTR_SIGN_FAILURE_REASON, "Your MTurk ID is invalid.");
       return PAGE_REDIRECT_SIGNIN_FAILURE;
+      
     default:
       redirectAttributes.addFlashAttribute(ATTR_SIGN_FAILURE_REASON, "An unknown error occurred.");
       return PAGE_REDIRECT_SIGNIN_FAILURE;
@@ -89,7 +99,8 @@ public class AppController {
   @RequestMapping(value = { "/" + PAGE_PRESURVEY }, method = RequestMethod.GET)
   public String showPresurvey(@ModelAttribute(ATTR_MTURK_ID) String mturkId, BindingResult result,
       ModelMap model) {
-    TurkerPresurveyResponse presurveyResponse = new TurkerPresurveyResponse();
+    
+    PresurveyResponse presurveyResponse = new PresurveyResponse();
     presurveyResponse.setMturkId(mturkId);
     model.addAttribute(ATTR_PRESURVEY_RESPONSE, presurveyResponse);
     return PAGE_PRESURVEY;
@@ -97,7 +108,7 @@ public class AppController {
   
   @RequestMapping(value = { "/" + PAGE_PRESURVEY }, method = RequestMethod.POST)
   public String processPresurveyResponse(
-      @ModelAttribute(ATTR_PRESURVEY_RESPONSE) TurkerPresurveyResponse presurveyResponse,
+      @ModelAttribute(ATTR_PRESURVEY_RESPONSE) PresurveyResponse presurveyResponse,
       BindingResult result, ModelMap model, final RedirectAttributes redirectAttributes) {
     if (isTurkerPresurveyResponseValid(presurveyResponse, result, model)) {
       presurveyResponse.setResponseTime(LocalDateTime.now());
@@ -116,14 +127,14 @@ public class AppController {
     // 3 has been chosen intuitively.
     if (mturkID == null || mturkID.trim().length() <= 3) {
       return MTURK_ID_INVALID;
-    } else if (mturkID.equals("pmuruka") || mturkID.equals("rlopezf")) {
-      // Make exception for some IDs; we use these for testing
+    } else if (mturkID.equals("pmuruka") || mturkID.equals("najmeri")) {
+      // Make exceptions for some IDs; we use these for testing
       return MTURK_ID_VALID;
     }
     return MTURK_ID_VALID;
   }
 
-  private boolean isTurkerPresurveyResponseValid(TurkerPresurveyResponse presurveyResponse,
+  private boolean isTurkerPresurveyResponseValid(PresurveyResponse presurveyResponse,
       BindingResult result, ModelMap model) {
     if (presurveyResponse.getGender() == null || presurveyResponse.getAge() == null
         || presurveyResponse.getEducation() == null

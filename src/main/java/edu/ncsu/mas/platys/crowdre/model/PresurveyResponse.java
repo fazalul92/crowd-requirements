@@ -15,7 +15,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "presurvey_response")
-public class TurkerPresurveyResponse {
+public class PresurveyResponse {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -129,9 +129,9 @@ public class TurkerPresurveyResponse {
       return true;
     if (obj == null)
       return false;
-    if (!(obj instanceof TurkerPresurveyResponse))
+    if (!(obj instanceof PresurveyResponse))
       return false;
-    TurkerPresurveyResponse other = (TurkerPresurveyResponse) obj;
+    PresurveyResponse other = (PresurveyResponse) obj;
     if (id != other.id)
       return false;
     return true;

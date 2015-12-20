@@ -33,12 +33,7 @@ USE `crowd_requirements_development`;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `mturk_id` varchar(20) NOT NULL,
-  `password` varchar(45) DEFAULT NULL,
-  `gender` varchar(20) DEFAULT NULL,
-  `age` varchar(20) DEFAULT NULL,
-  `education` varchar(20) DEFAULT NULL,
   `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
