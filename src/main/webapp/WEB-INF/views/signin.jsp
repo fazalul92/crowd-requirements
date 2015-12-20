@@ -14,7 +14,7 @@
 <meta name="author" content="">
 <link rel="icon" href="resources/favicon.ico">
 
-<title>Signin to Multiparty Privacy Study</title>
+<title>Signin to Smart Home Study</title>
 
 <!-- Bootstrap core CSS -->
 <link href="resources/css/bootstrap.min.css" rel="stylesheet">
@@ -28,27 +28,55 @@
 
 <body>
  <div class="container">
-  <form:form class="form-signin" method="POST"  modelAttribute="user">
-   <h2 class="form-signin-heading">Please sign in</h2>
-   <label for="mturkId" class="sr-only"> Amazon Mechanical Turk
-    ID</label>
-   <form:input class="form-control" path="mturkId"
-    placeholder="Amazon Mechanical Turk Worker ID" required="required"
-    autofocus="autofocus" />
+  <form:form id="registrationForm" class="form-horizontal" method="POST"  modelAttribute="user">
+   <div class="form-group">
+    <h2 class="form-signin-heading">Please sign in</h2>
+    <label class="col-xs-3 control-label">MTurk ID</label>
+    <div class="col-xs-5">
+     <form:input type="text" class="form-control" path="mturkId"
+      placeholder="Amazon Mechanical Turk Worker ID" required="required"
+      autofocus="autofocus" />
+    </div>
+   </div>
 
-   <button class="btn btn-lg btn-primary btn-block" type="submit">
+   <div class="form-group">
+    <label class="col-xs-3 control-label">Terms of Use</label>
+    <div class="col-xs-5">
+     <div
+      style="border: 1px solid #e5e5e5; overflow: auto; padding: 10px;">
+      <p>
+       This HIT is part of a research study being conducted at North
+       Carolina State University (NCSU). Please review the <a
+        href="doc/irb-consent.pdf">informed consent</a> form for
+       research. By clicking the checkbox below:
+      </p>
+      <ol>
+       <li>You consent to participate in the study, and</li>
+       <li>You confirm that you are not currently employed by North
+        Carolina State University.</li>
+      </ol>
+     </div>
+    </div>
+   </div>
+
+   <div class="form-group">
+    <div class="col-xs-6 col-xs-offset-3">
+     <div class="checkbox">
+      <label> <input type="checkbox" name="agree" value="agree"/>
+       Agree with the terms and conditions
+      </label>
+     </div>
+    </div>
+   </div>
+
+   <button class="col-xs-5 col-xs-offset-3 btn btn-lg btn-primary" type="submit">
     Sign in</button>
-    
-   <p>
-    <br> <b>Note:</b> Your worker ID is not your name or email. You
-    can find it on your mechanical turk dashboard.
-   </p>
-
   </form:form>
  </div>
+ 
  <!-- /container -->
 
  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
- <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+ <!-- <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script> -->
 </body>
 </html>
