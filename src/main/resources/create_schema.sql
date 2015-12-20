@@ -112,7 +112,6 @@ CREATE TABLE `presurvey_questions_users` (
   `user_id` int(11) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
   `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_presurvey_questions_idx` (`presurvey_question_id`),
   KEY `FK_users_idx` (`user_id`),

@@ -1,7 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
- pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -87,11 +87,46 @@
    </ul>
   </div>
   
-  <ol>
-     <c:forEach items="${presurveyQuestions}" var="presurveyQuestion">
-      <li class="active">${presurveyQuestion.description}</li>
+  <form:form method="POST" modelAttribute="presurveyResponseForm">
+   <h3>Demographics Survey</h3>
+   <div class="jumbotron lead">
+    <ol>
+     <c:forEach var="presurveyResponse" items="${presurveyResponseForm.presurveyResponses}" varStatus="loop">
+      <form:input type="hidden" path="presurveyResponses[${loop.index}].userId" name="userId" id="userId" />
+      <form:input type="hidden" path="presurveyResponses[${loop.index}].presurveyQuestionId" name="presurveyQuestionId" id="presurveyQuestionId" />
+      
+      <li>
+       <h3>${presurveyQuestions[loop.index].description}</h3>
+       <div class="form-horizontal">
+       <c:if test="${presurveyQuestions[loop.index].questionType == 'multiple_choice'}">
+        <c:set var="answerChoices" value="${fn:split(presurveyQuestions[loop.index].answerChoices,'|')}"/>
+        <c:forEach var="answerChoice" items="${answerChoices}">
+         <div class="radio">
+          <label> <form:radiobutton path="presurveyResponses[${loop.index}].description" value="${answerChoice}" />
+           ${answerChoice}
+          </label>
+         </div>
+        </c:forEach>
+       </c:if>
+       </div>
+      </li>
+      
+      <div class="has-error">
+       <form:errors path="presurveyResponses[${loop.index}].description" class="help-inline" />
+      </div>
      </c:forEach>
-  </ol>
+    </ol>
+    
+    <div class="text-center">
+     <button type="submit" class="btn btn-primary btn-lg">Submit
+      Responses &raquo;</button>
+     <p>
+      <br> <b>Note:</b> After submitting the responses, you cannot edit
+      them again.
+     </p>
+    </div>  
+   </div>
+  </form:form>
 
  </div>
  <!-- /container -->

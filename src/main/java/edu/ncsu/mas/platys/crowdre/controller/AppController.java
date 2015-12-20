@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import edu.ncsu.mas.platys.crowdre.form.PresurveyResponseForm;
 import edu.ncsu.mas.platys.crowdre.model.PresurveyQuestion;
 import edu.ncsu.mas.platys.crowdre.model.User;
 import edu.ncsu.mas.platys.crowdre.model.PresurveyResponse;
@@ -46,15 +47,17 @@ public class AppController {
   private static final String PAGE_SIGNIN = "signin";
   private static final String PAGE_SIGNIN_FAILURE = "signin_failure";
   private static final String PAGE_REDIRECT_SIGNIN_FAILURE = "redirect:signin_failure";
+  
   private static final String PAGE_PRESURVEY = "presurvey";
   private static final String PAGE_REDIRECT_PRESURVEY = "redirect:presurvey";
-  private static final String PAGE_REDIRECT_QUESTIONNAIRE = "redirect:questionnaire";
+  
+  private static final String PAGE_REDIRECT_PRESURVEY2 = "redirect:presurvey2";
     
   private static final String ATTR_SIGN_FAILURE_REASON = "signinFailureReason";
   
   private static final String ATTR_USER = "user";
   private static final String ATTR_PRESURVEY_QUESTIONS = "presurveyQuestions";
-  private static final String ATTR_PRESURVEY_RESPONSE = "presurveyResponse";
+  private static final String ATTR_PRESURVEY_RESPONSE_FORM = "presurveyResponseForm";
   
   private static final int MTURK_ID_VALID = 0;
   private static final int MTURK_ID_INVALID = 1;
@@ -109,59 +112,75 @@ public class AppController {
     
     int numQuestions = (int) presurveyQuestionService.getCount();
     PresurveyQuestion[] presurveyQuestions = new PresurveyQuestion[numQuestions];
-    //PresurveyResponse[] presurveyResponses = new PresurveyResponse[numQuestions];
+    PresurveyResponse[] presurveyResponses = new PresurveyResponse[numQuestions];
     
     for (int i = 0; i < numQuestions; i++) {
       presurveyQuestions[i] = presurveyQuestionService.findById(i + 1);
-      //presurveyResponses[i] = new PresurveyResponse();
-      //presurveyResponses[i].setMturkId(mturkId);
+      presurveyResponses[i] = new PresurveyResponse();
+      presurveyResponses[i].setUserId(user.getId());
+      presurveyResponses[i].setPresurveyQuestionId(presurveyQuestions[i].getId());
     }
     
-    //presurveyResponse.setMturkId(mturkId);
+    PresurveyResponseForm presurveyResponseForm = new PresurveyResponseForm();
+    presurveyResponseForm.setPresurveyResponses(presurveyResponses);
+    
     model.addAttribute(ATTR_PRESURVEY_QUESTIONS, presurveyQuestions);
+    model.addAttribute(ATTR_PRESURVEY_RESPONSE_FORM, presurveyResponseForm);
+    
     return PAGE_PRESURVEY;
   }
   
+  
   @RequestMapping(value = { "/" + PAGE_PRESURVEY }, method = RequestMethod.POST)
   public String processPresurveyResponse(
-      @ModelAttribute(ATTR_PRESURVEY_RESPONSE) PresurveyResponse presurveyResponse,
+      @ModelAttribute(ATTR_PRESURVEY_RESPONSE_FORM) PresurveyResponseForm presurveyResponseForm,
       BindingResult result, ModelMap model, final RedirectAttributes redirectAttributes) {
-    if (isTurkerPresurveyResponseValid(presurveyResponse, result, model)) {
-      presurveyResponse.setResponseTime(LocalDateTime.now());
-      presurveyResponseService.saveResponse(presurveyResponse);
-      
-      // redirectAttributes.addFlashAttribute(ATTR_MTURK_ID, presurveyResponse.getMturkId());
-      return PAGE_REDIRECT_QUESTIONNAIRE;
+    if (isTurkerPresurveyResponseFormValid(presurveyResponseForm, result, model)) {
+      PresurveyResponse[] presurveyResponses = presurveyResponseForm.getPresurveyResponses();
+      for (int i = 0; i < presurveyResponses.length; i++) {
+        presurveyResponses[i].setCreatedAt(LocalDateTime.now());
+        presurveyResponseService.saveResponse(presurveyResponses[i]);
+      }
+      return PAGE_REDIRECT_PRESURVEY2;
     } else {
       // Page has errors
+      int numQuestions = (int) presurveyQuestionService.getCount();
+      PresurveyQuestion[] presurveyQuestions = new PresurveyQuestion[numQuestions];
+      for (int i = 0; i < numQuestions; i++) {
+        presurveyQuestions[i] = presurveyQuestionService.findById(i + 1);
+      }
+      model.addAttribute(ATTR_PRESURVEY_QUESTIONS, presurveyQuestions);
+      model.addAttribute(ATTR_PRESURVEY_RESPONSE_FORM, presurveyResponseForm);
       return PAGE_PRESURVEY;
     }
   }
-  
+
+  /*
+   * Could not find much information on the Mturk ID specification. The length 3
+   * has been chosen intuitively.
+   */
   private int isMturkIDValid(String mturkID) {
-    // Could not find much information on the Mturk ID specification. The length
-    // 3 has been chosen intuitively.
     if (mturkID == null || mturkID.trim().length() <= 3) {
       return MTURK_ID_INVALID;
-    } else if (mturkID.equals("pmuruka") || mturkID.equals("najmeri")) {
-      // Make exceptions for some IDs; we use these for testing
+    } else if (mturkID.equals("pmuruka") || mturkID.equals("najmeri")) { // Exceptions for testing
       return MTURK_ID_VALID;
     }
     return MTURK_ID_VALID;
   }
 
-  private boolean isTurkerPresurveyResponseValid(PresurveyResponse presurveyResponse,
+  private boolean isTurkerPresurveyResponseFormValid(PresurveyResponseForm presurveyResponseForm,
       BindingResult result, ModelMap model) {
-    if (presurveyResponse.getGender() == null || presurveyResponse.getAge() == null
-        || presurveyResponse.getEducation() == null
-        || presurveyResponse.getSocialmediaFrequency() == null
-        || presurveyResponse.getSharingFrequency() == null) {
-      FieldError error = new FieldError(ATTR_PRESURVEY_RESPONSE, "education",
-          messageSource.getMessage("mandatory.answers", new String[] { "above" },
-              Locale.getDefault()));
-      result.addError(error);
-      return false;
+    PresurveyResponse[] presurveyResponses = presurveyResponseForm.getPresurveyResponses();
+    boolean returnValue = true;
+    for (int i = 0; i < presurveyResponses.length; i++) {
+      if (presurveyResponses[i].getDescription() == null) {
+        FieldError error = new FieldError(ATTR_PRESURVEY_RESPONSE_FORM, "presurveyResponses[" + i
+            + "].description", messageSource.getMessage("mandatory.answer", null,
+            Locale.getDefault()));
+        result.addError(error);
+        returnValue = false;
+      }
     }
-    return true;
+    return returnValue;
   }
 }

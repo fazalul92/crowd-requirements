@@ -14,42 +14,30 @@ import org.joda.time.LocalDateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-@Table(name = "presurvey_response")
+@Table(name = "presurvey_questions_users")
 public class PresurveyResponse {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
+  @NotNull
+  @Column(name = "user_id", nullable = false)
+  private int userId;
+
+  @NotNull
+  @Column(name = "presurvey_question_id", nullable = false)
+  private int presurveyQuestionId;
+
   @NotBlank
-  @Column(name = "mturk_id", nullable = false)
-  private String mturkId;
+  @Column(name = "description", nullable = false)
+  private String description;
 
   @NotNull
   @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
-  @Column(name = "response_time", nullable = false)
+  @Column(name = "created_at", nullable = false)
   @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
-  private LocalDateTime responseTime;
-
-  @NotBlank
-  @Column(name = "gender", nullable = false)
-  private String gender;
-  
-  @NotBlank
-  @Column(name = "age", nullable = false)
-  private String age;
-
-  @NotBlank
-  @Column(name = "education", nullable = false)
-  private String education;
-
-  @NotBlank
-  @Column(name = "socialmedia_frequency", nullable = false)
-  private String socialmediaFrequency;
-  
-  @NotBlank
-  @Column(name = "sharing_frequency", nullable = false)
-  private String sharingFrequency;
+  private LocalDateTime createdAt;
 
   public int getId() {
     return id;
@@ -59,86 +47,35 @@ public class PresurveyResponse {
     this.id = id;
   }
 
-  public String getMturkId() {
-    return mturkId;
+  public int getUserId() {
+    return userId;
   }
 
-  public void setMturkId(String mturkId) {
-    this.mturkId = mturkId;
+  public void setUserId(int userId) {
+    this.userId = userId;
   }
 
-  public LocalDateTime getResponseTime() {
-    return responseTime;
+  public int getPresurveyQuestionId() {
+    return presurveyQuestionId;
   }
 
-  public void setResponseTime(LocalDateTime responseTime) {
-    this.responseTime = responseTime;
+  public void setPresurveyQuestionId(int presurveyQuestionId) {
+    this.presurveyQuestionId = presurveyQuestionId;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
   }
   
-  public String getGender() {
-    return gender;
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
   }
 
-  public void setGender(String gender) {
-    this.gender = gender;
-  }
-
-  public String getAge() {
-    return age;
-  }
-
-  public void setAge(String age) {
-    this.age = age;
-  }
-
-  public String getEducation() {
-    return education;
-  }
-
-  public void setEducation(String education) {
-    this.education = education;
-  }
-
-  public String getSocialmediaFrequency() {
-    return socialmediaFrequency;
-  }
-
-  public void setSocialmediaFrequency(String socialmediaFrequency) {
-    this.socialmediaFrequency = socialmediaFrequency;
-  }
-
-  public String getSharingFrequency() {
-    return sharingFrequency;
-  }
-
-  public void setSharingFrequency(String sharingFrequency) {
-    this.sharingFrequency = sharingFrequency;
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + id;
-    return result;
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (!(obj instanceof PresurveyResponse))
-      return false;
-    PresurveyResponse other = (PresurveyResponse) obj;
-    if (id != other.id)
-      return false;
-    return true;
-  }
-
-  @Override
-  public String toString() {
-    return "TurkerPresurveyResponse [id=" + id + "]";
+  public void setCreatedAt(LocalDateTime createdAt) {
+    this.createdAt = createdAt;
   }
 }
