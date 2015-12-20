@@ -119,4 +119,48 @@ CREATE TABLE `presurvey_questions_users` (
   CONSTRAINT `FK_presurvey_questions_user_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+/* PROJECT RELATED TABLES*/
 
+/*For Question Categories: To be prepopulated by admin*/
+CREATE TABLE `categories` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*For Projects: To be prepopulated by admin*/
+CREATE TABLE `projects` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(45) NOT NULL,
+  `description` varchar(4096) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*For Questions in Projects: To be prepopulated by admin*/
+CREATE TABLE `project_questions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `project_id` int(11) NOT NULL,
+  `title` varchar(45) NOT NULL,
+  `description` varchar(4096) DEFAULT NULL,
+  `category_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*For assigning Projects to Users: To be prepopulated by admin*/
+CREATE TABLE `projects_users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `project_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*UserRequirements for ProjectQuestions*/
+CREATE TABLE `user_requirements` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `project_question_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` varchar(4096) DEFAULT NULL,
+  `tags` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
