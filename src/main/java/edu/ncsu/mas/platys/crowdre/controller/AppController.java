@@ -17,11 +17,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.ncsu.mas.platys.crowdre.form.PresurveyResponseForm;
+import edu.ncsu.mas.platys.crowdre.form.PersonalityResponseForm;
+import edu.ncsu.mas.platys.crowdre.form.CreativityResponseForm;
 import edu.ncsu.mas.platys.crowdre.model.PresurveyQuestion;
+import edu.ncsu.mas.platys.crowdre.model.PersonalityQuestion;
+import edu.ncsu.mas.platys.crowdre.model.CreativityQuestion;
 import edu.ncsu.mas.platys.crowdre.model.User;
 import edu.ncsu.mas.platys.crowdre.model.PresurveyResponse;
+import edu.ncsu.mas.platys.crowdre.model.PersonalityResponse;
+import edu.ncsu.mas.platys.crowdre.model.CreativityResponse;
 import edu.ncsu.mas.platys.crowdre.service.PresurveyQuestionService;
+import edu.ncsu.mas.platys.crowdre.service.PersonalityQuestionService;
+import edu.ncsu.mas.platys.crowdre.service.CreativityQuestionService;
 import edu.ncsu.mas.platys.crowdre.service.PresurveyResponseService;
+import edu.ncsu.mas.platys.crowdre.service.PersonalityResponseService;
+import edu.ncsu.mas.platys.crowdre.service.CreativityResponseService;
 import edu.ncsu.mas.platys.crowdre.service.UserService;
 
 @Controller
@@ -43,13 +53,31 @@ public class AppController {
 
   @Autowired
   PresurveyResponseService presurveyResponseService;
-    
+
+  @Autowired
+  PersonalityQuestionService personalityQuestionService;
+
+  @Autowired
+  PersonalityResponseService personalityResponseService;
+  
+  @Autowired
+  CreativityQuestionService creativityQuestionService;
+
+  @Autowired
+  CreativityResponseService creativityResponseService;
+  
   private static final String PAGE_SIGNIN = "signin";
   private static final String PAGE_SIGNIN_FAILURE = "signin_failure";
   private static final String PAGE_REDIRECT_SIGNIN_FAILURE = "redirect:signin_failure";
   
   private static final String PAGE_PRESURVEY = "presurvey";
   private static final String PAGE_REDIRECT_PRESURVEY = "redirect:presurvey";
+  
+  private static final String PAGE_PERSONALITY = "personality";
+  private static final String PAGE_REDIRECT_PERSONALITY = "redirect:personality";
+  
+  private static final String PAGE_CREATIVITY = "creativity";
+  private static final String PAGE_REDIRECT_CREATIVITY = "redirect:creativity";
   
   private static final String PAGE_REDIRECT_PRESURVEY2 = "redirect:presurvey2";
     
@@ -58,6 +86,10 @@ public class AppController {
   private static final String ATTR_USER = "user";
   private static final String ATTR_PRESURVEY_QUESTIONS = "presurveyQuestions";
   private static final String ATTR_PRESURVEY_RESPONSE_FORM = "presurveyResponseForm";
+  private static final String ATTR_PERSONALITY_QUESTIONS = "personalityQuestions";
+  private static final String ATTR_PERSONALITY_RESPONSE_FORM = "personalityResponseForm";
+  private static final String ATTR_CREATIVITY_QUESTIONS = "creativityQuestions";
+  private static final String ATTR_CREATIVITY_RESPONSE_FORM = "creativityResponseForm";
   
   private static final int MTURK_ID_VALID = 0;
   private static final int MTURK_ID_INVALID = 1;
@@ -155,6 +187,105 @@ public class AppController {
     }
   }
 
+  @RequestMapping(value = { "/" + PAGE_PERSONALITY }, method = RequestMethod.GET)
+  public String showPersonality(@ModelAttribute(ATTR_USER) User user, BindingResult result,
+      ModelMap model) {
+    
+    int numQuestions = (int) personalityQuestionService.getCount();
+    PersonalityQuestion[] personalityQuestions = new PersonalityQuestion[numQuestions];
+    PersonalityResponse[] personalityResponses = new PersonalityResponse[numQuestions];
+    
+    for (int i = 0; i < numQuestions; i++) {
+      personalityQuestions[i] = personalityQuestionService.findById(i + 1);
+      personalityResponses[i] = new PersonalityResponse();
+      personalityResponses[i].setUserId(user.getId());
+      personalityResponses[i].setPersonalityQuestionId(personalityQuestions[i].getId());
+    }
+    
+    PersonalityResponseForm personalityResponseForm = new PersonalityResponseForm();
+    personalityResponseForm.setPersonalityResponses(personalityResponses);
+    
+    model.addAttribute(ATTR_PERSONALITY_QUESTIONS, personalityQuestions);
+    model.addAttribute(ATTR_PERSONALITY_RESPONSE_FORM, personalityResponseForm);
+    
+    return PAGE_PERSONALITY;
+  }
+  
+  
+  @RequestMapping(value = { "/" + PAGE_PERSONALITY }, method = RequestMethod.POST)
+  public String processPersonalityResponse(
+      @ModelAttribute(ATTR_PERSONALITY_RESPONSE_FORM) PersonalityResponseForm personalityResponseForm,
+      BindingResult result, ModelMap model, final RedirectAttributes redirectAttributes) {
+    if (isTurkerPersonalityResponseFormValid(personalityResponseForm, result, model)) {
+      PersonalityResponse[] personalityResponses = personalityResponseForm.getPersonalityResponses();
+      for (int i = 0; i < personalityResponses.length; i++) {
+        personalityResponses[i].setCreatedAt(LocalDateTime.now());
+        personalityResponseService.saveResponse(personalityResponses[i]);
+      }
+      return PAGE_REDIRECT_PERSONALITY;
+    } else {
+      // Page has errors
+      int numQuestions = (int) personalityQuestionService.getCount();
+      PersonalityQuestion[] personalityQuestions = new PersonalityQuestion[numQuestions];
+      for (int i = 0; i < numQuestions; i++) {
+        personalityQuestions[i] = personalityQuestionService.findById(i + 1);
+      }
+      model.addAttribute(ATTR_PERSONALITY_QUESTIONS, personalityQuestions);
+      model.addAttribute(ATTR_PERSONALITY_RESPONSE_FORM, personalityResponseForm);
+      return PAGE_PERSONALITY;
+    }
+  }
+
+  @RequestMapping(value = { "/" + PAGE_CREATIVITY }, method = RequestMethod.GET)
+  public String showCreativity(@ModelAttribute(ATTR_USER) User user, BindingResult result,
+      ModelMap model) {
+    
+    int numQuestions = (int) creativityQuestionService.getCount();
+    CreativityQuestion[] creativityQuestions = new CreativityQuestion[numQuestions];
+    CreativityResponse[] creativityResponses = new CreativityResponse[numQuestions];
+    
+    for (int i = 0; i < numQuestions; i++) {
+      creativityQuestions[i] = creativityQuestionService.findById(i + 1);
+      creativityResponses[i] = new CreativityResponse();
+      creativityResponses[i].setUserId(user.getId());
+      creativityResponses[i].setCreativityQuestionId(creativityQuestions[i].getId());
+    }
+    
+    CreativityResponseForm creativityResponseForm = new CreativityResponseForm();
+    creativityResponseForm.setCreativityResponses(creativityResponses);
+    
+    model.addAttribute(ATTR_CREATIVITY_QUESTIONS, creativityQuestions);
+    model.addAttribute(ATTR_CREATIVITY_RESPONSE_FORM, creativityResponseForm);
+    
+    return PAGE_CREATIVITY;
+  }
+  
+  
+  @RequestMapping(value = { "/" + PAGE_CREATIVITY }, method = RequestMethod.POST)
+  public String processCreativityResponse(
+      @ModelAttribute(ATTR_CREATIVITY_RESPONSE_FORM) CreativityResponseForm creativityResponseForm,
+      BindingResult result, ModelMap model, final RedirectAttributes redirectAttributes) {
+    if (isTurkerCreativityResponseFormValid(creativityResponseForm, result, model)) {
+      CreativityResponse[] creativityResponses = creativityResponseForm.getCreativityResponses();
+      for (int i = 0; i < creativityResponses.length; i++) {
+        creativityResponses[i].setCreatedAt(LocalDateTime.now());
+        creativityResponseService.saveResponse(creativityResponses[i]);
+      }
+      return PAGE_REDIRECT_CREATIVITY;
+    } else {
+      // Page has errors
+      int numQuestions = (int) creativityQuestionService.getCount();
+      CreativityQuestion[] creativityQuestions = new CreativityQuestion[numQuestions];
+      for (int i = 0; i < numQuestions; i++) {
+        creativityQuestions[i] = creativityQuestionService.findById(i + 1);
+      }
+      model.addAttribute(ATTR_CREATIVITY_QUESTIONS, creativityQuestions);
+      model.addAttribute(ATTR_CREATIVITY_RESPONSE_FORM, creativityResponseForm);
+      return PAGE_CREATIVITY;
+    }
+  }
+
+  
   /*
    * Could not find much information on the Mturk ID specification. The length 3
    * has been chosen intuitively.
@@ -183,4 +314,37 @@ public class AppController {
     }
     return returnValue;
   }
+  
+  private boolean isTurkerPersonalityResponseFormValid(PersonalityResponseForm personalityResponseForm,
+	      BindingResult result, ModelMap model) {
+	    PersonalityResponse[] personalityResponses = personalityResponseForm.getPersonalityResponses();
+	    boolean returnValue = true;
+	    for (int i = 0; i < personalityResponses.length; i++) {
+	      if (personalityResponses[i].getDescription() == null) {
+	        FieldError error = new FieldError(ATTR_PERSONALITY_RESPONSE_FORM, "personalityResponses[" + i
+	            + "].description", messageSource.getMessage("mandatory.answer", null,
+	            Locale.getDefault()));
+	        result.addError(error);
+	        returnValue = false;
+	      }
+	    }
+	    return returnValue;
+	  }
+  
+  private boolean isTurkerCreativityResponseFormValid(CreativityResponseForm creativityResponseForm,
+	      BindingResult result, ModelMap model) {
+	    CreativityResponse[] creativityResponses = creativityResponseForm.getCreativityResponses();
+	    boolean returnValue = true;
+	    for (int i = 0; i < creativityResponses.length; i++) {
+	      if (creativityResponses[i].getDescription() == null) {
+	        FieldError error = new FieldError(ATTR_CREATIVITY_RESPONSE_FORM, "creativityResponses[" + i
+	            + "].description", messageSource.getMessage("mandatory.answer", null,
+	            Locale.getDefault()));
+	        result.addError(error);
+	        returnValue = false;
+	      }
+	    }
+	    return returnValue;
+	  }
+  
 }

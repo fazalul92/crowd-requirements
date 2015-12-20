@@ -2,11 +2,11 @@
 
   <!-- progressbar -->
   <ul id="progressbar">
-   <li class="active">Pre-Survey (1)</li>
+   <li class="active">Pre-Survey (2)</li>
    <c:forEach begin="1" end="5" varStatus="loop">
     <li>Picture ${loop.index}</li>
    </c:forEach>
-   <li>Post-Survey</li>
+   <li>Post-</li>
   </ul>
 
   <h3>Instructions</h3>
@@ -34,22 +34,22 @@
    </ul>
   </div>
   
-  <form:form method="POST" modelAttribute="presurveyResponseForm">
-   <h3>Pre-Survey (1)</h3>
+  <form:form method="POST" modelAttribute="personalityResponseForm">
+   <h3>Pre-Survey (2) </h3>
    <div class="jumbotron lead">
     <ol>
-     <c:forEach var="presurveyResponse" items="${presurveyResponseForm.presurveyResponses}" varStatus="loop">
-      <form:input type="hidden" path="presurveyResponses[${loop.index}].userId" name="userId" id="userId" />
-      <form:input type="hidden" path="presurveyResponses[${loop.index}].presurveyQuestionId" name="presurveyQuestionId" id="presurveyQuestionId" />
+     <c:forEach var="personalityResponse" items="${personalityResponseForm.personalityResponses}" varStatus="loop">
+      <form:input type="hidden" path="personalityResponses[${loop.index}].userId" name="userId" id="userId" />
+      <form:input type="hidden" path="personalityResponses[${loop.index}].personalityQuestionId" name="personalityQuestionId" id="personalityQuestionId" />
       
       <li>
-       <h3>${presurveyQuestions[loop.index].description}</h3>
+       <h3>${personalityQuestions[loop.index].description}</h3>
        <div class="form-horizontal">
-       <c:if test="${presurveyQuestions[loop.index].questionType == 'multiple_choice'}">
-        <c:set var="answerChoices" value="${fn:split(presurveyQuestions[loop.index].answerChoices,'|')}"/>
+       <c:if test="${personalityQuestions[loop.index].questionType == 'multiple_choice'}">
+        <c:set var="answerChoices" value="${fn:split(personalityQuestions[loop.index].answerChoices,'|')}"/>
         <c:forEach var="answerChoice" items="${answerChoices}">
          <div class="radio">
-          <label> <form:radiobutton path="presurveyResponses[${loop.index}].description" value="${answerChoice}" />
+          <label> <form:radiobutton path="personalityResponses[${loop.index}].description" value="${answerChoice}" />
            ${answerChoice}
           </label>
          </div>
@@ -59,7 +59,7 @@
       </li>
       
       <div class="has-error">
-       <form:errors path="presurveyResponses[${loop.index}].description" class="help-inline" />
+       <form:errors path="personalityResponses[${loop.index}].description" class="help-inline" />
       </div>
      </c:forEach>
     </ol>
