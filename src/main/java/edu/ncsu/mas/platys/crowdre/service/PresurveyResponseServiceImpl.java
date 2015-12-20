@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import edu.ncsu.mas.platys.crowdre.dao.PresurveyResponseDao;
 import edu.ncsu.mas.platys.crowdre.model.PresurveyResponse;
 
-@Service("turkerPresurveyResponseService")
+@Service("presurveyResponseService")
 @Transactional
 public class PresurveyResponseServiceImpl implements PresurveyResponseService {
 

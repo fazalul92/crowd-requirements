@@ -28,7 +28,7 @@
 
 <body>
  <div class="container">
-  <form:form class="form-signin" modelAttribute="turker" method="POST">
+  <form:form class="form-signin" method="POST"  modelAttribute="user">
    <h2 class="form-signin-heading">Please sign in</h2>
    <label for="mturkId" class="sr-only"> Amazon Mechanical Turk
     ID</label>

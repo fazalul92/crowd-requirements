@@ -101,6 +101,8 @@ CREATE TABLE `postsurvey_questions_users` (
 CREATE TABLE `presurvey_questions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `description` varchar(255) DEFAULT NULL,
+  `question_type` varchar(50) DEFAULT NULL,
+  `answer_choices` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import edu.ncsu.mas.platys.crowdre.model.PresurveyQuestion;
 import edu.ncsu.mas.platys.crowdre.model.User;
 import edu.ncsu.mas.platys.crowdre.model.PresurveyResponse;
+import edu.ncsu.mas.platys.crowdre.service.PresurveyQuestionService;
 import edu.ncsu.mas.platys.crowdre.service.PresurveyResponseService;
 import edu.ncsu.mas.platys.crowdre.service.UserService;
 
@@ -36,6 +38,9 @@ public class AppController {
   UserService userService;
 
   @Autowired
+  PresurveyQuestionService presurveyQuestionService;
+
+  @Autowired
   PresurveyResponseService presurveyResponseService;
     
   private static final String PAGE_SIGNIN = "signin";
@@ -45,9 +50,10 @@ public class AppController {
   private static final String PAGE_REDIRECT_PRESURVEY = "redirect:presurvey";
   private static final String PAGE_REDIRECT_QUESTIONNAIRE = "redirect:questionnaire";
     
-  private static final String ATTR_TURKER = "turker";
-  private static final String ATTR_MTURK_ID = "mturkId";
   private static final String ATTR_SIGN_FAILURE_REASON = "signinFailureReason";
+  
+  private static final String ATTR_USER = "user";
+  private static final String ATTR_PRESURVEY_QUESTIONS = "presurveyQuestions";
   private static final String ATTR_PRESURVEY_RESPONSE = "presurveyResponse";
   
   private static final int MTURK_ID_VALID = 0;
@@ -56,18 +62,19 @@ public class AppController {
     
   @RequestMapping(value = { "/", "/" + PAGE_SIGNIN }, method = RequestMethod.GET)
   public String showSignIn(ModelMap model) {
-    model.addAttribute(ATTR_TURKER, new User());
+    model.addAttribute(ATTR_USER, new User());
     return PAGE_SIGNIN;
   }
 
   @RequestMapping(value = { "/", "/" + PAGE_SIGNIN }, method = RequestMethod.POST)
-  public String processSignIn(@ModelAttribute(ATTR_TURKER) User user,
+  public String processSignIn(@ModelAttribute(ATTR_USER) User user,
       final RedirectAttributes redirectAttributes) {
     
-    redirectAttributes.addFlashAttribute(ATTR_MTURK_ID, user.getMturkId());
+    redirectAttributes.addFlashAttribute(ATTR_USER, user);
     
     switch (isMturkIDValid(user.getMturkId())) {
     case MTURK_ID_VALID:
+      user.setCreatedAt(LocalDateTime.now());
       userService.saveResponse(user);
       return PAGE_REDIRECT_PRESURVEY;
       
@@ -88,21 +95,30 @@ public class AppController {
   }
 
   @RequestMapping(value = { "/" + PAGE_SIGNIN_FAILURE }, method = RequestMethod.GET)
-  public String showSigninFailure(@ModelAttribute(ATTR_MTURK_ID) String mturkId,
+  public String showSigninFailure(@ModelAttribute(ATTR_USER) User user,
       @ModelAttribute(ATTR_SIGN_FAILURE_REASON) String signinFailureReason, BindingResult result,
       ModelMap model) {
-    model.addAttribute(ATTR_MTURK_ID, mturkId);
+    model.addAttribute(ATTR_USER, user);
     model.addAttribute(ATTR_SIGN_FAILURE_REASON, signinFailureReason);
     return PAGE_SIGNIN_FAILURE;
   }
 
   @RequestMapping(value = { "/" + PAGE_PRESURVEY }, method = RequestMethod.GET)
-  public String showPresurvey(@ModelAttribute(ATTR_MTURK_ID) String mturkId, BindingResult result,
+  public String showPresurvey(@ModelAttribute(ATTR_USER) User user, BindingResult result,
       ModelMap model) {
     
-    PresurveyResponse presurveyResponse = new PresurveyResponse();
-    presurveyResponse.setMturkId(mturkId);
-    model.addAttribute(ATTR_PRESURVEY_RESPONSE, presurveyResponse);
+    int numQuestions = (int) presurveyQuestionService.getCount();
+    PresurveyQuestion[] presurveyQuestions = new PresurveyQuestion[numQuestions];
+    //PresurveyResponse[] presurveyResponses = new PresurveyResponse[numQuestions];
+    
+    for (int i = 0; i < numQuestions; i++) {
+      presurveyQuestions[i] = presurveyQuestionService.findById(i + 1);
+      //presurveyResponses[i] = new PresurveyResponse();
+      //presurveyResponses[i].setMturkId(mturkId);
+    }
+    
+    //presurveyResponse.setMturkId(mturkId);
+    model.addAttribute(ATTR_PRESURVEY_QUESTIONS, presurveyQuestions);
     return PAGE_PRESURVEY;
   }
   
@@ -114,7 +130,7 @@ public class AppController {
       presurveyResponse.setResponseTime(LocalDateTime.now());
       presurveyResponseService.saveResponse(presurveyResponse);
       
-      redirectAttributes.addFlashAttribute(ATTR_MTURK_ID, presurveyResponse.getMturkId());
+      // redirectAttributes.addFlashAttribute(ATTR_MTURK_ID, presurveyResponse.getMturkId());
       return PAGE_REDIRECT_QUESTIONNAIRE;
     } else {
       // Page has errors

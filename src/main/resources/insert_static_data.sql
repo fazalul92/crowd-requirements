@@ -10,7 +10,9 @@
 
 LOCK TABLES `presurvey_questions` WRITE;
 /*!40000 ALTER TABLE `presurvey_questions` DISABLE KEYS */;
-INSERT INTO `presurvey_questions` VALUES (1,'Gender'),(2,'Age'),(3,'Highest level of education');
+INSERT INTO `presurvey_questions` VALUES (1, 'What is your gender?', 'multiple_choice', 'Male|Female|Other'),
+  (2, 'How old are you?', 'multiple_choice', '18 to 24|25 to 34|35 to 45|45 to 54|55 or older'),
+  (3, 'What is your highest level of education?', 'multiple_choice', 'Less than high school degree|High school degree or equivalent (e.g., GED)|Some college but no degree|Bachelor degree|Graduate degree');
 /*!40000 ALTER TABLE `presurvey_questions` ENABLE KEYS */;
 UNLOCK TABLES;
   
