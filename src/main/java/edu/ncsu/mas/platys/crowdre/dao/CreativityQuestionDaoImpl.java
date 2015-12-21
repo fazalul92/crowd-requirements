@@ -5,13 +5,13 @@ import java.math.BigInteger;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
-import edu.ncsu.mas.platys.crowdre.model.PersonalityQuestion;
+import edu.ncsu.mas.platys.crowdre.model.CreativityQuestion;
 
 @Repository("creativityQuestionDao")
-public class CreativityQuestionDaoImpl extends AbstractDao<Integer, PersonalityQuestion> implements
-    PersonalityQuestionDao {
+public class CreativityQuestionDaoImpl extends AbstractDao<Integer, CreativityQuestion> implements
+    CreativityQuestionDao {
 
-  public PersonalityQuestion findById(int id) {
+  public CreativityQuestion findById(int id) {
     return getByKey(id);
   }
 
@@ -20,7 +20,7 @@ public class CreativityQuestionDaoImpl extends AbstractDao<Integer, PersonalityQ
     return ((BigInteger) query.uniqueResult()).longValue();
   }
 
-  public void saveResponse(PersonalityQuestion question) {
+  public void saveResponse(CreativityQuestion question) {
     persist(question);
   }
 }

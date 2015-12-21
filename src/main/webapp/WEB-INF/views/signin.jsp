@@ -22,7 +22,7 @@
 <!-- Custom styles for this template -->
 <link href="resources/css/signin.css" rel="stylesheet">
 
-<script src="../../assets/js/ie-emulation-modes-warning.js"></script>
+<!--  <script src="../../assets/js/ie-emulation-modes-warning.js"></script>-->
 
 </head>
 
@@ -47,7 +47,7 @@
       <p>
        This HIT is part of a research study being conducted at North
        Carolina State University (NCSU). Please review the <a
-        href="doc/irb-consent.pdf">informed consent</a> form for
+        href="resources/doc/irb-consent.pdf">informed consent</a> form for
        research. By clicking the checkbox below:
       </p>
       <ol>
@@ -62,17 +62,46 @@
    <div class="form-group">
     <div class="col-xs-6 col-xs-offset-3">
      <div class="checkbox">
-      <label> <input type="checkbox" name="agree" value="agree"/>
+      <label> <input type="checkbox" name="agree" value="agree" id="chkConsent"/>
        Agree with the terms and conditions
       </label>
      </div>
     </div>
    </div>
 
-   <button class="col-xs-5 col-xs-offset-3 btn btn-lg btn-primary" type="submit">
+   <button class="col-xs-5 col-xs-offset-3 btn btn-lg btn-primary" type="submit" id="testcheck">
     Sign in</button>
   </form:form>
  </div>
+ 
+ 
+  <!-- Bootstrap core JavaScript
+    ================================================== -->
+ <!-- Placed at the end of the document so the pages load faster -->
+ <script src="resources/js/jquery.min.js" type="text/javascript"></script>
+ <script src="resources/js/bootstrap.min.js" type="text/javascript"></script>
+ 
+ <script type="text/javascript">
+ jQuery(document).ready(function ($) {
+	 $("#testcheck").on('click', function() {
+		    if (jQuery("#chkConsent").is(":checked")) {
+		        //alert("Consent Checked");
+		        return true;
+		    }
+		    else
+		    	{
+		    	alert("You must agree with Terms and Conditions");
+		    	return false;
+		    	}
+		    
+		});
+ 
+	 
+	});
+ 
+ 
+ 
+ </script>
  
  <!-- /container -->
 
