@@ -23,7 +23,37 @@ UNLOCK TABLES;
 
 LOCK TABLES `creativity_questions` WRITE;
 /*!40000 ALTER TABLE `creativity_questions` DISABLE KEYS */;
-INSERT INTO `creativity_questions` VALUES (1,'Capable'),(2,'Artificial'),(3,'Clever'),(4,'Cautious'),(5,'Confident'),(6,'Egotistical'),(7,'Commonplace'),(8,'Humourous'),(9,'Conservative'),(10,'Individualistic');
+INSERT INTO `creativity_questions` VALUES 
+  (1,'Capable'),
+  (2,'Artificial'),
+  (3,'Clever'),
+  (4,'Cautious'),
+  (5,'Confident'),
+  (6,'Egotistical'),
+  (7,'Commonplace'),
+  (8,'Humourous'),
+  (9,'Conservative'),
+  (10,'Individualistic'),
+  (11,'Conventional'),
+  (12,'Informal'),
+  (13,'Dissatisfied'),
+  (14,'Insightful'),
+  (15,'Suspicious'),
+  (16,'Honest'),
+  (17,'Intelligent'),
+  (18,'Well mannered'),
+  (19,'Wide interests'),
+  (20,'Inventive'),
+  (21,'Original'),
+  (22,'Norrow interests'),
+  (23,'Reflective'),
+  (24,'Sincere'),
+  (25,'Resourceful'),
+  (26,'Self-confident'),
+  (27,'Sexy'),
+  (28,'Submissive'),
+  (29,'Snobbish'),
+  (30,'Unconventional');
 /*!40000 ALTER TABLE `creativity_questions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -33,6 +63,26 @@ UNLOCK TABLES;
 
 LOCK TABLES `personality_questions` WRITE;
 /*!40000 ALTER TABLE `personality_questions` DISABLE KEYS */;
-INSERT INTO `personality_questions` VALUES (1,'Am the life of the party'),(2,'Sympathize with others\' feelings'),(3,'Get chores done right away'),(4,'Have frequent mood swings'),(5,'Have a vivid imagination'),(6,'Don\'t talk a lot'),(7,'Am not interested in other people\'s problems'),(8,'Often forget to put things back in their proper place'),(9,'Am relaxed most of the time'),(10,'Am not interested in abstract ideas');
+INSERT INTO `personality_questions` VALUES 
+  (1,'Am the life of the party'),
+  (2,'Sympathize with others\' feelings'),
+  (3,'Get chores done right away'),
+  (4,'Have frequent mood swings'),
+  (5,'Have a vivid imagination'),
+  (6,'Don\'t talk a lot'),
+  (7,'Am not interested in other people\'s problems'),
+  (8,'Often forget to put things back in their proper place'),
+  (9,'Am relaxed most of the time'),
+  (10,'Am not interested in abstract ideas'),
+  (11,'Talk to a lot of different people at parties'),
+  (12,'Feel others\' emotions'),
+  (13,'Like order'),
+  (14,'Get upset easily'),
+  (15,'Have difficulty understanding abstract ideas'),
+  (16,'Keep in the background'),
+  (17,'Am not really interested in others'),
+  (18,'Make a mess of things'),
+  (19,'Seldom feel blue'),
+  (20,'Do not have a good imagination');
 /*!40000 ALTER TABLE `personality_questions` ENABLE KEYS */;
 UNLOCK TABLES;
