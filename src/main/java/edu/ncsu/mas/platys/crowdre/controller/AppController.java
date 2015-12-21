@@ -173,7 +173,7 @@ public class AppController {
         presurveyResponses[i].setCreatedAt(LocalDateTime.now());
         presurveyResponseService.saveResponse(presurveyResponses[i]);
       }
-      return PAGE_REDIRECT_PRESURVEY2;
+      return PAGE_REDIRECT_PERSONALITY;
     } else {
       // Page has errors
       int numQuestions = (int) presurveyQuestionService.getCount();
@@ -222,7 +222,7 @@ public class AppController {
         personalityResponses[i].setCreatedAt(LocalDateTime.now());
         personalityResponseService.saveResponse(personalityResponses[i]);
       }
-      return PAGE_REDIRECT_PERSONALITY;
+      return PAGE_REDIRECT_CREATIVITY;
     } else {
       // Page has errors
       int numQuestions = (int) personalityQuestionService.getCount();
@@ -271,7 +271,7 @@ public class AppController {
         creativityResponses[i].setCreatedAt(LocalDateTime.now());
         creativityResponseService.saveResponse(creativityResponses[i]);
       }
-      return PAGE_REDIRECT_CREATIVITY;
+      return PAGE_REDIRECT_PRESURVEY2;
     } else {
       // Page has errors
       int numQuestions = (int) creativityQuestionService.getCount();

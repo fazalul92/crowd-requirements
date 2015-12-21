@@ -1,12 +1,14 @@
 <%@include file="header.jsp" %>
 
   <!-- progressbar -->
-  <ul id="progressbar">
-   <li class="active">Pre-Survey (2)</li>
-   <c:forEach begin="1" end="5" varStatus="loop">
-    <li>Picture ${loop.index}</li>
+<ul id="progressbar">
+   <li>Pre-Survey (1)</li>
+   <li>Pre-Survey (2)</li>
+   <li class="active">Pre-Survey (3)</li>
+   <c:forEach begin="1" end="3" varStatus="loop">
+    <li>Phase ${loop.index}</li>
    </c:forEach>
-   <li>Post-</li>
+   <li>Post-Survey</li>
   </ul>
 
   <h3>Instructions</h3>
@@ -34,18 +36,18 @@
    </ul>
   </div>
   
-  <form:form method="POST" modelAttribute="personalityResponseForm">
-   <h3>Pre-Survey (2) </h3>
+  <form:form method="POST" modelAttribute="creativityResponseForm">
+   <h3>Pre-Survey (3)</h3>
    <div class="jumbotron lead">
     <ol>
-     <c:forEach var="personalityResponse" items="${personalityResponseForm.personalityResponses}" varStatus="loop">
-      <form:input type="hidden" path="personalityResponses[${loop.index}].userId" name="userId" id="userId" />
-      <form:input type="hidden" path="personalityResponses[${loop.index}].personalityQuestionId" name="personalityQuestionId" id="personalityQuestionId" />
+     <c:forEach var="creativityResponse" items="${creativityResponseForm.creativityResponses}" varStatus="loop">
+      <form:input type="hidden" path="creativityResponses[${loop.index}].userId" name="userId" id="userId" />
+      <form:input type="hidden" path="creativityResponses[${loop.index}].creativityQuestionId" name="creativityQuestionId" id="creativityQuestionId" />
       
       <li>
-       <h3>${personalityQuestions[loop.index].description}</h3>
+       <h3>${creativityQuestions[loop.index].description}</h3>
        <div class="form-horizontal">
-       <c:if test="${personalityQuestions[loop.index].questionType == 'multiple_choice'}">
+       <%-- <c:if test="${personalityQuestions[loop.index].questionType == 'multiple_choice'}">
         <c:set var="answerChoices" value="${fn:split(personalityQuestions[loop.index].answerChoices,'|')}"/>
         <c:forEach var="answerChoice" items="${answerChoices}">
          <div class="radio">
@@ -54,12 +56,15 @@
           </label>
          </div>
         </c:forEach>
-       </c:if>
+       </c:if> --%>
+       <c:forEach begin="1" end="5" varStatus="likertloop">
+         <label> <form:radiobutton path="personalityResponses[${loop.index}].description" value="${likertloop.index}" />${likertloop.index} </label>
+        </c:forEach>
        </div>
       </li>
       
       <div class="has-error">
-       <form:errors path="personalityResponses[${loop.index}].description" class="help-inline" />
+       <form:errors path="creativityResponses[${loop.index}].description" class="help-inline" />
       </div>
      </c:forEach>
     </ol>

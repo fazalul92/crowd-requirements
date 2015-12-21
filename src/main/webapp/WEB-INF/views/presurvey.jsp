@@ -3,8 +3,10 @@
   <!-- progressbar -->
   <ul id="progressbar">
    <li class="active">Pre-Survey (1)</li>
-   <c:forEach begin="1" end="5" varStatus="loop">
-    <li>Picture ${loop.index}</li>
+   <li>Pre-Survey (2)</li>
+   <li>Pre-Survey (3)</li>
+   <c:forEach begin="1" end="3" varStatus="loop">
+    <li>Phase ${loop.index}</li>
    </c:forEach>
    <li>Post-Survey</li>
   </ul>
