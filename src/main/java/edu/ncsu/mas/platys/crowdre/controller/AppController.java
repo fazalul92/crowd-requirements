@@ -81,6 +81,8 @@ public class AppController {
   
   private static final String PAGE_REDIRECT_PRESURVEY2 = "redirect:presurvey2";
     
+  private static final String PAGE_REQUIREMENTS_PHASE1 = "requirements_phase1";
+  
   private static final String ATTR_SIGN_FAILURE_REASON = "signinFailureReason";
   
   private static final String ATTR_USER = "user";
