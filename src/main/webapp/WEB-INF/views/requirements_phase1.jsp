@@ -25,31 +25,42 @@
   <form:form method="POST" modelAttribute="presurveyResponseForm">
    <h3>New Smart Home Requirement</h3>
    <div>
-    <fieldset class="form-group">
-     <label for="requirementTextarea">Requirement</label>
-     <textarea class="form-control" id="requirementTextarea" rows="3"></textarea>
-    </fieldset>
-      
-    <fieldset class="form-group">
-     <label for="domainSelect">Application Domain</label>
-     <select class="form-control" id="domainSelect">
+    <div class="form-group row">
+     <label for="requirementTextarea" class="col-sm-2 form-control-label">Requirement</label>
+     <div class="col-sm-10">
+     	<textarea class="form-control" id="requirementTextarea" rows="3"></textarea>
+     </div>
+    </div>
+    <div class="form-group row">
+     <label for="domainSelect" class="col-sm-2 form-control-label">Application Domain</label>
+     <div class="col-sm-5">
+      <select class="form-control" id="domainSelect">
       <option>Healthcare</option>
       <option>Energy</option>
       <option>Entertainment</option>
       <option>Automation</option>
       <option>Other</option>
-     </select>
-<!-- </fieldset>
-    <fieldset class="form-group">
-     <label for="applicationDomain">Application Domain</label>-->
-     If other,
-     <textarea class="form-control" id="tags" rows="1"></textarea>
-    </fieldset>
+      </select>
+     
+     </div>
+     <div class="col-sm-5">
+      <input type="text" class="form-control" id="inputDomain" placeholder="Other Domain">
+     </div>
+    </div>
 	
-	<fieldset class="form-group">
-     <label for="tagsTextarea">Tags (separate multiple tags with a comma)</label>
-      <textarea class="form-control" id="tags" rows="1"></textarea>
-    </fieldset>
+	<div class="form-group row">
+     <label for="riskTextarea" class="col-sm-2 form-control-label">Potential Risks</label>
+     <div class="col-sm-10">
+     	<textarea class="form-control" id="riskTextarea" rows="3"></textarea>
+     </div>
+    </div>
+	
+	<div class="form-group row">
+     <label for="tagsText" class="col-sm-2 form-control-label">Tags </label>
+     <div class="col-sm-10">
+      <input type="text" class="form-control" id="tagsText" placeholder="Separate multiple tags with a comma">
+     </div>
+	</div>
      
     <div class="has-error">
      <form:errors path="presurveyResponses[${loop.index}].description" class="help-inline" />
@@ -58,7 +69,19 @@
     <button type="submit" class="btn btn-primary">Submit</button>
    </div>  
   </form:form>
-
+  
+  <div>
+  	<ul>
+  	   <!-- Loop LI -->
+  		<li>
+  			Requirements:  <br/>
+  			Application Domain: <br/>
+  			Potential Risk: <br/>
+  			Tags: 
+  		</li>
+  	</ul>
+  </div>
+  
  </div>
  <!-- /container -->
  
