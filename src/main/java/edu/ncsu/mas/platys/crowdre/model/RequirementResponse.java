@@ -15,7 +15,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "presurvey_questions")
-public class Requirement {
+public class RequirementResponse {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
@@ -31,7 +31,10 @@ public class Requirement {
   @NotBlank
   @Column(name = "application_domain", nullable = false)
   private String applicationDomain;
-  
+
+  @Column(name = "application_domain_other")
+  private String applicationDomainOther;
+
   @Column(name = "tags")
   private String tags;
 
@@ -71,6 +74,14 @@ public class Requirement {
 
   public void setApplicationDomain(String applicationDomain) {
     this.applicationDomain = applicationDomain;
+  }
+
+  public String getApplicationDomainOther() {
+    return applicationDomainOther;
+  }
+
+  public void setApplicationDomainOther(String applicationDomainOther) {
+    this.applicationDomainOther = applicationDomainOther;
   }
 
   public String getTags() {

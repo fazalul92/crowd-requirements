@@ -123,6 +123,7 @@ CREATE TABLE `requirements` (
   `user_id` int(11) NOT NULL,
   `description` varchar(4096) NOT NULL,
   `application_domain` varchar(256) NOT NULL,
+  `application_domain_other` varchar(256) NOT NULL,
   `tags` varchar(1024) DEFAULT NULL,
   `created_at` datetime NOT NULL,
   PRIMARY KEY (`id`),

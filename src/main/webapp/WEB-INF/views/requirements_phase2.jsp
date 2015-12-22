@@ -114,8 +114,5 @@
 		</li>
 	</ul>
   </div>
-
- </div>
- <!-- /container -->
- 
+  
  <%@include file="footer.jsp" %>
