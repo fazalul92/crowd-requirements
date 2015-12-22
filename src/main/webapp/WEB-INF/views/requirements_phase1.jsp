@@ -28,7 +28,7 @@
     <div class="form-group row">
      <label for="requirementTextarea" class="col-sm-2 form-control-label">Requirement</label>
      <div class="col-sm-10">
-     	<textarea class="form-control" id="requirementTextarea" rows="3"></textarea>
+     	<textarea class="form-control" id="requirementTextarea" rows="2"></textarea>
      </div>
     </div>
     <div class="form-group row">
@@ -51,7 +51,7 @@
 	<div class="form-group row">
      <label for="riskTextarea" class="col-sm-2 form-control-label">Potential Risks</label>
      <div class="col-sm-10">
-     	<textarea class="form-control" id="riskTextarea" rows="3"></textarea>
+     	<textarea class="form-control" id="riskTextarea" rows="2"></textarea>
      </div>
     </div>
 	
