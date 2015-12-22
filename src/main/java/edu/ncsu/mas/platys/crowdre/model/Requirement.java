@@ -32,9 +32,6 @@ public class Requirement {
   @Column(name = "application_domain", nullable = false)
   private String applicationDomain;
   
-  @Column(name = "risks")
-  private String risks;
-
   @Column(name = "tags")
   private String tags;
 
@@ -74,14 +71,6 @@ public class Requirement {
 
   public void setApplicationDomain(String applicationDomain) {
     this.applicationDomain = applicationDomain;
-  }
-
-  public String getRisks() {
-    return risks;
-  }
-
-  public void setRisks(String risks) {
-    this.risks = risks;
   }
 
   public String getTags() {

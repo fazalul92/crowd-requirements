@@ -32,6 +32,7 @@ import edu.ncsu.mas.platys.crowdre.service.CreativityQuestionService;
 import edu.ncsu.mas.platys.crowdre.service.PresurveyResponseService;
 import edu.ncsu.mas.platys.crowdre.service.PersonalityResponseService;
 import edu.ncsu.mas.platys.crowdre.service.CreativityResponseService;
+import edu.ncsu.mas.platys.crowdre.service.RequirementService;
 import edu.ncsu.mas.platys.crowdre.service.UserService;
 
 @Controller
@@ -66,6 +67,9 @@ public class AppController {
   @Autowired
   CreativityResponseService creativityResponseService;
   
+  @Autowired
+  RequirementService requirementService;
+  
   private static final String PAGE_SIGNIN = "signin";
   private static final String PAGE_SIGNIN_FAILURE = "signin_failure";
   private static final String PAGE_REDIRECT_SIGNIN_FAILURE = "redirect:signin_failure";
@@ -79,10 +83,10 @@ public class AppController {
   private static final String PAGE_CREATIVITY = "creativity";
   private static final String PAGE_REDIRECT_CREATIVITY = "redirect:creativity";
   
-  private static final String PAGE_REDIRECT_PRESURVEY2 = "redirect:presurvey2";
+  //private static final String PAGE_REDIRECT_PRESURVEY2 = "redirect:presurvey2";
+  private static final String PAGE_REDIRECT_REQUIREMENT_1 = "redirect:requirement1";
     
   private static final String ATTR_SIGN_FAILURE_REASON = "signinFailureReason";
-  
   private static final String ATTR_USER = "user";
   private static final String ATTR_PRESURVEY_QUESTIONS = "presurveyQuestions";
   private static final String ATTR_PRESURVEY_RESPONSE_FORM = "presurveyResponseForm";
@@ -279,7 +283,7 @@ public class AppController {
         creativityResponses[i].setCreatedAt(LocalDateTime.now());
         creativityResponseService.saveResponse(creativityResponses[i]);
       }
-      return PAGE_REDIRECT_PRESURVEY2;
+      return PAGE_REDIRECT_REQUIREMENT_1;
     } else {
       // Page has errors
       int numQuestions = (int) creativityQuestionService.getCount();
@@ -293,7 +297,12 @@ public class AppController {
     }
   }
 
-  
+  @RequestMapping(value = { "/" + PAGE_REDIRECT_REQUIREMENT_1 }, method = RequestMethod.GET)
+  public String showRequirement(ModelMap model) {
+    model.addAttribute(ATTR_USER, new User());
+    return PAGE_REDIRECT_REQUIREMENT_1;
+  }
+
   /*
    * Could not find much information on the Mturk ID specification. The length 3
    * has been chosen intuitively.
@@ -323,36 +332,35 @@ public class AppController {
     return returnValue;
   }
   
-  private boolean isTurkerPersonalityResponseFormValid(PersonalityResponseForm personalityResponseForm,
-	      BindingResult result, ModelMap model) {
-	    PersonalityResponse[] personalityResponses = personalityResponseForm.getPersonalityResponses();
-	    boolean returnValue = true;
-	    for (int i = 0; i < personalityResponses.length; i++) {
-	      if (personalityResponses[i].getDescription() == null) {
-	        FieldError error = new FieldError(ATTR_PERSONALITY_RESPONSE_FORM, "personalityResponses[" + i
-	            + "].description", messageSource.getMessage("mandatory.answer", null,
-	            Locale.getDefault()));
-	        result.addError(error);
-	        returnValue = false;
-	      }
-	    }
-	    return returnValue;
-	  }
+  private boolean isTurkerPersonalityResponseFormValid(
+      PersonalityResponseForm personalityResponseForm, BindingResult result, ModelMap model) {
+    PersonalityResponse[] personalityResponses = personalityResponseForm.getPersonalityResponses();
+    boolean returnValue = true;
+    for (int i = 0; i < personalityResponses.length; i++) {
+      if (personalityResponses[i].getDescription() == null) {
+        FieldError error = new FieldError(ATTR_PERSONALITY_RESPONSE_FORM, "personalityResponses["
+            + i + "].description", messageSource.getMessage("mandatory.answer", null,
+            Locale.getDefault()));
+        result.addError(error);
+        returnValue = false;
+      }
+    }
+    return returnValue;
+  }
   
-  private boolean isTurkerCreativityResponseFormValid(CreativityResponseForm creativityResponseForm,
-	      BindingResult result, ModelMap model) {
-	    CreativityResponse[] creativityResponses = creativityResponseForm.getCreativityResponses();
-	    boolean returnValue = true;
-	    for (int i = 0; i < creativityResponses.length; i++) {
-	      if (creativityResponses[i].getDescription() == null) {
-	        FieldError error = new FieldError(ATTR_CREATIVITY_RESPONSE_FORM, "creativityResponses[" + i
-	            + "].description", messageSource.getMessage("mandatory.answer", null,
-	            Locale.getDefault()));
-	        result.addError(error);
-	        returnValue = false;
-	      }
-	    }
-	    return returnValue;
-	  }
-  
+  private boolean isTurkerCreativityResponseFormValid(
+      CreativityResponseForm creativityResponseForm, BindingResult result, ModelMap model) {
+    CreativityResponse[] creativityResponses = creativityResponseForm.getCreativityResponses();
+    boolean returnValue = true;
+    for (int i = 0; i < creativityResponses.length; i++) {
+      if (creativityResponses[i].getDescription() == null) {
+        FieldError error = new FieldError(ATTR_CREATIVITY_RESPONSE_FORM, "creativityResponses[" + i
+            + "].description", messageSource.getMessage("mandatory.answer", null,
+            Locale.getDefault()));
+        result.addError(error);
+        returnValue = false;
+      }
+    }
+    return returnValue;
+  }
 }
