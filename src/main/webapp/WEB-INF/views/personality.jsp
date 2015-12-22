@@ -12,28 +12,20 @@
 
 <h3>Instructions</h3>
 <div class="jumbotron lead">
- <p>Smart home requirements collection...</p>
-
- <ul>
-  <li><b>Do not</b> use the browser's <b>refresh</b>, <b>back</b>,
-   or <b>forward</b> buttons.</li>
-  <li>Use the <b>Submit Responses</b> button at the end of the page
-   to proceed to the next page.
-  </li>
-  <li>After submitting responses in a page, you <b>cannot
-    modify</b> your responses in that page.
-  </li>
-  <li>Answering all questions is mandatory, unless explicitly
-   marked as optional.</li>
-  <li>If something goes wrong (does not happen often), please start
-   again from the beginning. If the problem persists, please contact <b>pmuruka
-    AT ncsu.edu</b> with details of the problem.
-  </li>
-  <li>This HIT may contain <b>adult content</b>. Worker discretion
-   is advised.
-  </li>
-  <li>You must be <b>18 or older</b> to participate in the study.
-  </li>
+ <p>Please use the rating scale below to describe how accurately
+  each statement describes you. Describe yourself as you generally are
+  now, not as you wish to be in the future. Describe yourself as you
+  honestly see yourself, in relation to other people you know of the
+  same sex as you are, and roughly your same age. So that you can
+  describe yourself in an honest manner, your responses will be kept in
+  absolute confidence. Please read each statement carefully, and then
+  fill in the bubble that corresponds to the number on the scale.</p>
+ <ul class="list-unstyled" style="font-weight: bold;">
+  <li>1=Very Inaccurate</li>
+  <li>2=Moderately Inaccurate</li>
+  <li>3=Neither Inaccurate nor Accurate</li>
+  <li>4=Moderately Accurate</li>
+  <li>5=Very Accurate</li>
  </ul>
 </div>
 
