@@ -1,29 +1,3 @@
-/*Old Tables*/
-/*
-  CREATE TABLE presurvey_response (
-  id INT NOT NULL auto_increment,
-  mturk_id VARCHAR(20) NOT NULL,
-  response_time DATETIME NOT NULL,
-  gender VARCHAR(20) NOT NULL,
-  age VARCHAR(20) NOT NULL,
-  education VARCHAR(20) NOT NULL,
-  socialmedia_frequency VARCHAR(20) NOT NULL,
-  sharing_frequency VARCHAR(20) NOT NULL,
-  PRIMARY KEY (id)
-);
-
-CREATE TABLE spotcheck_question (
-  id INT NOT NULL auto_increment,
-  name VARCHAR(200) NOT NULL,
-  question VARCHAR(1024) NOT NULL,
-  options VARCHAR(1024) NOT NULL,
-  options_type VARCHAR(20) NOT NULL,
-  answer VARCHAR(256) NOT NULL,
-  PRIMARY KEY (id)
-);
-*/
-
-/*New Schema*/
 DROP DATABASE IF EXISTS `crowd_requirements_development`;
 
 CREATE DATABASE `crowd_requirements_development` /*!40100 DEFAULT CHARACTER SET utf8 */;
@@ -144,12 +118,14 @@ CREATE TABLE `projects_users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*UserRequirements for ProjectQuestions*/
-CREATE TABLE `user_requirements` (
+CREATE TABLE `requirements` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `project_question_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `description` varchar(4096) DEFAULT NULL,
-  `tags` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `description` varchar(4096) NOT NULL,
+  `application_domain` varchar(256) NOT NULL,
+  `risks` varchar(4096) DEFAULT NULL,
+  `tags` varchar(1024) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY `FK_user_requirements_user` (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
