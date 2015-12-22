@@ -30,7 +30,7 @@
  <div class="container">
   <form:form id="registrationForm" class="form-horizontal" method="POST"  modelAttribute="user">
    <div class="form-group">
-    <h2 class="form-signin-heading">Please sign in</h2>
+    <h2 class="form-signin-heading">Please sign in...</h2>
     <label class="col-xs-3 control-label">MTurk ID</label>
     <div class="col-xs-5">
      <form:input type="text" class="form-control" path="mturkId"
@@ -40,7 +40,7 @@
    </div>
 
    <div class="form-group">
-    <label class="col-xs-3 control-label">Terms of Use</label>
+    <label class="col-xs-3 control-label">Terms</label>
     <div class="col-xs-5">
      <div
       style="border: 1px solid #e5e5e5; overflow: auto; padding: 10px;">
@@ -80,29 +80,21 @@
  <!-- Placed at the end of the document so the pages load faster -->
  <script src="resources/js/jquery.min.js" type="text/javascript"></script>
  <script src="resources/js/bootstrap.min.js" type="text/javascript"></script>
- 
+
  <script type="text/javascript">
- jQuery(document).ready(function ($) {
-	 $("#testcheck").on('click', function() {
-		    if (jQuery("#chkConsent").is(":checked")) {
-		        //alert("Consent Checked");
-		        return true;
-		    }
-		    else
-		    	{
-		    	alert("You must agree with Terms and Conditions");
-		    	return false;
-		    	}
-		    
+		jQuery(document).ready(function($) {
+			$("#testcheck").on('click', function() {
+				if (jQuery("#chkConsent").is(":checked")) {
+					//alert("Consent Checked");
+					return true;
+				} else {
+					alert("You must agree with Terms and Conditions");
+					return false;
+				}
+			});
 		});
- 
-	 
-	});
- 
- 
- 
- </script>
- 
+	</script>
+
  <!-- /container -->
 
  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->

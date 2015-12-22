@@ -175,6 +175,10 @@ public class AppController {
         presurveyResponses[i].setCreatedAt(LocalDateTime.now());
         presurveyResponseService.saveResponse(presurveyResponses[i]);
       }
+      
+      User user = userService.findById(presurveyResponses[0].getUserId()); 
+      redirectAttributes.addFlashAttribute(ATTR_USER, user);
+      
       return PAGE_REDIRECT_PERSONALITY;
     } else {
       // Page has errors
@@ -224,6 +228,10 @@ public class AppController {
         personalityResponses[i].setCreatedAt(LocalDateTime.now());
         personalityResponseService.saveResponse(personalityResponses[i]);
       }
+
+      User user = userService.findById(personalityResponses[0].getUserId()); 
+      redirectAttributes.addFlashAttribute(ATTR_USER, user);
+
       return PAGE_REDIRECT_CREATIVITY;
     } else {
       // Page has errors
