@@ -88,7 +88,4 @@
  </div>
 </form:form>
 
-</div>
-<!-- /container -->
-
 <%@include file="footer.jsp"%>
