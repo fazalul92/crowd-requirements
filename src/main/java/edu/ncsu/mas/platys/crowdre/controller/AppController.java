@@ -84,8 +84,10 @@ public class AppController {
   private static final String PAGE_REDIRECT_CREATIVITY = "redirect:creativity";
   
   //private static final String PAGE_REDIRECT_PRESURVEY2 = "redirect:presurvey2";
-  private static final String PAGE_REDIRECT_REQUIREMENT_1 = "redirect:requirement1";
     
+  private static final String PAGE_REQUIREMENTS_PHASE1 = "requirements_phase1";
+  private static final String PAGE_REQUIREMENTS_PHASE2 = "requirements_phase2";
+  
   private static final String ATTR_SIGN_FAILURE_REASON = "signinFailureReason";
   private static final String ATTR_USER = "user";
   private static final String ATTR_PRESURVEY_QUESTIONS = "presurveyQuestions";
@@ -283,7 +285,7 @@ public class AppController {
         creativityResponses[i].setCreatedAt(LocalDateTime.now());
         creativityResponseService.saveResponse(creativityResponses[i]);
       }
-      return PAGE_REDIRECT_REQUIREMENT_1;
+      return PAGE_REQUIREMENTS_PHASE1;
     } else {
       // Page has errors
       int numQuestions = (int) creativityQuestionService.getCount();
@@ -297,12 +299,18 @@ public class AppController {
     }
   }
 
-  @RequestMapping(value = { "/" + PAGE_REDIRECT_REQUIREMENT_1 }, method = RequestMethod.GET)
-  public String showRequirement(ModelMap model) {
+  @RequestMapping(value = { "/", "/" + PAGE_REQUIREMENTS_PHASE1 }, method = RequestMethod.GET)
+  public String showRequirementsPhase1(ModelMap model) {
     model.addAttribute(ATTR_USER, new User());
-    return PAGE_REDIRECT_REQUIREMENT_1;
+    return PAGE_REQUIREMENTS_PHASE1;
   }
-
+  
+  @RequestMapping(value = { "/", "/" + PAGE_REQUIREMENTS_PHASE2 }, method = RequestMethod.GET)
+  public String showRequirementsPhase2(ModelMap model) {
+    model.addAttribute(ATTR_USER, new User());
+    return PAGE_REQUIREMENTS_PHASE2;
+  }
+  
   /*
    * Could not find much information on the Mturk ID specification. The length 3
    * has been chosen intuitively.
