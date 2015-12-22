@@ -17,104 +17,97 @@
   </div>
   
   <h3>Your Requirements</h3>
-   <div>
-	<ul>
-		<li>
-			<p>
-			<b>Requirement 1.</b> Smart home should call police as soon as it recognizes a break-in.<br/>
-			Feasibility: <i>Highly feasible</i>
-			<ul>
-				<li>Camera's can record, and trigger a phone call.</li>
-			</ul>
-			Novelty: <i>Highly novel</i>
-			<ul>
-				<li>Alarms already exists.</li>
-			</ul>
-			Privacy Concerns: <i>No</i>
-			<ul>
-				<li>No privacy concern.</li>
-			</ul>
-			<span class="badge">safety</span> <span class="badge">break-in</span> <span class="badge">police</span><br/>
-			</p>
-		</li>
-
-		<li>
-			<p>
-			<b>Requirement 2.</b> Smart home should call nearest neighbour if it recognizes that an elderly person in the house broke down.<br/>
-			Feasibility: <i>Highly feasible</i>
-			<ul>
-				<li>Camera's can record, and trigger a phone call.</li>
-			</ul>
-			Novelty: <i>Highly novel</i>
-			<ul>
-				<li>No such thing exists.</li>
-			</ul>
-			Privacy Concerns: <i>Yes</i>
-			<ul>
-				<li>Records video all the time.</li>
-			</ul>
-			<span class="badge">health</span> <span class="badge">doctor</span><br/>
-			</p>
-			<div class="panel panel-default" >
-				<div class="panel-heading">Editing Requirement 2</div>
-				<div class="panel-body">
-				  <form>
-					<fieldset class="form-group">
-						<label>Feasibility?</label>
-						<div class="radio">
-						
-						<label><input type="radio" name="optionsRadios" id="optionsRadios1" value="1" checked>1</label>
-						<label><input type="radio" name="optionsRadios" id="optionsRadios2" value="2" checked>2</label>
-						<label><input type="radio" name="optionsRadios" id="optionsRadios3" value="3" checked>3</label>
-						<label><input type="radio" name="optionsRadios" id="optionsRadios4" value="4" checked>4</label>
-						<label><input type="radio" name="optionsRadios" id="optionsRadios5" value="5" checked>5</label>
-					</div>
-					</fieldset>
-					<!--
-					<fieldset class="form-group">
-					  <label for="requirementTextarea">In a few words describe, why do you think so? (Personal experience? Evidence?)</label>
-						<textarea class="form-control" id="feasibleEvidence" rows="2"></textarea>
-					</fieldset>
-					-->
-					<fieldset class="form-group">
-						<label>Novelty?</label>
-						<div class="radio">
-						
-						<label><input type="radio" name="optionsRadios" id="optionsRadios1" value="1" checked>1</label>
-						<label><input type="radio" name="optionsRadios" id="optionsRadios2" value="2" checked>2</label>
-						<label><input type="radio" name="optionsRadios" id="optionsRadios3" value="3" checked>3</label>
-						<label><input type="radio" name="optionsRadios" id="optionsRadios4" value="4" checked>4</label>
-						<label><input type="radio" name="optionsRadios" id="optionsRadios5" value="5" checked>5</label>
-					</div>
-					</fieldset>
-					<!--
-					<fieldset class="form-group">
-					  <label for="requirementTextarea">In a few words describe, why do you think so? (Personal experience? Evidence?)</label>
-					  <textarea class="form-control" id="novelEvidence" rows="2"></textarea>
-					</fieldset>
-					-->
-					<fieldset class="form-group">
-					  <label for="requirementTextarea">Potential risks?</label>
-					  <textarea class="form-control" id="novelEvidence" rows="2"></textarea>
-					</fieldset>
-					<fieldset class="form-group">
-						<label>How important is it to mitigate the above identified risks?</label>
-						<div class="radio">
-						<label><input type="radio" name="optionsRadios" id="optionsRadios1" value="0" checked>No</label>
-						<label><input type="radio" name="optionsRadios" id="optionsRadios2" value="1" checked>Yes</label>
-					</div>
-					</fieldset>
-			  
-
-					<button type="submit" class="btn btn-primary">Submit</button>
-				  </form>
-				</div>
-			</div>
-
-		</li>
-	</ul>
+  
+  <div>
+  <table class="table">
+  	<tr>
+  		<td>#</td>
+  		<td class="col-sm-5 ">Requirements</td>
+  		<td>Feasibility</td>
+  		<td>Novelty</td>
+  		<td>Risks</td>
+  		<td>Comment</td>
+  	</tr>
+  	
+  	<tr>
+  		<td>1.</td>
+  		<td>
+  			Smart home should call police as soon as it recognizes a break-in. <br/>
+  			Application Domain: <i>Health and safety</i><br/>
+  			<span class="badge">safety</span> <span class="badge">break-in</span> <span class="badge">police</span>
+  		</td>
+  		<td>
+  			<select class="form-control">
+			  <option>1</option>
+			  <option>2</option>
+			  <option>3</option>
+			  <option>4</option>
+			  <option>5</option>
+			</select>
+		</td>
+  		<td>
+  			<select class="form-control">
+			  <option>1</option>
+			  <option>2</option>
+			  <option>3</option>
+			  <option>4</option>
+			  <option>5</option>
+			</select>
+		</td>
+  		<td>
+  			<select class="form-control">
+			  <option>1</option>
+			  <option>2</option>
+			  <option>3</option>
+			  <option>4</option>
+			  <option>5</option>
+			</select>
+		</td>
+  		<td><textarea class="form-control" id="comment" rows="2">No potential risk</textarea></td>
+  	</tr>
+  	
+  	<tr>
+  		<td>2.</td>
+  		<td>
+  			Smart home should call nearest neighbour if it recognizes that an elderly person in the house broke down.<br/>
+  			Application Domain: <i>Health and safety</i><br/>
+  			<span class="badge">safety</span> <span class="badge">health</span> <span class="badge">doctor</span>
+  		</td>
+  		<td>
+  			<select class="form-control">
+			  <option>1</option>
+			  <option>2</option>
+			  <option>3</option>
+			  <option>4</option>
+			  <option>5</option>
+			</select>
+		</td>
+  		<td>
+  			<select class="form-control">
+			  <option>1</option>
+			  <option>2</option>
+			  <option>3</option>
+			  <option>4</option>
+			  <option>5</option>
+			</select>
+		</td>
+  		<td>
+  			<select class="form-control">
+			  <option>1</option>
+			  <option>2</option>
+			  <option>3</option>
+			  <option>4</option>
+			  <option>5</option>
+			</select>
+		</td>
+  		<td><textarea class="form-control" id="comment" rows="2">Privacy concern</textarea></td>
+  	</tr>
+  	
+  </table>
+  <button type="submit" class="btn btn-primary">Submit</button>
   </div>
-
+  
+  
  </div>
  <!-- /container -->
  
