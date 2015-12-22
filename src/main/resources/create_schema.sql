@@ -50,12 +50,9 @@ CREATE TABLE `creativity_questions_users` (
   `user_id` int(11) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
   `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `FK_creativity_questions_user_user_idx` (`user_id`),
-  KEY `FK_creativity_questions_user_creativity_question_idx` (`creativity_question_id`),
-  CONSTRAINT `FK_creativity_questions_user_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK_creativity_questions_user_creativity_question` FOREIGN KEY (`creativity_question_id`) REFERENCES `creativity_questions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY `FK_creativity_questions_user_user` (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY `FK_creativity_questions_user_creativity_question` (`creativity_question_id`) REFERENCES `creativity_questions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `personality_questions` (
@@ -70,12 +67,9 @@ CREATE TABLE `personality_questions_users` (
   `user_id` int(11) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
   `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `FK_personality_questions_user_user_idx` (`user_id`),
-  KEY `FK_personality_questions_user_personality_question_idx` (`personality_question_id`),
-  CONSTRAINT `FK_personality_questions_user_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK_personality_questions_user_personality_question` FOREIGN KEY (`personality_question_id`) REFERENCES `personality_questions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY `FK_personality_questions_user_user` (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY `FK_personality_questions_user_personality_question` (`personality_question_id`) REFERENCES `personality_questions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `postsurvey_questions` (
@@ -90,12 +84,9 @@ CREATE TABLE `postsurvey_questions_users` (
   `user_id` int(11) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
   `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `FK_postsurvey_questions_idx` (`postsurvey_question_id`),
-  KEY `FK_users_idx` (`user_id`),
-  CONSTRAINT `FK_postsurvey_questions_user_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK_postsurvey_questions_user_postsurvey_question` FOREIGN KEY (`postsurvey_question_id`) REFERENCES `postsurvey_questions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY `FK_postsurvey_questions_user_user` (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY `FK_postsurvey_questions_user_postsurvey_question` (`postsurvey_question_id`) REFERENCES `postsurvey_questions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `presurvey_questions` (
@@ -113,10 +104,8 @@ CREATE TABLE `presurvey_questions_users` (
   `description` varchar(255) DEFAULT NULL,
   `created_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `FK_presurvey_questions_idx` (`presurvey_question_id`),
-  KEY `FK_users_idx` (`user_id`),
-  CONSTRAINT `FK_presurvey_questions_user_presurvey_questions` FOREIGN KEY (`presurvey_question_id`) REFERENCES `presurvey_questions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK_presurvey_questions_user_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY `FK_presurvey_questions_user_presurvey_questions` (`presurvey_question_id`) REFERENCES `presurvey_questions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY `FK_presurvey_questions_user_user` (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /* PROJECT RELATED TABLES*/

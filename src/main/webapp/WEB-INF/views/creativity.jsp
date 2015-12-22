@@ -43,27 +43,20 @@
      <c:forEach var="creativityResponse" items="${creativityResponseForm.creativityResponses}" varStatus="loop">
       <form:input type="hidden" path="creativityResponses[${loop.index}].userId" name="userId" id="userId" />
       <form:input type="hidden" path="creativityResponses[${loop.index}].creativityQuestionId" name="creativityQuestionId" id="creativityQuestionId" />
-      
-      <li>
-       <h3>${creativityQuestions[loop.index].description}</h3>
-       <div class="form-horizontal">
-       <%-- <c:if test="${personalityQuestions[loop.index].questionType == 'multiple_choice'}">
-        <c:set var="answerChoices" value="${fn:split(personalityQuestions[loop.index].answerChoices,'|')}"/>
-        <c:forEach var="answerChoice" items="${answerChoices}">
-         <div class="radio">
-          <label> <form:radiobutton path="personalityResponses[${loop.index}].description" value="${answerChoice}" />
-           ${answerChoice}
-          </label>
-         </div>
-        </c:forEach>
-       </c:if> --%>
-       <c:forEach begin="1" end="5" varStatus="likertloop">
-         <label> <form:radiobutton path="personalityResponses[${loop.index}].description" value="${likertloop.index}" />${likertloop.index} </label>
-        </c:forEach>
-       </div>
-      </li>
-      
-      <div class="has-error">
+
+    <li>
+     <h3>${creativityQuestions[loop.index].description}</h3>
+     <div class="form-group radio">
+      <c:forEach begin="1" end="5" varStatus="likertloop">
+       <label> <form:radiobutton
+         path="creativityResponses[${loop.index}].description"
+         value="${likertloop.index}" />${likertloop.index}
+       </label>
+      </c:forEach>
+     </div>
+    </li>
+
+    <div class="has-error">
        <form:errors path="creativityResponses[${loop.index}].description" class="help-inline" />
       </div>
      </c:forEach>
