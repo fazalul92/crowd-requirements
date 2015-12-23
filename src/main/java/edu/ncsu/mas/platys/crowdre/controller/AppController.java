@@ -5,7 +5,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +42,7 @@ import edu.ncsu.mas.platys.crowdre.service.CreativityResponseService;
 import edu.ncsu.mas.platys.crowdre.service.RequirementRatingResponseService;
 import edu.ncsu.mas.platys.crowdre.service.RequirementResponseService;
 import edu.ncsu.mas.platys.crowdre.service.UserService;
+import edu.ncsu.mas.platys.crowdre.util.RandomCodeGenerator;
 
 @Controller
 @RequestMapping("/")
@@ -95,11 +95,13 @@ public class AppController {
   private static final String PAGE_CREATIVITY = "creativity";
   private static final String PAGE_REDIRECT_CREATIVITY = "redirect:creativity";
 
-  // private static final String PAGE_REDIRECT_PRESURVEY2 =
-  // "redirect:presurvey2";
-
   private static final String PAGE_REQUIREMENTS_PHASE1 = "requirements_phase1";
   private static final String PAGE_REQUIREMENTS_PHASE2 = "requirements_phase2";
+
+  private static final String PAGE_SUCCESS = "success";
+  private static final String PAGE_REDIRECT_SUCCESS = "redirect:success";
+  
+  private static final String PAGE_ERROR = "error";
 
   private static final String ATTR_SIGN_FAILURE_REASON = "signinFailureReason";
   private static final String ATTR_USER = "user";
@@ -119,6 +121,8 @@ public class AppController {
   private static final int MTURK_ID_INVALID = 1;
   private static final int MTURK_ID_COMPLETED = 2;
 
+  private final RandomCodeGenerator randCodeGen = new RandomCodeGenerator(8);
+  
   @RequestMapping(value = { "/", "/" + PAGE_SIGNIN }, method = RequestMethod.GET)
   public String showSignIn(ModelMap model) {
     model.addAttribute(ATTR_USER, new User());
@@ -390,14 +394,28 @@ public class AppController {
         requirementRatingResponses[i].setCreatedAt(LocalDateTime.now());
         requirementRatingResponseService.saveResponse(requirementRatingResponses[i]);
       }
-      return PAGE_REQUIREMENTS_PHASE2;
+      
+      User user = userService.findById(requirementRatingResponses[0].getRequirementResponse()
+          .getUserId());
+      user.setCompletionCode(randCodeGen.nextString());
+      userService.saveResponse(user);
+      redirectAttributes.addFlashAttribute(ATTR_USER, user);
+      
+      return PAGE_REDIRECT_SUCCESS;
     } else {
-      // Page has errors
-      model.addAttribute(ATTR_REQUIREMENT_RATING_RESPONSE_FORM, responseForm);
-      return "todo"; //TODO
+      // Page has errors. This should never happen since this form is validated
+      // client side
+      return PAGE_ERROR;
     }
   }
 
+  @RequestMapping(value = { "/" + PAGE_SUCCESS }, method = RequestMethod.GET)
+  public String showSuccess(@ModelAttribute(ATTR_USER) User user, BindingResult result,
+      ModelMap model) {
+    model.addAttribute(ATTR_USER, user);
+    return PAGE_SUCCESS;
+  }
+  
   /*
    * Could not find much information on the Mturk ID specification. The length 3
    * has been chosen intuitively.
@@ -405,9 +423,8 @@ public class AppController {
   private int isMturkIDValid(String mturkID) {
     if (mturkID == null || mturkID.trim().length() <= 3) {
       return MTURK_ID_INVALID;
-    } else if (mturkID.equals("pmuruka") || mturkID.equals("najmeri")) { // Exceptions
-                                                                         // for
-                                                                         // testing
+    } else if (mturkID.equals("pmuruka") || mturkID.equals("najmeri")) {
+      // Exceptions testing
       return MTURK_ID_VALID;
     }
     return MTURK_ID_VALID;

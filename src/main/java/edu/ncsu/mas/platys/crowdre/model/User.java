@@ -30,6 +30,9 @@ public class User {
   @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
   private LocalDateTime createdAt;
 
+  @Column(name = "completion_code")
+  private String completionCode;
+
   public int getId() {
     return id;
   }
@@ -52,5 +55,13 @@ public class User {
 
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
+  }
+
+  public String getCompletionCode() {
+    return completionCode;
+  }
+
+  public void setCompletionCode(String completionCode) {
+    this.completionCode = completionCode;
   }
 }

@@ -8,6 +8,7 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `mturk_id` varchar(20) NOT NULL,
   `created_at` datetime NOT NULL,
+  `completion_code` VARCHAR(20),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
