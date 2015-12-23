@@ -33,7 +33,7 @@
    <label for="requirementTextarea" class="col-sm-2 form-control-label">Requirement</label>
    <div class="col-sm-10">
     <form:textarea class="form-control" path="description"
-     id="requirementTextarea" rows="2"></form:textarea>
+     id="requirementTextarea" rows="2" required="required"></form:textarea>
    </div>
    <div class="has-error">
     <form:errors path="description" class="help-inline" />
@@ -53,7 +53,10 @@
      <option>Entertainment</option>
      <option>Other</option>
     </form:select>
-    <form:errors path="description" class="help-inline" />
+    <div class="has-error">
+     <form:errors path="applicationDomain" class="help-inline" />
+    </div>
+
    </div>
 
    <div class="col-sm-5">
@@ -78,14 +81,18 @@
 
 <div>
  <ul>
- <c:forEach var="appDomain" items="Health,Safety,Energy,Entertainment,Other" varStatus="domainLoop">
-  <c:forEach var="previousRequirementResponse"
-   items="${previousRequirementResponses[appDomain]}" varStatus="reqLoop">
-   <li>Requirement: "${previousRequirementResponse.description}"<br />
-    Application Domain: "${previousRequirementResponse.applicationDomain}"<br /> 
-    Tags: "${previousRequirementResponse.tags}"
-   </li>
-  </c:forEach>
+  <c:forEach var="appDomain"
+   items="Health,Safety,Energy,Entertainment,Other"
+   varStatus="domainLoop">
+   <c:forEach var="previousRequirementResponse"
+    items="${previousRequirementResponses[appDomain]}"
+    varStatus="reqLoop">
+    <li>Requirement: "${previousRequirementResponse.description}"<br />
+     Application Domain:
+     "${previousRequirementResponse.applicationDomain}"<br /> Tags:
+     "${previousRequirementResponse.tags}"
+    </li>
+   </c:forEach>
   </c:forEach>
  </ul>
 </div>

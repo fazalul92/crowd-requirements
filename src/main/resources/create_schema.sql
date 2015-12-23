@@ -129,3 +129,13 @@ CREATE TABLE `requirements` (
   PRIMARY KEY (`id`),
   FOREIGN KEY `FK_user_requirements_user` (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `requirements_ratings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `requirement_id` int(11) NOT NULL,
+  `novelty` tinyint NOT NULL,
+  `feasibility` tinyint NOT NULL,
+  `created_at` datetime NOT NULL,
+   PRIMARY KEY (`id`),
+   FOREIGN KEY `FK_ratings_requirements_requirement` (`requirement_id`) REFERENCES `requirements` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
