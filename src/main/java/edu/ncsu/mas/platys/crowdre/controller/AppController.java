@@ -5,6 +5,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,19 +103,24 @@ public class AppController {
   private static final String PAGE_REDIRECT_SUCCESS = "redirect:success";
   
   private static final String PAGE_ERROR = "error";
+  
+  private static final String USER_ENTITY = "userEntity";
 
   private static final String ATTR_SIGN_FAILURE_REASON = "signinFailureReason";
   private static final String ATTR_USER = "user";
+  
   private static final String ATTR_PRESURVEY_QUESTIONS = "presurveyQuestions";
   private static final String ATTR_PRESURVEY_RESPONSE_FORM = "presurveyResponseForm";
+  
   private static final String ATTR_PERSONALITY_QUESTIONS = "personalityQuestions";
   private static final String ATTR_PERSONALITY_RESPONSE_FORM = "personalityResponseForm";
+  
   private static final String ATTR_CREATIVITY_QUESTIONS = "creativityQuestions";
   private static final String ATTR_CREATIVITY_RESPONSE_FORM = "creativityResponseForm";
 
   private static final String ATTR_REQUIREMENT_RESPONSE = "requirementResponse";
   private static final String ATTR_PREVIOUS_REQUIREMENT_RESPONSES = "previousRequirementResponses";
-
+  
   private static final String ATTR_REQUIREMENT_RATING_RESPONSE_FORM = "requirementRatingResponseForm";
 
   private static final int MTURK_ID_VALID = 0;
@@ -131,13 +137,13 @@ public class AppController {
 
   @RequestMapping(value = { "/", "/" + PAGE_SIGNIN }, method = RequestMethod.POST)
   public String processSignIn(@ModelAttribute(ATTR_USER) User user,
-      final RedirectAttributes redirectAttributes) {
+      final RedirectAttributes redirectAttributes, HttpSession session) {
 
-    redirectAttributes.addFlashAttribute(ATTR_USER, user);
-
+    user.setCreatedAt(LocalDateTime.now());
+    session.setAttribute(USER_ENTITY, user);
+    
     switch (isMturkIDValid(user.getMturkId())) {
     case MTURK_ID_VALID:
-      user.setCreatedAt(LocalDateTime.now());
       userService.saveResponse(user);
       return PAGE_REDIRECT_PRESURVEY;
 
@@ -160,18 +166,18 @@ public class AppController {
   }
 
   @RequestMapping(value = { "/" + PAGE_SIGNIN_FAILURE }, method = RequestMethod.GET)
-  public String showSigninFailure(@ModelAttribute(ATTR_USER) User user,
+  public String showSigninFailure(
       @ModelAttribute(ATTR_SIGN_FAILURE_REASON) String signinFailureReason, BindingResult result,
       ModelMap model) {
-    model.addAttribute(ATTR_USER, user);
     model.addAttribute(ATTR_SIGN_FAILURE_REASON, signinFailureReason);
     return PAGE_SIGNIN_FAILURE;
   }
 
   @RequestMapping(value = { "/" + PAGE_PRESURVEY }, method = RequestMethod.GET)
-  public String showPresurvey(@ModelAttribute(ATTR_USER) User user, BindingResult result,
-      ModelMap model) {
+  public String showPresurvey(ModelMap model, HttpSession session) {
 
+    User user = (User) session.getAttribute(USER_ENTITY);
+    
     int numQuestions = (int) presurveyQuestionService.getCount();
     PresurveyQuestion[] presurveyQuestions = new PresurveyQuestion[numQuestions];
     PresurveyResponse[] presurveyResponses = new PresurveyResponse[numQuestions];
@@ -203,10 +209,6 @@ public class AppController {
         presurveyResponses[i].setCreatedAt(LocalDateTime.now());
         presurveyResponseService.saveResponse(presurveyResponses[i]);
       }
-
-      User user = userService.findById(presurveyResponses[0].getUserId());
-      redirectAttributes.addFlashAttribute(ATTR_USER, user);
-
       return PAGE_REDIRECT_PERSONALITY;
     } else {
       // Page has errors
@@ -222,9 +224,10 @@ public class AppController {
   }
 
   @RequestMapping(value = { "/" + PAGE_PERSONALITY }, method = RequestMethod.GET)
-  public String showPersonality(@ModelAttribute(ATTR_USER) User user, BindingResult result,
-      ModelMap model) {
+  public String showPersonality(ModelMap model, HttpSession session) {
 
+    User user = (User) session.getAttribute(USER_ENTITY);
+    
     int numQuestions = (int) personalityQuestionService.getCount();
     PersonalityQuestion[] personalityQuestions = new PersonalityQuestion[numQuestions];
     PersonalityResponse[] personalityResponses = new PersonalityResponse[numQuestions];
@@ -258,6 +261,7 @@ public class AppController {
         personalityResponseService.saveResponse(personalityResponses[i]);
       }
 
+      //TODO Use session
       User user = userService.findById(personalityResponses[0].getUserId());
       redirectAttributes.addFlashAttribute(ATTR_USER, user);
 
@@ -276,9 +280,10 @@ public class AppController {
   }
 
   @RequestMapping(value = { "/" + PAGE_CREATIVITY }, method = RequestMethod.GET)
-  public String showCreativity(@ModelAttribute(ATTR_USER) User user, BindingResult result,
-      ModelMap model) {
-
+  public String showCreativity(ModelMap model, HttpSession session) {
+    
+    User user = (User) session.getAttribute(USER_ENTITY);
+    
     int numQuestions = (int) creativityQuestionService.getCount();
     CreativityQuestion[] creativityQuestions = new CreativityQuestion[numQuestions];
     CreativityResponse[] creativityResponses = new CreativityResponse[numQuestions];
@@ -325,9 +330,9 @@ public class AppController {
   }
 
   @RequestMapping(value = { "/" + PAGE_REQUIREMENTS_PHASE1 }, method = RequestMethod.GET)
-  public String showRequirementsPhase1(ModelMap model) {
-    User user = userService.findById(1); // TODO Remove
-    model.addAttribute(ATTR_USER, user);
+  public String showRequirementsPhase1(ModelMap model, HttpSession session) {
+    
+    User user = (User) session.getAttribute(USER_ENTITY);
 
     Map<String, List<RequirementResponse>> previousRequirementResponses = requirementResponseService
         .findByUserIdAndGroupByDomain(user.getId());
@@ -359,9 +364,9 @@ public class AppController {
   }
 
   @RequestMapping(value = { "/" + PAGE_REQUIREMENTS_PHASE2 }, method = RequestMethod.GET)
-  public String showRequirementsPhase2(ModelMap model) {
-    User user = userService.findById(1); // TODO Remove
-    model.addAttribute(ATTR_USER, user);
+  public String showRequirementsPhase2(ModelMap model, HttpSession session) {
+    
+    User user = (User) session.getAttribute(USER_ENTITY);
 
     RequirementResponse[] previousRequirementResponses = requirementResponseService
         .findByUserId(user.getId());
@@ -395,6 +400,7 @@ public class AppController {
         requirementRatingResponseService.saveResponse(requirementRatingResponses[i]);
       }
       
+      // TODO: Use session
       User user = userService.findById(requirementRatingResponses[0].getRequirementResponse()
           .getUserId());
       user.setCompletionCode(randCodeGen.nextString());
@@ -410,9 +416,7 @@ public class AppController {
   }
 
   @RequestMapping(value = { "/" + PAGE_SUCCESS }, method = RequestMethod.GET)
-  public String showSuccess(@ModelAttribute(ATTR_USER) User user, BindingResult result,
-      ModelMap model) {
-    model.addAttribute(ATTR_USER, user);
+  public String showSuccess(ModelMap model) {
     return PAGE_SUCCESS;
   }
   
