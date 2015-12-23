@@ -33,7 +33,7 @@
    <label for="requirementTextarea" class="col-sm-2 form-control-label">Requirement</label>
    <div class="col-sm-10">
     <form:textarea class="form-control" path="description" id="requirementTextarea" rows="2"/>
-    As a (role) I want (something) so that (benefit). <br/>
+    As a (role) I want (something) so that (benefit).
    </div>
    -->
    <div class="has-error">
@@ -73,7 +73,10 @@
      <option>Entertainment</option>
      <option>Other</option>
     </form:select>
-    <form:errors path="description" class="help-inline" />
+    <div class="has-error">
+     <form:errors path="applicationDomain" class="help-inline" />
+    </div>
+
    </div>
 
    <div class="col-sm-5">
@@ -104,30 +107,30 @@
    <td>#</td>
    <td class="col-sm-11 ">Requirements</td>
   </tr>
-  
+
   <c:set var="count" value="0" scope="page" />
-  <c:forEach var="appDomain" items="Health,Safety,Energy,Entertainment,Other" varStatus="domainLoop">
-  <c:forEach var="previousRequirementResponse"
-   items="${previousRequirementResponses[appDomain]}" varStatus="reqLoop">
-   <tr>
-   <td>
-    <c:set var="count" value="${count + 1}" scope="page"/>
-    ${count}.
-   </td>
-   <td>
-   	${previousRequirementResponse.description}<br />
-    Application Domain: <i>${previousRequirementResponse.applicationDomain}</i><br /> 
-    Tags:
-    <c:set var="tags" value="${fn:split(previousRequirementResponse.tags,',')}"/>
-    <c:forEach var="tag" items="${tags}" varStatus="tagLoop">
-     <span class="badge">${tag}</span>
-    </c:forEach>
-    
-   </td>
-   </tr>
+  <c:forEach var="appDomain"
+   items="Health,Safety,Energy,Entertainment,Other"
+   varStatus="domainLoop">
+   <c:forEach var="previousRequirementResponse"
+    items="${previousRequirementResponses[appDomain]}"
+    varStatus="reqLoop">
+    <tr>
+     <td><c:set var="count" value="${count + 1}" scope="page" />
+      ${count}.</td>
+     <td>${previousRequirementResponse.description}<br />
+      Application Domain: <i>${previousRequirementResponse.applicationDomain}</i><br />
+      Tags: <c:set var="tags"
+       value="${fn:split(previousRequirementResponse.tags,',')}" /> <c:forEach
+       var="tag" items="${tags}" varStatus="tagLoop">
+       <span class="badge">${tag}</span>
+      </c:forEach>
+
+     </td>
+    </tr>
+   </c:forEach>
   </c:forEach>
-  </c:forEach>
-  
+
  </table>
 </div>
 

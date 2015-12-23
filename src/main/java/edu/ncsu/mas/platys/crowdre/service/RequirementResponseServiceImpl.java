@@ -18,6 +18,11 @@ public class RequirementResponseServiceImpl implements RequirementResponseServic
   private RequirementResponseDao dao;
 
   @Override
+  public RequirementResponse findById(int id) {
+    return dao.findById(id);
+  }
+
+  @Override
   public void saveResponse(RequirementResponse response) {
     dao.saveResponse(response);
   }
