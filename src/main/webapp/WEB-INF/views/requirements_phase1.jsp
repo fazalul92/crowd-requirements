@@ -76,18 +76,34 @@
  </div>
 </form:form>
 
+<h3>Your Requirements</h3>
+
 <div>
- <ul>
- <c:forEach var="appDomain" items="Health,Safety,Energy,Entertainment,Other" varStatus="domainLoop">
+ <table class="table">
+  <tr>
+   <td>#</td>
+   <td class="col-sm-11 ">Requirements</td>
+  </tr>
+  
+  <c:set var="count" value="0" scope="page" />
+  <c:forEach var="appDomain" items="Health,Safety,Energy,Entertainment,Other" varStatus="domainLoop">
   <c:forEach var="previousRequirementResponse"
    items="${previousRequirementResponses[appDomain]}" varStatus="reqLoop">
-   <li>Requirement: "${previousRequirementResponse.description}"<br />
-    Application Domain: "${previousRequirementResponse.applicationDomain}"<br /> 
-    Tags: "${previousRequirementResponse.tags}"
-   </li>
+   <tr>
+   <td>
+    <c:set var="count" value="${count + 1}" scope="page"/>
+    ${count}.
+   </td>
+   <td>
+   	${previousRequirementResponse.description}<br />
+    Application Domain: <i>${previousRequirementResponse.applicationDomain}</i><br /> 
+    Tags: <i>${previousRequirementResponse.tags}</i>
+   </td>
+   </tr>
   </c:forEach>
   </c:forEach>
- </ul>
+  
+ </table>
 </div>
 
 <%@include file="footer.jsp"%>
