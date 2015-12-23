@@ -26,6 +26,7 @@
 
 
 <form:form method="POST" modelAttribute="requirementResponse">
+ <form:input type="hidden" path="userId" name="userId" />
  <h3>New Smart Home Requirement</h3>
  <div>
   <div class="form-group row">
@@ -45,12 +46,14 @@
    <div class="col-sm-5">
     <form:select class="form-control" path="applicationDomain"
      id="domainSelect">
+     <option>--Select--</option>
      <option>Health</option>
      <option>Safety</option>
      <option>Energy</option>
      <option>Entertainment</option>
      <option>Other</option>
     </form:select>
+    <form:errors path="description" class="help-inline" />
    </div>
 
    <div class="col-sm-5">
@@ -75,10 +78,15 @@
 
 <div>
  <ul>
-  <!-- Loop LI -->
-  <li>Requirements: <br /> Application Domain: <br /> Potential
-   Risk: <br /> Tags:
-  </li>
+ <c:forEach var="appDomain" items="Health,Safety,Energy,Entertainment,Other" varStatus="domainLoop">
+  <c:forEach var="previousRequirementResponse"
+   items="${previousRequirementResponses[appDomain]}" varStatus="reqLoop">
+   <li>Requirement: "${previousRequirementResponse.description}"<br />
+    Application Domain: "${previousRequirementResponse.applicationDomain}"<br /> 
+    Tags: "${previousRequirementResponse.tags}"
+   </li>
+  </c:forEach>
+  </c:forEach>
  </ul>
 </div>
 

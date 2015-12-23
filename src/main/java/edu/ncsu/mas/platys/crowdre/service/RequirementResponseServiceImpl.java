@@ -1,5 +1,8 @@
 package edu.ncsu.mas.platys.crowdre.service;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,4 +22,13 @@ public class RequirementResponseServiceImpl implements RequirementResponseServic
     dao.saveResponse(response);
   }
 
+  @Override
+  public RequirementResponse[] findByUserId(int userId) {
+    return dao.findByUserId(userId);
+  }
+
+  @Override
+  public Map<String, List<RequirementResponse>> findByUserIdAndGroupByDomain(int userId) {
+    return dao.findByUserIdAndGroupByDomain(userId);
+  }
 }

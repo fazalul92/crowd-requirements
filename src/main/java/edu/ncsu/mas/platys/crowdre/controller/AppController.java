@@ -1,6 +1,8 @@
 package edu.ncsu.mas.platys.crowdre.controller;
 
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +71,7 @@ public class AppController {
   CreativityResponseService creativityResponseService;
   
   @Autowired
-  RequirementResponseService requirementService;
+  RequirementResponseService requirementResponseService;
   
   private static final String PAGE_SIGNIN = "signin";
   private static final String PAGE_SIGNIN_FAILURE = "signin_failure";
@@ -99,6 +101,7 @@ public class AppController {
   private static final String ATTR_CREATIVITY_RESPONSE_FORM = "creativityResponseForm";
   
   private static final String ATTR_REQUIREMENT_RESPONSE = "requirementResponse";
+  private static final String ATTR_PREVIOUS_REQUIREMENT_RESPONSES = "previousRequirementResponses";
   
   private static final int MTURK_ID_VALID = 0;
   private static final int MTURK_ID_INVALID = 1;
@@ -150,7 +153,6 @@ public class AppController {
   @RequestMapping(value = { "/" + PAGE_PRESURVEY }, method = RequestMethod.GET)
   public String showPresurvey(@ModelAttribute(ATTR_USER) User user, BindingResult result,
       ModelMap model) {
-    
     int numQuestions = (int) presurveyQuestionService.getCount();
     PresurveyQuestion[] presurveyQuestions = new PresurveyQuestion[numQuestions];
     PresurveyResponse[] presurveyResponses = new PresurveyResponse[numQuestions];
@@ -302,11 +304,15 @@ public class AppController {
     }
   }
 
-  @RequestMapping(value = { "/", "/" + PAGE_REQUIREMENTS_PHASE1 }, method = RequestMethod.GET)
+  @RequestMapping(value = { "/" + PAGE_REQUIREMENTS_PHASE1 }, method = RequestMethod.GET)
   public String showRequirementsPhase1(ModelMap model) {
     User user = userService.findById(1); // TODO Remove
     model.addAttribute(ATTR_USER, user);
 
+    Map<String, List<RequirementResponse>> previousRequirementResponses = requirementResponseService
+        .findByUserIdAndGroupByDomain(user.getId());
+    model.addAttribute(ATTR_PREVIOUS_REQUIREMENT_RESPONSES, previousRequirementResponses);
+    
     RequirementResponse requirementResponse = new RequirementResponse();
     requirementResponse.setUserId(user.getId());
     model.addAttribute(ATTR_REQUIREMENT_RESPONSE, requirementResponse);
@@ -314,7 +320,22 @@ public class AppController {
     return PAGE_REQUIREMENTS_PHASE1;
   }
   
-  @RequestMapping(value = { "/", "/" + PAGE_REQUIREMENTS_PHASE2 }, method = RequestMethod.GET)
+  @RequestMapping(value = { "/" + PAGE_REQUIREMENTS_PHASE1 }, method = RequestMethod.POST)
+  public String processRequirementsPhase1Response(
+      @ModelAttribute(ATTR_REQUIREMENT_RESPONSE) RequirementResponse requirementResponse,
+      BindingResult result, ModelMap model, final RedirectAttributes redirectAttributes) {
+    if (isRequirementResponseValid(requirementResponse, result, model)) {
+      requirementResponse.setCreatedAt(LocalDateTime.now());
+      requirementResponseService.saveResponse(requirementResponse);
+      return PAGE_REQUIREMENTS_PHASE2;
+    } else {
+      // Page has errors
+      model.addAttribute(ATTR_REQUIREMENT_RESPONSE, requirementResponse);
+      return PAGE_CREATIVITY;
+    }
+  }
+  
+  @RequestMapping(value = { "/" + PAGE_REQUIREMENTS_PHASE2 }, method = RequestMethod.GET)
   public String showRequirementsPhase2(ModelMap model) {
     model.addAttribute(ATTR_USER, new User());    
     return PAGE_REQUIREMENTS_PHASE2;
@@ -377,6 +398,34 @@ public class AppController {
         result.addError(error);
         returnValue = false;
       }
+    }
+    return returnValue;
+  }
+  
+  private boolean isRequirementResponseValid(RequirementResponse requirementResponse,
+      BindingResult result, ModelMap model) {
+    boolean returnValue = true;
+    if (requirementResponse.getDescription() == null
+        || requirementResponse.getDescription().trim().length() == 0) {
+      returnValue = false;
+      FieldError error = new FieldError(ATTR_REQUIREMENT_RESPONSE,
+          "requirementResponse.description", messageSource.getMessage("mandatory.answer", null,
+              Locale.getDefault()));
+      result.addError(error);
+    }
+    if (requirementResponse.equals("--Select--")) {
+      FieldError error = new FieldError(ATTR_REQUIREMENT_RESPONSE,
+          "requirementResponse.applicationDomain", messageSource.getMessage("mandatory.select",
+              null, Locale.getDefault()));
+      result.addError(error);
+    } else if (requirementResponse.equals("Other")
+        && (requirementResponse.getApplicationDomainOther() == null || requirementResponse
+            .getApplicationDomainOther().trim().length() == 0)) {
+      FieldError error = new FieldError(ATTR_REQUIREMENT_RESPONSE,
+          "requirementResponse.applicationDomain", messageSource.getMessage("mandatory.if.answer",
+              new String[] { "Other", "indicative name for the category in the textbox" },
+              Locale.getDefault()));
+      result.addError(error);
     }
     return returnValue;
   }

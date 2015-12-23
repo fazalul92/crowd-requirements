@@ -14,7 +14,7 @@ import org.joda.time.LocalDateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-@Table(name = "presurvey_questions")
+@Table(name = "requirements")
 public class RequirementResponse {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
