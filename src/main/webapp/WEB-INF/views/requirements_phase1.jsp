@@ -97,7 +97,12 @@
    <td>
    	${previousRequirementResponse.description}<br />
     Application Domain: <i>${previousRequirementResponse.applicationDomain}</i><br /> 
-    Tags: <i>${previousRequirementResponse.tags}</i>
+    Tags:
+    <c:set var="tags" value="${fn:split(previousRequirementResponse.tags,',')}"/>
+    <c:forEach var="tag" items="${tags}" varStatus="tagLoop">
+     <span class="badge">${tag}</span>
+    </c:forEach>
+    
    </td>
    </tr>
   </c:forEach>
