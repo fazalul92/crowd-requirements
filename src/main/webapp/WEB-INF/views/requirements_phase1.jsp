@@ -29,16 +29,36 @@
  <form:input type="hidden" path="userId" name="userId" />
  <h3>New Smart Home Requirement</h3>
  <div>
-  <div class="form-group row">
+  <!-- <div class="form-group row">
    <label for="requirementTextarea" class="col-sm-2 form-control-label">Requirement</label>
    <div class="col-sm-10">
-    <form:textarea class="form-control" path="description"
-     id="requirementTextarea" rows="2"></form:textarea>
+    <form:textarea class="form-control" path="description" id="requirementTextarea" rows="2"/>
+    As a (role) I want (something) so that (benefit). <br/>
    </div>
+   -->
    <div class="has-error">
     <form:errors path="description" class="help-inline" />
    </div>
   </div>
+  <div class="form-group row">
+   <label for="requirementTextarea" class="col-sm-2 form-control-label">Requirement</label>
+    <div class="col-sm-10">
+     <div class="form-group row">
+      <label for="roleText" class="col-sm-1 form-control-label">As a</label>
+      <div class="col-sm-11"><input type="text" value="(role)" class="form-control"/></div>
+     </div>
+
+     <div class="form-group row">
+      <label for="featureText" class="col-sm-1 form-control-label">I want</label>
+      <div class="col-sm-11"><input type="text" value="(feature)" class="form-control"/></div>
+     </div>     
+
+	 <div class="form-group row">
+      <label for="benefitText" class="col-sm-1 form-control-label">so that</label>
+      <div class="col-sm-11"><input type="text" value="(benefit)" class="form-control"/></div>
+     </div> 
+    </div>
+   </div>
 
   <div class="form-group row">
    <label for="domainSelect" class="col-sm-2 form-control-label">Application
