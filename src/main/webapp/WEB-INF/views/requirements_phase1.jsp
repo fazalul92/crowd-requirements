@@ -36,67 +36,75 @@
     As a (role) I want (something) so that (benefit).
    </div>
    -->
-   <div class="has-error">
-    <form:errors path="description" class="help-inline" />
-   </div>
+  <div class="has-error">
+   <form:errors path="description" class="help-inline" />
   </div>
-  <div class="form-group row">
-   <label for="requirementTextarea" class="col-sm-2 form-control-label">Requirement</label>
-    <div class="col-sm-10">
-     <div class="form-group row">
-      <label for="roleText" class="col-sm-1 form-control-label">As a</label>
-      <div class="col-sm-11"><input type="text" value="(role)" class="form-control"/></div>
-     </div>
-
-     <div class="form-group row">
-      <label for="featureText" class="col-sm-1 form-control-label">I want</label>
-      <div class="col-sm-11"><input type="text" value="(feature)" class="form-control"/></div>
-     </div>     
-
-	 <div class="form-group row">
-      <label for="benefitText" class="col-sm-1 form-control-label">so that</label>
-      <div class="col-sm-11"><input type="text" value="(benefit)" class="form-control"/></div>
-     </div> 
-    </div>
-   </div>
-
-  <div class="form-group row">
-   <label for="domainSelect" class="col-sm-2 form-control-label">Application
-    Domain</label>
-   <div class="col-sm-5">
-    <form:select class="form-control" path="applicationDomain"
-     id="domainSelect">
-     <option>--Select--</option>
-     <option>Health</option>
-     <option>Safety</option>
-     <option>Energy</option>
-     <option>Entertainment</option>
-     <option>Other</option>
-    </form:select>
-    <div class="has-error">
-     <form:errors path="applicationDomain" class="help-inline" />
-    </div>
-
-   </div>
-
-   <div class="col-sm-5">
-    <form:input type="text" class="form-control"
-     path="applicationDomainOther" id="inputDomain"
-     placeholder="Other Domain"></form:input>
-   </div>
-  </div>
-
-  <div class="form-group row">
-   <label for="tagsText" class="col-sm-2 form-control-label">Tags
-   </label>
-   <div class="col-sm-10">
-    <form:input type="text" class="form-control" path="tags"
-     id="tagsText" placeholder="Separate multiple tags with a comma"></form:input>
-   </div>
-  </div>
-
-  <button type="submit" class="btn btn-primary">Submit</button>
  </div>
+ <div class="form-group row">
+  <label for="requirementTextarea" class="col-sm-2 form-control-label">Requirement</label>
+  <div class="col-sm-10">
+   <div class="form-group row">
+    <label for="roleText" class="col-sm-1 form-control-label">As
+     a</label>
+    <div class="col-sm-11">
+     <input type="text" value="(role)" class="form-control" />
+    </div>
+   </div>
+
+   <div class="form-group row">
+    <label for="featureText" class="col-sm-1 form-control-label">I
+     want</label>
+    <div class="col-sm-11">
+     <input type="text" value="(feature)" class="form-control" />
+    </div>
+   </div>
+
+   <div class="form-group row">
+    <label for="benefitText" class="col-sm-1 form-control-label">so
+     that</label>
+    <div class="col-sm-11">
+     <input type="text" value="(benefit)" class="form-control" />
+    </div>
+   </div>
+  </div>
+ </div>
+
+ <div class="form-group row">
+  <label for="domainSelect" class="col-sm-2 form-control-label">Application
+   Domain</label>
+  <div class="col-sm-5">
+   <form:select class="form-control" path="applicationDomain"
+    id="domainSelect">
+    <option>--Select--</option>
+    <option>Health</option>
+    <option>Safety</option>
+    <option>Energy</option>
+    <option>Entertainment</option>
+    <option>Other</option>
+   </form:select>
+   <div class="has-error">
+    <form:errors path="applicationDomain" class="help-inline" />
+   </div>
+
+  </div>
+
+  <div class="col-sm-5">
+   <form:input type="text" class="form-control"
+    path="applicationDomainOther" id="inputDomain"
+    placeholder="Other Domain"></form:input>
+  </div>
+ </div>
+
+ <div class="form-group row">
+  <label for="tagsText" class="col-sm-2 form-control-label">Tags
+  </label>
+  <div class="col-sm-10">
+   <form:input type="text" class="form-control" path="tags"
+    id="tagsText" placeholder="Separate multiple tags with a comma"></form:input>
+  </div>
+ </div>
+
+ <button type="submit" class="btn btn-primary">Submit</button>
 </form:form>
 
 <h3>Your Requirements</h3>

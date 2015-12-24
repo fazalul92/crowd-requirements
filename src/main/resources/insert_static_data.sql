@@ -14,9 +14,9 @@ INSERT INTO `presurvey_questions` VALUES (1, 'What is your gender?', 'multiple_c
   (2, 'Which of the following categories includes your age?', 'multiple_choice', '18 to 24|25 to 34|35 to 45|45 to 54|55 or older'),
   (3, 'What is the highest level of school you have completed or the highest degree you have received?', 'multiple_choice', 'Less than high school degree|High school degree or equivalent (e.g., GED)|Some college but no degree|Bachelor degree|Graduate degree'),
   (4, 'If you went to college, what was your major?', 'text', 'For example, computer science, mechanical engineering, psychology, music, law, etc.'),
-  (5, 'How familiar are you with concepts related to Computer Science or Information Technology (IT)?', 'multiple_choice', 'Not familiar|Somewhat familiar|Quite familiar|I am (or was) an IT professional'),
-  (6, 'If you work (worked) for an IT company, how long did you do so?', 'multiple_choice', 'Did not work for IT |For less than a year|For one to five years|For more than five years'),
-  (7, 'How familiar are you with concepts such as Inteternet of Things, Smart Homes, and Smart Cities?', 'multiple_choice', 'Never heard the terms|Terms seem familiar|Read about the concepts a few times|Read about the concepts several times'),
+  (5, 'How familiar are you with concepts related to Computer Science or Information Technology (IT)?', 'multiple_choice', 'Very low familiarity|low familiarity|Medium familiarity|High familiarity|Very high familiarity'),
+  (6, 'If you worked for an IT company, how long did you do so?', 'multiple_choice', 'Did not work for IT |For less than a year|For one to five years|For more than five years'),
+  (7, 'How familiar are you with concepts such as Internet of Things, Smart Homes, and Smart Cities?', 'multiple_choice', 'Never heard the terms|Terms seem familiar|Read about the concepts a few times|Read about the concepts several times'),
   (8, 'Please use the text box below if you need to clarify any of your answers above', 'text', 'Optional clarifications');
 /*!40000 ALTER TABLE `presurvey_questions` ENABLE KEYS */;
 UNLOCK TABLES;

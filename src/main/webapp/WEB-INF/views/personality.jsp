@@ -57,12 +57,12 @@
       <c:forEach begin="1" end="5" varStatus="likertloop">
        <label> <form:radiobutton
          path="personalityResponses[${loop.index}].description"
-         value="${likertloop.index}" />${likertloop.index}&nbsp;&nbsp;
+         value="${likertloop.index}" required="required" />${likertloop.index}&nbsp;&nbsp;
        </label>
       </c:forEach>
      </div>
-     
-    <div class="has-error">
+
+     <div class="has-error">
      <form:errors path="personalityResponses[${loop.index}].description"
       class="help-inline" />
     </div>

@@ -9,7 +9,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Type;
-import org.hibernate.validator.constraints.NotBlank;
 import org.joda.time.LocalDateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -29,7 +28,6 @@ public class PresurveyResponse {
   @Column(name = "presurvey_question_id", nullable = false)
   private int presurveyQuestionId;
 
-  @NotBlank
   @Column(name = "description", nullable = false)
   private String description;
 

@@ -97,7 +97,10 @@ public class AppController {
   private static final String PAGE_REDIRECT_CREATIVITY = "redirect:creativity";
 
   private static final String PAGE_REQUIREMENTS_PHASE1 = "requirements_phase1";
+  private static final String PAGE_REDIRECT_REQUIREMENTS_PHASE1 = "redirect:requirements_phase1";
+  
   private static final String PAGE_REQUIREMENTS_PHASE2 = "requirements_phase2";
+  private static final String PAGE_REDIRECT_REQUIREMENTS_PHASE2 = "redirect:requirements_phase2";
 
   private static final String PAGE_SUCCESS = "success";
   private static final String PAGE_REDIRECT_SUCCESS = "redirect:success";
@@ -210,16 +213,9 @@ public class AppController {
         presurveyResponseService.saveResponse(presurveyResponses[i]);
       }
       return PAGE_REDIRECT_PERSONALITY;
-    } else {
-      // Page has errors
-      int numQuestions = (int) presurveyQuestionService.getCount();
-      PresurveyQuestion[] presurveyQuestions = new PresurveyQuestion[numQuestions];
-      for (int i = 0; i < numQuestions; i++) {
-        presurveyQuestions[i] = presurveyQuestionService.findById(i + 1);
-      }
-      model.addAttribute(ATTR_PRESURVEY_QUESTIONS, presurveyQuestions);
-      model.addAttribute(ATTR_PRESURVEY_RESPONSE_FORM, presurveyResponseForm);
-      return PAGE_PRESURVEY;
+    } else { // Page has errors
+      // This should never happen since this form is validated client side
+      return PAGE_ERROR;
     }
   }
 
@@ -261,16 +257,9 @@ public class AppController {
         personalityResponseService.saveResponse(personalityResponses[i]);
       }
       return PAGE_REDIRECT_CREATIVITY;
-    } else {
-      // Page has errors
-      int numQuestions = (int) personalityQuestionService.getCount();
-      PersonalityQuestion[] personalityQuestions = new PersonalityQuestion[numQuestions];
-      for (int i = 0; i < numQuestions; i++) {
-        personalityQuestions[i] = personalityQuestionService.findById(i + 1);
-      }
-      model.addAttribute(ATTR_PERSONALITY_QUESTIONS, personalityQuestions);
-      model.addAttribute(ATTR_PERSONALITY_RESPONSE_FORM, personalityResponseForm);
-      return PAGE_PERSONALITY;
+    } else { // Page has errors
+      // This should never happen since this form is validated client side
+      return PAGE_ERROR;
     }
   }
 
@@ -310,17 +299,10 @@ public class AppController {
         creativityResponses[i].setCreatedAt(LocalDateTime.now());
         creativityResponseService.saveResponse(creativityResponses[i]);
       }
-      return PAGE_REQUIREMENTS_PHASE1;
-    } else {
-      // Page has errors
-      int numQuestions = (int) creativityQuestionService.getCount();
-      CreativityQuestion[] creativityQuestions = new CreativityQuestion[numQuestions];
-      for (int i = 0; i < numQuestions; i++) {
-        creativityQuestions[i] = creativityQuestionService.findById(i + 1);
-      }
-      model.addAttribute(ATTR_CREATIVITY_QUESTIONS, creativityQuestions);
-      model.addAttribute(ATTR_CREATIVITY_RESPONSE_FORM, creativityResponseForm);
-      return PAGE_CREATIVITY;
+      return PAGE_REDIRECT_REQUIREMENTS_PHASE1;
+    } else { // Page has errors
+      // This should never happen since this form is validated client side
+      return PAGE_ERROR;
     }
   }
 
@@ -347,9 +329,8 @@ public class AppController {
     if (isRequirementResponseValid(requirementResponse, result, model)) {
       requirementResponse.setCreatedAt(LocalDateTime.now());
       requirementResponseService.saveResponse(requirementResponse);
-      return PAGE_REQUIREMENTS_PHASE2;
-    } else {
-      // Page has errors
+      return PAGE_REDIRECT_REQUIREMENTS_PHASE2;
+    } else { // Page has errors
       Map<String, List<RequirementResponse>> previousRequirementResponses = requirementResponseService
           .findByUserIdAndGroupByDomain(requirementResponse.getUserId());
       model.addAttribute(ATTR_PREVIOUS_REQUIREMENT_RESPONSES, previousRequirementResponses);
@@ -379,7 +360,7 @@ public class AppController {
   }
 
   @RequestMapping(value = { "/" + PAGE_REQUIREMENTS_PHASE2 }, method = RequestMethod.POST)
-  public String processRequirementRatingResponse(
+  public String processRequirementsPhase2Response(
       @ModelAttribute(ATTR_REQUIREMENT_RATING_RESPONSE_FORM) RequirementRatingResponseForm responseForm,
       BindingResult result, ModelMap model, final RedirectAttributes redirectAttributes,
       HttpServletRequest request, HttpSession session) {
@@ -394,12 +375,12 @@ public class AppController {
         requirementRatingResponses[i].setCreatedAt(LocalDateTime.now());
         requirementRatingResponseService.saveResponse(requirementRatingResponses[i]);
       }
-       
-      User user = (User) session.getAttribute(USER_ENTITY);      
+
+      User user = (User) session.getAttribute(USER_ENTITY);
       user.setCompletionCode(randCodeGen.nextString());
       userService.saveResponse(user);
       redirectAttributes.addFlashAttribute(ATTR_USER, user);
-      
+
       return PAGE_REDIRECT_SUCCESS;
     } else { // Page has errors
       // This should never happen since this form is validated client side
@@ -428,50 +409,20 @@ public class AppController {
 
   private boolean isPresurveyResponseFormValid(PresurveyResponseForm presurveyResponseForm,
       BindingResult result, ModelMap model) {
-    PresurveyResponse[] presurveyResponses = presurveyResponseForm.getPresurveyResponses();
-    boolean returnValue = true;
-    for (int i = 0; i < presurveyResponses.length; i++) {
-      if (presurveyResponses[i].getDescription() == null) {
-        FieldError error = new FieldError(ATTR_PRESURVEY_RESPONSE_FORM, "presurveyResponses[" + i
-            + "].description", messageSource.getMessage("mandatory.answer", null,
-            Locale.getDefault()));
-        result.addError(error);
-        returnValue = false;
-      }
-    }
-    return returnValue;
+    // All validations are being done on the client side
+    return true;
   }
 
   private boolean isPersonalityResponseFormValid(PersonalityResponseForm personalityResponseForm,
       BindingResult result, ModelMap model) {
-    PersonalityResponse[] personalityResponses = personalityResponseForm.getPersonalityResponses();
-    boolean returnValue = true;
-    for (int i = 0; i < personalityResponses.length; i++) {
-      if (personalityResponses[i].getDescription() == null) {
-        FieldError error = new FieldError(ATTR_PERSONALITY_RESPONSE_FORM, "personalityResponses["
-            + i + "].description", messageSource.getMessage("mandatory.answer", null,
-            Locale.getDefault()));
-        result.addError(error);
-        returnValue = false;
-      }
-    }
-    return returnValue;
+    // All validations are being done on the client side
+    return true;
   }
 
   private boolean isCreativityResponseFormValid(CreativityResponseForm creativityResponseForm,
       BindingResult result, ModelMap model) {
-    CreativityResponse[] creativityResponses = creativityResponseForm.getCreativityResponses();
-    boolean returnValue = true;
-    for (int i = 0; i < creativityResponses.length; i++) {
-      if (creativityResponses[i].getDescription() == null) {
-        FieldError error = new FieldError(ATTR_CREATIVITY_RESPONSE_FORM, "creativityResponses[" + i
-            + "].description", messageSource.getMessage("mandatory.answer", null,
-            Locale.getDefault()));
-        result.addError(error);
-        returnValue = false;
-      }
-    }
-    return returnValue;
+    // All validations are being done on the client side
+    return true;
   }
 
   private boolean isRequirementResponseValid(RequirementResponse requirementResponse,
