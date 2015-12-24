@@ -13,7 +13,7 @@
 
 <h3>Main Task(1)</h3>
 <div class="bg-info" style="padding: 5px; border-radius: 5px;">
- <h4>Smart Home Study</h4>
+ <!-- <h4>Smart Home Study</h4> -->
  <ul>
   <li><span class="badge">2</span>What should a smart home do to
    enhance health and safety of its occupants?</li>
@@ -22,6 +22,22 @@
   <li><span class="badge">7</span>What should a smart home do to
    ensure occupants stay happy?</li>
  </ul>
+ <div>
+  <div class="col-sm-8">
+   <h5>What is a Smart Home?</h5>
+   <ul>
+    <li></li>
+    <li></li>
+    <li></li>
+   </ul>
+  </div>
+  <div class="col-sm-4 text-right">
+   <a href="https://storiesbywilliams.files.wordpress.com/2014/01/smarthome.jpg" title="Click here to enlarge" target="_blank"> 
+    <img src="https://storiesbywilliams.files.wordpress.com/2014/01/smarthome.jpg" height=200px;/>
+   </a>
+   <small><a href="http://storiesbywilliams.com/2014/01/20/tech-news-google-buys-nest-seeking-conscious-homes/">Image Source</a></small> 
+  </div>
+ </div>
 </div>
 
 
