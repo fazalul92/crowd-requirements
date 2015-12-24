@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -43,22 +42,22 @@ public class RequirementResponseDaoImpl extends AbstractDao<Integer, Requirement
   @Override
   public Map<String, List<RequirementResponse>> findByUserIdAndGroupByDomain(int userId) {
     Map<String, List<RequirementResponse>> requirementsMap = new LinkedHashMap<String, List<RequirementResponse>>();
-    Query query = getSession().createSQLQuery(
-        "select description, application_domain, tags from requirements");
-    @SuppressWarnings("unchecked")
-    List<Object[]> results = query.list();
-    for (int i = 0; i < results.size(); i++) {
-      RequirementResponse response = new RequirementResponse();
-      response.setDescription((String) results.get(i)[0]);
-      response.setApplicationDomain((String) results.get(i)[1]);
-      response.setTags((String) results.get(i)[2]);
 
-      List<RequirementResponse> responseList = requirementsMap.get(response.getApplicationDomain());
-      if (responseList == null) {
-        responseList = new ArrayList<RequirementResponse>();
-        requirementsMap.put(response.getApplicationDomain(), responseList);
+    Criteria criteria = getSession().createCriteria(RequirementResponse.class);
+    criteria.add(Restrictions.eq("userId", userId));
+
+    @SuppressWarnings("unchecked")
+    List<Object> responseList = criteria.list();
+
+    for (int i = 0; i < responseList.size(); i++) {
+      RequirementResponse response = (RequirementResponse) responseList.get(i);
+      List<RequirementResponse> domainResponseList = requirementsMap.get(response
+          .getApplicationDomain());
+      if (domainResponseList == null) {
+        domainResponseList = new ArrayList<RequirementResponse>();
+        requirementsMap.put(response.getApplicationDomain(), domainResponseList);
       }
-      responseList.add(response);
+      domainResponseList.add(response);
     }
     return requirementsMap;
   }

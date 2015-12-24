@@ -18,7 +18,12 @@ public class UserServiceImpl implements UserService {
   public User findById(int id) {
     return dao.findById(id);
   }
-  
+
+  @Override
+  public void updateResponse(User response) {
+    dao.updateResponse(response);
+  }
+
   @Override
   public void saveResponse(User response) {
     dao.saveResponse(response);

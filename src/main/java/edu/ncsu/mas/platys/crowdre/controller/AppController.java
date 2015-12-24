@@ -100,7 +100,7 @@ public class AppController {
   private static final String PAGE_REDIRECT_REQUIREMENTS_PHASE1 = "redirect:requirements_phase1";
   
   private static final String PAGE_REQUIREMENTS_PHASE2 = "requirements_phase2";
-  private static final String PAGE_REDIRECT_REQUIREMENTS_PHASE2 = "redirect:requirements_phase2";
+  // private static final String PAGE_REDIRECT_REQUIREMENTS_PHASE2 = "redirect:requirements_phase2";
 
   private static final String PAGE_SUCCESS = "success";
   private static final String PAGE_REDIRECT_SUCCESS = "redirect:success";
@@ -329,7 +329,7 @@ public class AppController {
     if (isRequirementResponseValid(requirementResponse, result, model)) {
       requirementResponse.setCreatedAt(LocalDateTime.now());
       requirementResponseService.saveResponse(requirementResponse);
-      return PAGE_REDIRECT_REQUIREMENTS_PHASE2;
+      return PAGE_REDIRECT_REQUIREMENTS_PHASE1;
     } else { // Page has errors
       Map<String, List<RequirementResponse>> previousRequirementResponses = requirementResponseService
           .findByUserIdAndGroupByDomain(requirementResponse.getUserId());
@@ -378,8 +378,7 @@ public class AppController {
 
       User user = (User) session.getAttribute(USER_ENTITY);
       user.setCompletionCode(randCodeGen.nextString());
-      userService.saveResponse(user);
-      redirectAttributes.addFlashAttribute(ATTR_USER, user);
+      userService.updateResponse(user);
 
       return PAGE_REDIRECT_SUCCESS;
     } else { // Page has errors
@@ -393,12 +392,10 @@ public class AppController {
     return PAGE_SUCCESS;
   }
   
-  /*
-   * Could not find much information on the Mturk ID specification. The length 3
-   * has been chosen intuitively.
-   */
   private int isMturkIDValid(String mturkID) {
     if (mturkID == null || mturkID.trim().length() <= 3) {
+      // Could not find much information on the Mturk ID specification.
+      // The length 3 has been chosen intuitively.
       return MTURK_ID_INVALID;
     } else if (mturkID.equals("pmuruka") || mturkID.equals("najmeri")) {
       // Exceptions testing
@@ -442,6 +439,7 @@ public class AppController {
               "indicate a domain name in the textbox to the right" }, Locale.getDefault()));
       result.addError(error);
     }
+    // Other fields are validated on the client side
     return returnValue;
   }
 

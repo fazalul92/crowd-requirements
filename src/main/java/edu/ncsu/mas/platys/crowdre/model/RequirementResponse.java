@@ -25,8 +25,17 @@ public class RequirementResponse {
   private int userId;
 
   @NotBlank
-  @Column(name = "description", nullable = false)
-  private String description;
+  @Column(name = "role", nullable = false)
+  private String role;
+  
+  @NotBlank
+  @Column(name = "feature", nullable = false)
+  private String feature;
+
+  @NotBlank
+  @Column(name = "benefit", nullable = false)
+  private String benefit;
+
 
   @NotBlank
   @Column(name = "application_domain", nullable = false)
@@ -60,12 +69,28 @@ public class RequirementResponse {
     this.userId = userId;
   }
 
-  public String getDescription() {
-    return description;
+  public String getRole() {
+    return role;
   }
 
-  public void setDescription(String description) {
-    this.description = description;
+  public void setRole(String role) {
+    this.role = role;
+  }
+
+  public String getBenefit() {
+    return benefit;
+  }
+
+  public void setBenefit(String benefit) {
+    this.benefit = benefit;
+  }
+
+  public String getFeature() {
+    return feature;
+  }
+
+  public void setFeature(String feature) {
+    this.feature = feature;
   }
 
   public String getApplicationDomain() {

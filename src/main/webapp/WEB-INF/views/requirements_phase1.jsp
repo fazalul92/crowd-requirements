@@ -12,7 +12,7 @@
 </ul>
 
 <h3>Main Task(1)</h3>
-<div class="bg-info" style="padding:5px; border-radius:5px;">
+<div class="bg-info" style="padding: 5px; border-radius: 5px;">
  <h4>Smart Home Study</h4>
  <ul>
   <li><span class="badge">2</span>What should a smart home do to
@@ -28,18 +28,6 @@
 <form:form method="POST" modelAttribute="requirementResponse">
  <form:input type="hidden" path="userId" name="userId" />
  <h3>New Smart Home Requirement</h3>
- <div>
-  <!-- <div class="form-group row">
-   <label for="requirementTextarea" class="col-sm-2 form-control-label">Requirement</label>
-   <div class="col-sm-10">
-    <form:textarea class="form-control" path="description" id="requirementTextarea" rows="2"/>
-    As a (role) I want (something) so that (benefit).
-   </div>
-   -->
-  <div class="has-error">
-   <form:errors path="description" class="help-inline" />
-  </div>
- </div>
  <div class="form-group row">
   <label for="requirementTextarea" class="col-sm-2 form-control-label">Requirement</label>
   <div class="col-sm-10">
@@ -47,7 +35,8 @@
     <label for="roleText" class="col-sm-1 form-control-label">As
      a</label>
     <div class="col-sm-11">
-     <input type="text" placeholder="(role)" class="form-control" />
+     <form:input type="text" placeholder="Role" class="form-control"
+      path="role" required="required" />
     </div>
    </div>
 
@@ -55,7 +44,8 @@
     <label for="featureText" class="col-sm-1 form-control-label">I
      want</label>
     <div class="col-sm-11">
-     <input type="text" placeholder="(feature)" class="form-control" />
+     <form:input type="text" placeholder="Feature" class="form-control"
+      path="feature" required="required" />
     </div>
    </div>
 
@@ -63,7 +53,8 @@
     <label for="benefitText" class="col-sm-1 form-control-label">so
      that</label>
     <div class="col-sm-11">
-     <input type="text" placeholder="(benefit)" class="form-control" />
+     <form:input type="text" placeholder="Benefit" class="form-control"
+      path="benefit" required="required" />
     </div>
    </div>
   </div>
@@ -126,7 +117,9 @@
     <tr>
      <td><c:set var="count" value="${count + 1}" scope="page" />
       ${count}.</td>
-     <td>${previousRequirementResponse.description}<br />
+     <td>Role: ${previousRequirementResponse.role}<br /> 
+      Feature: ${previousRequirementResponse.feature}<br /> 
+      Benefit: ${previousRequirementResponse.benefit}<br /> 
       Application Domain: <i>${previousRequirementResponse.applicationDomain}</i><br />
       Tags: <c:set var="tags"
        value="${fn:split(previousRequirementResponse.tags,',')}" /> <c:forEach
@@ -142,15 +135,17 @@
  </table>
 </div>
 
-  <div class="text-center">
-   <a href="/crowd-requirements/requirements_phase2"  class="btn btn-primary btn-lg" onclick='confirm("Have you checked over ALL your requirements to verify they were recorded properly. If so, select OK. If you believe that your requirements were not recorded properly, select Cancel and reenter your requirements, and select Add Requirement after EVERY requirement before final submission.");'>
-   Submit Responses &raquo;
-   </a>
-   <p class="text-justify">
-   <b>Note:</b> After submitting the responses, you cannot edit your requirements again.<br/>
-   Check over ALL your requirements to verify they were recorded properly. If you believe that your requirements were not recorded properly, reenter your requirements, and select Add Requirement after EVERY requirement before final submission.
-   </p>
-  </div>
+<!-- onclick='confirm("Are you done adding all requirements? If yes, click OK and proceed to the next step. If no, click Cancel and add more requirements.");'-->
+<div class="text-center">
+ <a href="/crowd-requirements/requirements_phase2"
+  class="btn btn-primary btn-lg" data-toggle="confirmation"> Submit Responses &raquo; </a>
+ <p>
+  <b>Note:</b> You cannot add more requirements after submitting
+  responses. Check the list above to make sure that ALL your
+  requirements are recorded. If a requirement is not recorded properly,
+  reenter it and select Add Requirement before submitting.
+ </p>
+</div>
 
 
 <%@include file="footer.jsp"%>

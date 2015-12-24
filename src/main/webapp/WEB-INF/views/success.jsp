@@ -3,7 +3,7 @@
 <div class="jumbotron lead">
  <p>
   We sincerely <b>thank you</b> for completing the study. Your
-  completion code is <b>${completionCode}</b>
+  completion code is <b>${sessionScope.userEntity.completionCode}</b>
  </p>
 </div>
 
