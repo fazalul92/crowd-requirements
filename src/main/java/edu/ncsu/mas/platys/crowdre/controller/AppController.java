@@ -21,10 +21,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import edu.ncsu.mas.platys.crowdre.form.PostsurveyResponseForm;
 import edu.ncsu.mas.platys.crowdre.form.PresurveyResponseForm;
 import edu.ncsu.mas.platys.crowdre.form.PersonalityResponseForm;
 import edu.ncsu.mas.platys.crowdre.form.CreativityResponseForm;
 import edu.ncsu.mas.platys.crowdre.form.RequirementRatingResponseForm;
+import edu.ncsu.mas.platys.crowdre.model.PostsurveyQuestion;
+import edu.ncsu.mas.platys.crowdre.model.PostsurveyResponse;
 import edu.ncsu.mas.platys.crowdre.model.PresurveyQuestion;
 import edu.ncsu.mas.platys.crowdre.model.PersonalityQuestion;
 import edu.ncsu.mas.platys.crowdre.model.CreativityQuestion;
@@ -34,6 +37,8 @@ import edu.ncsu.mas.platys.crowdre.model.User;
 import edu.ncsu.mas.platys.crowdre.model.PresurveyResponse;
 import edu.ncsu.mas.platys.crowdre.model.PersonalityResponse;
 import edu.ncsu.mas.platys.crowdre.model.CreativityResponse;
+import edu.ncsu.mas.platys.crowdre.service.PostsurveyQuestionService;
+import edu.ncsu.mas.platys.crowdre.service.PostsurveyResponseService;
 import edu.ncsu.mas.platys.crowdre.service.PresurveyQuestionService;
 import edu.ncsu.mas.platys.crowdre.service.PersonalityQuestionService;
 import edu.ncsu.mas.platys.crowdre.service.CreativityQuestionService;
@@ -82,6 +87,12 @@ public class AppController {
 
   @Autowired
   RequirementRatingResponseService requirementRatingResponseService;
+  
+  @Autowired
+  PostsurveyQuestionService postsurveyQuestionService;
+
+  @Autowired
+  PostsurveyResponseService postsurveyResponseService;
 
   private static final String PAGE_SIGNIN = "signin";
   private static final String PAGE_SIGNIN_FAILURE = "signin_failure";
@@ -101,6 +112,9 @@ public class AppController {
   
   private static final String PAGE_REQUIREMENTS_PHASE2 = "requirements_phase2";
   // private static final String PAGE_REDIRECT_REQUIREMENTS_PHASE2 = "redirect:requirements_phase2";
+
+  private static final String PAGE_POSTSURVEY = "postsurvey";
+  private static final String PAGE_REDIRECT_POSTSURVEY = "redirect:postsurvey";
 
   private static final String PAGE_SUCCESS = "success";
   private static final String PAGE_REDIRECT_SUCCESS = "redirect:success";
@@ -125,6 +139,8 @@ public class AppController {
   private static final String ATTR_PREVIOUS_REQUIREMENT_RESPONSES = "previousRequirementResponses";
   
   private static final String ATTR_REQUIREMENT_RATING_RESPONSE_FORM = "requirementRatingResponseForm";
+  
+  private static final String ATTR_POSTSURVEY_RESPONSE_FORM = "postsurveyResponseForm";
 
   private static final int MTURK_ID_VALID = 0;
   private static final int MTURK_ID_INVALID = 1;
@@ -380,13 +396,55 @@ public class AppController {
       user.setCompletionCode(randCodeGen.nextString());
       userService.updateResponse(user);
 
+      return PAGE_REDIRECT_POSTSURVEY;
+    } else { // Page has errors
+      // This should never happen since this form is validated client side
+      return PAGE_ERROR;
+    }
+  }
+  @RequestMapping(value = { "/" + PAGE_POSTSURVEY }, method = RequestMethod.GET)
+  public String showPostsurvey(ModelMap model, HttpSession session) {
+
+    User user = (User) session.getAttribute(USER_ENTITY);
+    
+    int numQuestions = (int) postsurveyQuestionService.getCount();
+    PostsurveyQuestion[] postsurveyQuestions = new PostsurveyQuestion[numQuestions];
+    PostsurveyResponse[] postsurveyResponses = new PostsurveyResponse[numQuestions];
+
+    for (int i = 0; i < numQuestions; i++) {
+      postsurveyQuestions[i] = postsurveyQuestionService.findById(i + 1);
+      postsurveyResponses[i] = new PostsurveyResponse();
+      postsurveyResponses[i].setUserId(user.getId());
+      postsurveyResponses[i].setPostsurveyQuestionId(postsurveyQuestions[i].getId());
+    }
+
+    PostsurveyResponseForm postsurveyResponseForm = new PostsurveyResponseForm();
+    postsurveyResponseForm.setPostsurveyResponses(postsurveyResponses);
+
+    model.addAttribute(ATTR_PRESURVEY_QUESTIONS, postsurveyQuestions);
+    model.addAttribute(ATTR_PRESURVEY_RESPONSE_FORM, postsurveyResponseForm);
+
+    return PAGE_PRESURVEY;
+  }
+
+  @RequestMapping(value = { "/" + PAGE_POSTSURVEY }, method = RequestMethod.POST)
+  public String processPostsurveyResponse(
+      @ModelAttribute(ATTR_POSTSURVEY_RESPONSE_FORM) PostsurveyResponseForm postsurveyResponseForm,
+      BindingResult result, ModelMap model, final RedirectAttributes redirectAttributes) {
+
+    if (isPostsurveyResponseFormValid(postsurveyResponseForm, result, model)) {
+      PostsurveyResponse[] postsurveyResponses = postsurveyResponseForm.getPresurveyResponses();
+      for (int i = 0; i < postsurveyResponses.length; i++) {
+        postsurveyResponses[i].setCreatedAt(LocalDateTime.now());
+        postsurveyResponseService.saveResponse(postsurveyResponses[i]);
+      }
       return PAGE_REDIRECT_SUCCESS;
     } else { // Page has errors
       // This should never happen since this form is validated client side
       return PAGE_ERROR;
     }
   }
-
+  
   @RequestMapping(value = { "/" + PAGE_SUCCESS }, method = RequestMethod.GET)
   public String showSuccess(ModelMap model) {
     return PAGE_SUCCESS;
@@ -446,6 +504,12 @@ public class AppController {
   private boolean isRequirementRatingResponseFormValid(
       RequirementRatingResponseForm requirementRatingResponseForm, BindingResult result,
       ModelMap model) {
+    // All validations are being done on the client side
+    return true;
+  }
+
+  private boolean isPostsurveyResponseFormValid(PostsurveyResponseForm presurveyResponseForm,
+      BindingResult result, ModelMap model) {
     // All validations are being done on the client side
     return true;
   }
