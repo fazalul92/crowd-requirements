@@ -1,5 +1,6 @@
 <%@include file="header.jsp"%>
 
+<!-- progressbar -->
 <ul id="progressbar">
  <li>Pre-Survey (1)</li>
  <li class="active">Pre-Survey (2)</li>
@@ -11,8 +12,8 @@
 </ul>
 
 <h3>Instructions</h3>
-<div class="jumbotron lead">
- <p>Please use the rating scale below to describe how accurately
+<div class="bg-info" style="padding:5px; border-radius:5px;">
+ <p class="text-justify">Please use the rating scale below to describe how accurately
   each statement describes you. Describe yourself as you generally are
   now, not as you wish to be in the future. Describe yourself as you
   honestly see yourself, in relation to other people you know of the
@@ -20,19 +21,24 @@
   describe yourself in an honest manner, your responses will be kept in
   absolute confidence. Please read each statement carefully, and then
   fill in the bubble that corresponds to the number on the scale.</p>
- <ul class="list-unstyled" style="font-weight: bold;">
-  <li>1=Very Inaccurate</li>
-  <li>2=Moderately Inaccurate</li>
-  <li>3=Neither Inaccurate nor Accurate</li>
-  <li>4=Moderately Accurate</li>
-  <li>5=Very Accurate</li>
- </ul>
+ <ol>
+  <li>Very Inaccurate</li>
+  <li>Moderately Inaccurate</li>
+  <li>Neither Inaccurate nor Accurate</li>
+  <li>Moderately Accurate</li>
+  <li>Very Accurate</li>
+ </ol>
 </div>
 
 <form:form method="POST" modelAttribute="personalityResponseForm">
  <h3>Pre-Survey (2)</h3>
- <div class="jumbotron lead">
-  <ol>
+ <!-- <div class="jumbotron lead"> -->
+  <table class="table table-hover">
+   <tr>
+    <th class="col-sm-1">#</th>
+    <th class="col-sm-8">Statement</th>
+    <th class="col-sm-3">Rating</th>
+   </tr>
    <c:forEach var="personalityResponse"
     items="${personalityResponseForm.personalityResponses}"
     varStatus="loop">
@@ -43,24 +49,28 @@
      path="personalityResponses[${loop.index}].personalityQuestionId"
      name="personalityQuestionId" id="personalityQuestionId" />
 
-    <li>
-     <h3>${personalityQuestions[loop.index].description}</h3>
+    <tr>
+     <td>${loop.index + 1}.</td>
+     <td>${personalityQuestions[loop.index].description}</td>
+     <td>
      <div class="form-group radio">
       <c:forEach begin="1" end="5" varStatus="likertloop">
        <label> <form:radiobutton
          path="personalityResponses[${loop.index}].description"
-         value="${likertloop.index}" />${likertloop.index}
+         value="${likertloop.index}" />${likertloop.index}&nbsp;&nbsp;
        </label>
       </c:forEach>
      </div>
-    </li>
-
+     
     <div class="has-error">
      <form:errors path="personalityResponses[${loop.index}].description"
       class="help-inline" />
     </div>
+     
+     </td>
+    </tr>
    </c:forEach>
-  </ol>
+  </table>
 
   <div class="text-center">
    <button type="submit" class="btn btn-primary btn-lg">Submit
@@ -70,7 +80,7 @@
     edit them again.
    </p>
   </div>
- </div>
+ <!-- </div> -->
 </form:form>
 
 <%@include file="footer.jsp"%>

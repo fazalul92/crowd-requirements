@@ -74,7 +74,7 @@
         <form:textarea
          path="presurveyResponses[${loop.index}].description"
          class="form-control" rows="2"
-         placeholder="${presurveyQuestions[loop.index].answerChoices" />
+         placeholder="${presurveyQuestions[loop.index].answerChoices}" />
        </c:when>
       </c:choose>
      </div>
