@@ -12,8 +12,8 @@
 </ul>
 
 <h3>Instructions</h3>
-<div class="jumbotron lead">
- <p>Smart home requirements collection...</p>
+<div class="bg-info" style="padding:5px; border-radius:5px;">
+ <p class="text-justify">Smart home requirements collection...</p>
 
  <ul>
   <li><b>Do not</b> use the browser's <b>refresh</b>, <b>back</b>,
@@ -30,30 +30,24 @@
    again from the beginning. If the problem persists, please contact <b>pmuruka
     AT ncsu.edu</b> with details of the problem.
   </li>
-  <li>This HIT may contain <b>adult content</b>. Worker discretion
-   is advised.
-  </li>
-  <li>You must be <b>18 or older</b> to participate in the study.
-  </li>
  </ul>
 </div>
 
 <form:form method="POST" modelAttribute="presurveyResponseForm">
  <h3>Pre-Survey (1)</h3>
- <div class="jumbotron lead">
-  <ol>
+
    <c:forEach var="presurveyResponse"
     items="${presurveyResponseForm.presurveyResponses}" varStatus="loop">
     <form:input type="hidden"
      path="presurveyResponses[${loop.index}].userId" name="userId"
      id="userId" />
+     <div class="form-group">
+    <label for="presurveyResponse">${presurveyQuestions[loop.index].description}</label>
+  
     <form:input type="hidden"
      path="presurveyResponses[${loop.index}].presurveyQuestionId"
      name="presurveyQuestionId" id="presurveyQuestionId" />
 
-    <li>
-     <h3>${presurveyQuestions[loop.index].description}</h3>
-     <div class="form-horizontal">
       <c:choose>
        <c:when
         test="${presurveyQuestions[loop.index].questionType == 'multiple_choice'}">
@@ -78,14 +72,13 @@
        </c:when>
       </c:choose>
      </div>
-    </li>
+
 
     <div class="has-error">
      <form:errors path="presurveyResponses[${loop.index}].description"
       class="help-inline" />
     </div>
    </c:forEach>
-  </ol>
 
   <div class="text-center">
    <button type="submit" class="btn btn-primary btn-lg">Submit
@@ -95,7 +88,7 @@
     edit them again.
    </p>
   </div>
- </div>
+
 </form:form>
 
 <%@include file="footer.jsp"%>

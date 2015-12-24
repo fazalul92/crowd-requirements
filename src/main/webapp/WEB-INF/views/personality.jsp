@@ -80,7 +80,7 @@
     edit them again.
    </p>
   </div>
- <!-- </div> -->
+
 </form:form>
 
 <%@include file="footer.jsp"%>
