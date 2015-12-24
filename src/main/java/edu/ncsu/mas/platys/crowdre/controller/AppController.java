@@ -140,6 +140,7 @@ public class AppController {
   
   private static final String ATTR_REQUIREMENT_RATING_RESPONSE_FORM = "requirementRatingResponseForm";
   
+  private static final String ATTR_POSTSURVEY_QUESTIONS = "postsurveyQuestions";
   private static final String ATTR_POSTSURVEY_RESPONSE_FORM = "postsurveyResponseForm";
 
   private static final int MTURK_ID_VALID = 0;
@@ -421,10 +422,10 @@ public class AppController {
     PostsurveyResponseForm postsurveyResponseForm = new PostsurveyResponseForm();
     postsurveyResponseForm.setPostsurveyResponses(postsurveyResponses);
 
-    model.addAttribute(ATTR_PRESURVEY_QUESTIONS, postsurveyQuestions);
-    model.addAttribute(ATTR_PRESURVEY_RESPONSE_FORM, postsurveyResponseForm);
+    model.addAttribute(ATTR_POSTSURVEY_QUESTIONS, postsurveyQuestions);
+    model.addAttribute(ATTR_POSTSURVEY_RESPONSE_FORM, postsurveyResponseForm);
 
-    return PAGE_PRESURVEY;
+    return PAGE_POSTSURVEY;
   }
 
   @RequestMapping(value = { "/" + PAGE_POSTSURVEY }, method = RequestMethod.POST)
@@ -433,7 +434,7 @@ public class AppController {
       BindingResult result, ModelMap model, final RedirectAttributes redirectAttributes) {
 
     if (isPostsurveyResponseFormValid(postsurveyResponseForm, result, model)) {
-      PostsurveyResponse[] postsurveyResponses = postsurveyResponseForm.getPresurveyResponses();
+      PostsurveyResponse[] postsurveyResponses = postsurveyResponseForm.getPostsurveyResponses();
       for (int i = 0; i < postsurveyResponses.length; i++) {
         postsurveyResponses[i].setCreatedAt(LocalDateTime.now());
         postsurveyResponseService.saveResponse(postsurveyResponses[i]);

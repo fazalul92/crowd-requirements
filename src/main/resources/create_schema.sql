@@ -49,7 +49,7 @@ CREATE TABLE `personality_questions_users` (
 
 CREATE TABLE `postsurvey_questions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `description` varchar(45) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
   `question_type` varchar(50) DEFAULT NULL,
   `answer_choices` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
