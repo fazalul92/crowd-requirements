@@ -41,13 +41,14 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
      <ul class="nav navbar-nav">
-      <li>Pre-Survey (1)</li>
-      <li>Pre-Survey (2)</li>
-      <li>Pre-Survey (3)</li>
-      <li>Phase [alpha]</li>
-      <li>Phase [beta]</li>
-      <li>Phase [gamma]</li>
-      <li>Post-Survey</li>
+      <!-- <li class="active"><a href="#">Pre-Survey (1)</a></li>
+      <li><a href="#">Pre-Survey (2)</a></li>
+      <li><a href="#">Pre-Survey (3)</a></li>
+      <li><a href="#">Phase [alpha]</a></li>
+      <li><a href="#">Phase [beta]</a></li>
+      <li><a href="#">Phase [gamma]</a></li>
+      <li><a href="#">Post Survey</a></li>
+       -->
      </ul>
      <ul class="nav navbar-nav navbar-right">
       <li class="active"><a href="#">MTurk ID: ${sessionScope.userEntity.mturkId}</a></li>
