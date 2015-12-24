@@ -20,7 +20,7 @@
 <link href="resources/css/bootstrap.min.css" rel="stylesheet">
 
 <!-- Custom styles for this template -->
-<link href="resources/css/signin.css" rel="stylesheet">
+<!-- <link href="resources/css/signin.css" rel="stylesheet"> -->
 
 <!--  <script src="../../assets/js/ie-emulation-modes-warning.js"></script>-->
 
@@ -28,9 +28,35 @@
 
 <body>
  <div class="container">
+  <!-- Static navbar -->
+  <nav class="navbar navbar-default">
+   <div class="container-fluid">
+    <div class="navbar-header">
+     <button type="button" class="navbar-toggle collapsed"
+      data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+      aria-controls="navbar">
+      <span class="sr-only">Toggle navigation</span> <span
+       class="icon-bar"></span> <span class="icon-bar"></span> <span
+       class="icon-bar"></span>
+     </button>
+     <a class="navbar-brand" href="#">Smart Home Requirements</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+     <ul class="nav navbar-nav">
+
+     </ul>
+     <ul class="nav navbar-nav navbar-right">
+      
+     </ul>
+    </div>
+    <!--/.nav-collapse -->
+   </div>
+   <!--/.container-fluid -->
+  </nav>
+  <h3 class="form-signin-heading">Please Sign In</h3>
   <form:form id="registrationForm" class="form-horizontal" method="POST"  modelAttribute="user">
    <div class="form-group">
-    <h2 class="form-signin-heading">Please sign in...</h2>
+    
     <label class="col-xs-3 control-label">MTurk ID</label>
     <div class="col-xs-5">
      <form:input type="text" class="form-control" path="mturkId"
