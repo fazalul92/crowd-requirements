@@ -47,7 +47,7 @@
     <label for="roleText" class="col-sm-1 form-control-label">As
      a</label>
     <div class="col-sm-11">
-     <input type="text" value="(role)" class="form-control" />
+     <input type="text" placeholder="(role)" class="form-control" />
     </div>
    </div>
 
@@ -55,7 +55,7 @@
     <label for="featureText" class="col-sm-1 form-control-label">I
      want</label>
     <div class="col-sm-11">
-     <input type="text" value="(feature)" class="form-control" />
+     <input type="text" placeholder="(feature)" class="form-control" />
     </div>
    </div>
 
@@ -63,7 +63,7 @@
     <label for="benefitText" class="col-sm-1 form-control-label">so
      that</label>
     <div class="col-sm-11">
-     <input type="text" value="(benefit)" class="form-control" />
+     <input type="text" placeholder="(benefit)" class="form-control" />
     </div>
    </div>
   </div>
@@ -144,7 +144,7 @@
 
   <div class="text-center">
    <a href="/crowd-requirements/requirements_phase2"  class="btn btn-primary btn-lg" onclick='confirm("Have you checked over ALL your requirements to verify they were recorded properly. If so, select OK. If you believe that your requirements were not recorded properly, select Cancel and reenter your requirements, and select Add Requirement after EVERY requirement before final submission.");'>
-   Submit Responses
+   Submit Responses &raquo;
    </a>
    <p class="text-justify">
    <b>Note:</b> After submitting the responses, you cannot edit your requirements again.<br/>

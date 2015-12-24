@@ -66,8 +66,16 @@
     </tr>
    </c:forEach>
   </table>
-  <button type="submit" class="btn btn-primary">Submit</button>
+  
  </div>
+ <div class="text-center">
+   <button type="submit" class="btn btn-primary btn-lg">Submit
+    Responses &raquo;</button>
+   <p>
+    <br> <b>Note:</b> After submitting the responses, you cannot
+    edit them again.
+   </p>
+  </div>
 </form:form>
 
 <%@include file="footer.jsp"%>
