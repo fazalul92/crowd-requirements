@@ -3,13 +3,13 @@ package edu.ncsu.mas.platys.crowdre.form;
 import edu.ncsu.mas.platys.crowdre.model.PostsurveyResponse;
 
 public class PostsurveyResponseForm {
-  private PostsurveyResponse[] presurveyResponses;
+  private PostsurveyResponse[] postsurveyResponses;
 
-  public PostsurveyResponse[] getPresurveyResponses() {
-    return presurveyResponses;
+  public PostsurveyResponse[] getPostsurveyResponses() {
+    return postsurveyResponses;
   }
 
   public void setPostsurveyResponses(PostsurveyResponse[] presurveyResponses) {
-    this.presurveyResponses = presurveyResponses;
+    this.postsurveyResponses = presurveyResponses;
   }
 }

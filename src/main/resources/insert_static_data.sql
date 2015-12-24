@@ -94,7 +94,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `postsurvey_questions` WRITE;
 /*!40000 ALTER TABLE `presurvey_questions` DISABLE KEYS */;
-INSERT INTO `postsurvey_questions` VALUES (1, 'How long did the main tasks (excluding pre and post surveys) take?', 'text', 'duration in hours:minutes, e.g., 00:30 for thirty minutes'),
+INSERT INTO `postsurvey_questions` VALUES (1, 'How long did the main tasks (excluding pre and post surveys) take?', 'text_required', 'duration in hours:minutes, e.g., 00:30 for thirty minutes'),
   (2, 'How do you rate the difficulty of main tasks?', 'multiple_choice', 'Very easy|Easy|Medium|High|Very high'),
   (3, 'Please provide any additional comments you have below', 'text', 'Optional comments');
 /*!40000 ALTER TABLE `presurvey_questions` ENABLE KEYS */;
