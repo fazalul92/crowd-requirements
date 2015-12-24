@@ -12,7 +12,7 @@
 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="icon" href="resources/favicon.ico">
+<link rel="icon" href="http://www.ncsu.edu/favicon.ico">
 
 <title>Smart Home Study</title>
 
@@ -41,8 +41,13 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
      <ul class="nav navbar-nav">
-      <li class="active"><a href="#">Home</a></li>
-      <!-- <li><a href="#">Contact</a></li> -->
+      <li>Pre-Survey (1)</li>
+      <li>Pre-Survey (2)</li>
+      <li>Pre-Survey (3)</li>
+      <li>Phase [alpha]</li>
+      <li>Phase [beta]</li>
+      <li>Phase [gamma]</li>
+      <li>Post-Survey</li>
      </ul>
      <ul class="nav navbar-nav navbar-right">
       <li class="active"><a href="#">MTurk ID: ${sessionScope.userEntity.mturkId}</a></li>
