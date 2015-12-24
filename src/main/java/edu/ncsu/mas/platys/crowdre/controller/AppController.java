@@ -260,11 +260,6 @@ public class AppController {
         personalityResponses[i].setCreatedAt(LocalDateTime.now());
         personalityResponseService.saveResponse(personalityResponses[i]);
       }
-
-      //TODO Use session
-      User user = userService.findById(personalityResponses[0].getUserId());
-      redirectAttributes.addFlashAttribute(ATTR_USER, user);
-
       return PAGE_REDIRECT_CREATIVITY;
     } else {
       // Page has errors
@@ -387,7 +382,7 @@ public class AppController {
   public String processRequirementRatingResponse(
       @ModelAttribute(ATTR_REQUIREMENT_RATING_RESPONSE_FORM) RequirementRatingResponseForm responseForm,
       BindingResult result, ModelMap model, final RedirectAttributes redirectAttributes,
-      HttpServletRequest request) {
+      HttpServletRequest request, HttpSession session) {
 
     if (isRequirementRatingResponseFormValid(responseForm, result, model)) {
       RequirementRatingResponse[] requirementRatingResponses = responseForm
@@ -399,18 +394,15 @@ public class AppController {
         requirementRatingResponses[i].setCreatedAt(LocalDateTime.now());
         requirementRatingResponseService.saveResponse(requirementRatingResponses[i]);
       }
-      
-      // TODO: Use session
-      User user = userService.findById(requirementRatingResponses[0].getRequirementResponse()
-          .getUserId());
+       
+      User user = (User) session.getAttribute(USER_ENTITY);      
       user.setCompletionCode(randCodeGen.nextString());
       userService.saveResponse(user);
       redirectAttributes.addFlashAttribute(ATTR_USER, user);
       
       return PAGE_REDIRECT_SUCCESS;
-    } else {
-      // Page has errors. This should never happen since this form is validated
-      // client side
+    } else { // Page has errors
+      // This should never happen since this form is validated client side
       return PAGE_ERROR;
     }
   }

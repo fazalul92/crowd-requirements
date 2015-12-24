@@ -54,19 +54,29 @@
     <li>
      <h3>${presurveyQuestions[loop.index].description}</h3>
      <div class="form-horizontal">
-      <c:if
-       test="${presurveyQuestions[loop.index].questionType == 'multiple_choice'}">
-       <c:set var="answerChoices"
-        value="${fn:split(presurveyQuestions[loop.index].answerChoices,'|')}" />
-       <c:forEach var="answerChoice" items="${answerChoices}">
-        <div class="radio">
-         <label> <form:radiobutton
-           path="presurveyResponses[${loop.index}].description"
-           value="${answerChoice}" /> ${answerChoice}
-         </label>
-        </div>
-       </c:forEach>
-      </c:if>
+      <c:choose>
+       <c:when
+        test="${presurveyQuestions[loop.index].questionType == 'multiple_choice'}">
+        <c:set var="answerChoices"
+         value="${fn:split(presurveyQuestions[loop.index].answerChoices,'|')}" />
+        <c:forEach var="answerChoice" items="${answerChoices}">
+         <div class="radio">
+          <label> <form:radiobutton
+            path="presurveyResponses[${loop.index}].description"
+            value="${answerChoice}" required="required" />
+           ${answerChoice}
+          </label>
+         </div>
+        </c:forEach>
+       </c:when>
+       <c:when
+        test="${presurveyQuestions[loop.index].questionType == 'text'}">
+        <form:textarea
+         path="presurveyResponses[${loop.index}].description"
+         class="form-control" rows="2"
+         placeholder="${presurveyQuestions[loop.index].answerChoices" />
+       </c:when>
+      </c:choose>
      </div>
     </li>
 
