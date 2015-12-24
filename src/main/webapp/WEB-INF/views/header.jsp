@@ -50,7 +50,7 @@
       <li>Post-Survey</li>
      </ul>
      <ul class="nav navbar-nav navbar-right">
-      <li class="active"><a href="#">MTurk ID: ${user.mturkId}</a></li>
+      <li class="active"><a href="#">MTurk ID: ${sessionScope.userEntity.mturkId}</a></li>
      </ul>
     </div>
     <!--/.nav-collapse -->
