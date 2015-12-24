@@ -39,9 +39,9 @@
      name="requirementResponseId" id="requirementResponseId" />
     <tr>
      <td>${loop.index + 1}.</td>
-     <td>Role: ${jRequirementRatingResponse.requirementResponse.role}<br />
-      Feature: ${jRequirementRatingResponse.requirementResponse.feature}<br />
-      Benefit: ${jRequirementRatingResponse.requirementResponse.benefit}<br />
+     <td><b>As a</b> ${jRequirementRatingResponse.requirementResponse.role},<br/>
+      <b>I want</b> ${jRequirementRatingResponse.requirementResponse.feature},<br/>
+      <b>so that</b> ${jRequirementRatingResponse.requirementResponse.benefit}.<br />
       Application Domain: <i>${jRequirementRatingResponse.requirementResponse.applicationDomain}</i>
       <br /> <c:set var="jTags"
        value="${fn:split(jRequirementRatingResponse.requirementResponse.tags,',')}" />

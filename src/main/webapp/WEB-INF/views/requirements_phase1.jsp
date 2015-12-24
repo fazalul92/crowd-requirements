@@ -95,7 +95,9 @@
   </div>
  </div>
 
- <button type="submit" class="btn btn-primary">Add Requirement</button>
+ <div class="text-center">
+ <button type="submit" class="btn btn-primary btn-lg">Add Requirement</button>
+ </div>
 </form:form>
 
 <h3>Your Requirements</h3>
@@ -117,9 +119,9 @@
     <tr>
      <td><c:set var="count" value="${count + 1}" scope="page" />
       ${count}.</td>
-     <td>Role: ${previousRequirementResponse.role}<br /> 
-      Feature: ${previousRequirementResponse.feature}<br /> 
-      Benefit: ${previousRequirementResponse.benefit}<br /> 
+     <td><b>As a</b> ${previousRequirementResponse.role},<br/>  
+      <b>I want</b> ${previousRequirementResponse.feature},<br/> 
+      <b>so that</b> ${previousRequirementResponse.benefit}.<br /> 
       Application Domain: <i>${previousRequirementResponse.applicationDomain}</i><br />
       Tags: <c:set var="tags"
        value="${fn:split(previousRequirementResponse.tags,',')}" /> <c:forEach
@@ -136,9 +138,11 @@
 </div>
 
 <!-- onclick='confirm("Are you done adding all requirements? If yes, click OK and proceed to the next step. If no, click Cancel and add more requirements.");'-->
+<c:if test="${count >= 5}">
 <div class="text-center">
- <a href="/crowd-requirements/requirements_phase2"
-  class="btn btn-primary btn-lg" data-toggle="confirmation"> Submit Responses &raquo; </a>
+ <h4>
+  <a href="/crowd-requirements/requirements_phase2" onclick='return confirm("Are you done adding all requirements? If yes, click OK and proceed to the next step. If no, click Cancel and add more requirements.")'> Proceed to next phase &raquo; </a>
+ </h4>
  <p>
   <b>Note:</b> You cannot add more requirements after submitting
   responses. Check the list above to make sure that ALL your
@@ -146,6 +150,6 @@
   reenter it and select Add Requirement before submitting.
  </p>
 </div>
-
+</c:if>
 
 <%@include file="footer.jsp"%>
