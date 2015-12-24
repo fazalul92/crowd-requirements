@@ -5,15 +5,15 @@
  <li>Pre-Survey (1)</li>
  <li>Pre-Survey (2)</li>
  <li>Pre-Survey (3)</li>
- <li class="active">Phase [alpha]</li>
- <li>Phase [beta]</li>
- <li>Phase [gamma]</li>
+ <li class="active">Main Task (1)</li>
+ <li>Main Task (2)</li>
  <li>Post-Survey</li>
+ <li>Completion Code</li>
 </ul>
 
-<h3>Requirements Phase [alpha]</h3>
-<div class="jumbotron lead">
- <p>Smart Home Study</p>
+<h3>Main Task(1)</h3>
+<div class="bg-info" style="padding:5px; border-radius:5px;">
+ <h4>Smart Home Study</h4>
  <ul>
   <li><span class="badge">2</span>What should a smart home do to
    enhance health and safety of its occupants?</li>
@@ -104,7 +104,7 @@
   </div>
  </div>
 
- <button type="submit" class="btn btn-primary">Submit</button>
+ <button type="submit" class="btn btn-primary">Add Requirement</button>
 </form:form>
 
 <h3>Your Requirements</h3>
@@ -112,8 +112,8 @@
 <div>
  <table class="table">
   <tr>
-   <td>#</td>
-   <td class="col-sm-11 ">Requirements</td>
+   <th>#</th>
+   <th class="col-sm-11 ">Requirements</th>
   </tr>
 
   <c:set var="count" value="0" scope="page" />
@@ -141,5 +141,16 @@
 
  </table>
 </div>
+
+  <div class="text-center">
+   <a href="/crowd-requirements/requirements_phase2"  class="btn btn-primary btn-lg" onclick='confirm("Have you checked over ALL your requirements to verify they were recorded properly. If so, select OK. If you believe that your requirements were not recorded properly, select Cancel and reenter your requirements, and select Add Requirement after EVERY requirement before final submission.");'>
+   Submit Responses
+   </a>
+   <p class="text-justify">
+   <b>Note:</b> After submitting the responses, you cannot edit your requirements again.<br/>
+   Check over ALL your requirements to verify they were recorded properly. If you believe that your requirements were not recorded properly, reenter your requirements, and select Add Requirement after EVERY requirement before final submission.
+   </p>
+  </div>
+
 
 <%@include file="footer.jsp"%>

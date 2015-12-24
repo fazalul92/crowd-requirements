@@ -5,10 +5,10 @@
  <li class="active">Pre-Survey (1)</li>
  <li>Pre-Survey (2)</li>
  <li>Pre-Survey (3)</li>
- <c:forEach begin="1" end="3" varStatus="loop">
-  <li>Phase ${loop.index}</li>
- </c:forEach>
+ <li>Main Task (1)</li>
+ <li>Main Task (2)</li>
  <li>Post-Survey</li>
+ <li>Completion Code</li>
 </ul>
 
 <h3>Instructions</h3>

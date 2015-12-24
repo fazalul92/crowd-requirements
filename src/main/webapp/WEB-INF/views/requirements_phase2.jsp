@@ -5,14 +5,14 @@
  <li>Pre-Survey (1)</li>
  <li>Pre-Survey (2)</li>
  <li>Pre-Survey (3)</li>
- <li>Phase [alpha]</li>
- <li class="active">Phase [beta]</li>
- <li>Phase [gamma]</li>
+ <li>Main Task (1)</li>
+ <li class="active">Main Task (2)</li>
  <li>Post-Survey</li>
+ <li>Completion Code</li>
 </ul>
 
-<h3>Requirements Phase [beta]</h3>
-<div class="jumbotron lead">
+<h3>Main Task (2)</h3>
+<div class="bg-info" style="padding:5px; border-radius:5px;">
  <p>In this phase your task is to rate how feasible and novel are
   the requirements that you listed in phase [alpha], and provide a
   justification for your rating.</p>
@@ -25,10 +25,10 @@
  <div>
   <table class="table">
    <tr>
-    <td>#</td>
-    <td class="col-sm-5 ">Requirements</td>
-    <td>Feasibility</td>
-    <td>Novelty</td>
+    <th>#</th>
+    <th class="col-sm-5 ">Requirements</th>
+    <th>Feasibility</th>
+    <th>Novelty</th>
    </tr>
 
    <c:forEach var="jRequirementRatingResponse"
