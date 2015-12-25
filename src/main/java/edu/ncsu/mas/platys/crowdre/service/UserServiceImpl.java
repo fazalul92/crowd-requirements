@@ -20,6 +20,16 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  public int getResponseCount(int id) {
+    return dao.getResponseCount(id);
+  }
+  
+  @Override
+  public int getResponseCount(String mturkId) {
+    return dao.getResponseCount(mturkId);
+  }
+  
+  @Override
   public void updateResponse(User response) {
     dao.updateResponse(response);
   }

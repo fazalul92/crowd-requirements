@@ -1,9 +1,3 @@
-DROP DATABASE IF EXISTS `crowd_requirements_development`;
-
-CREATE DATABASE `crowd_requirements_development` /*!40100 DEFAULT CHARACTER SET utf8 */;
-
-USE `crowd_requirements_development`;
-
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `mturk_id` varchar(20) NOT NULL,

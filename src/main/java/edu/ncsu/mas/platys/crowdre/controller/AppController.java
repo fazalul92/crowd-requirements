@@ -486,6 +486,8 @@ public class AppController {
     } else if (mturkID.equals("pmuruka") || mturkID.equals("najmeri")) {
       // Exceptions testing
       return MTURK_ID_VALID;
+    } else if (userService.getResponseCount(mturkID) > 0) {
+      return MTURK_ID_COMPLETED;
     }
     return MTURK_ID_VALID;
   }
@@ -510,8 +512,8 @@ public class AppController {
 
   private boolean isRequirementResponseValid(RequirementResponse requirementResponse,
       BindingResult result, ModelMap model) {
+    
     boolean returnValue = true;
-     
     if (requirementResponse.getApplicationDomain().equals("Other")
         && (requirementResponse.getApplicationDomainOther() == null || requirementResponse
             .getApplicationDomainOther().trim().length() == 0)) {

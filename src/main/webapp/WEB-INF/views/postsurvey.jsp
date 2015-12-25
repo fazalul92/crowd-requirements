@@ -13,24 +13,8 @@
 
 <h3>Instructions</h3>
 <div class="bg-info" style="padding: 5px; border-radius: 5px;">
- <p class="text-justify">Smart home requirements collection...</p>
-
- <ul>
-  <li><b>Do not</b> use the browser's <b>refresh</b>, <b>back</b>,
-   or <b>forward</b> buttons.</li>
-  <li>Use the <b>Submit Responses</b> button at the end of the page
-   to proceed to the next page.
-  </li>
-  <li>After submitting responses in a page, you <b>cannot
-    modify</b> your responses in that page.
-  </li>
-  <li>Answering all questions is mandatory, unless explicitly
-   marked as optional.</li>
-  <li>If something goes wrong (does not happen often), please start
-   again from the beginning. If the problem persists, please contact <b>pmuruka
-    AT ncsu.edu</b> with details of the problem.
-  </li>
- </ul>
+ <p class="text-justify">We are almost done... Please complete the
+  following post survey.</p>
 </div>
 
 <form:form method="POST" modelAttribute="postsurveyResponseForm">
