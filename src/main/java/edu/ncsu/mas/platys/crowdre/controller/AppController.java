@@ -1,5 +1,6 @@
 package edu.ncsu.mas.platys.crowdre.controller;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -137,6 +138,7 @@ public class AppController {
 
   private static final String ATTR_REQUIREMENT_RESPONSE = "requirementResponse";
   private static final String ATTR_PREVIOUS_REQUIREMENT_RESPONSES = "previousRequirementResponses";
+  private static final String ATTR_DOMAIN_COUNTS = "domainCounts";
   
   private static final String ATTR_REQUIREMENT_RATING_RESPONSE_FORM = "requirementRatingResponseForm";
   
@@ -328,15 +330,40 @@ public class AppController {
     
     User user = (User) session.getAttribute(USER_ENTITY);
 
-    Map<String, List<RequirementResponse>> previousRequirementResponses = requirementResponseService
-        .findByUserIdAndGroupByDomain(user.getId());
+    //Map<String, List<RequirementResponse>> previousRequirementResponses = requirementResponseService
+    //    .findByUserIdAndGroupByDomain(user.getId());
+    RequirementResponse[] previousRequirementResponses = requirementResponseService
+            .findByUserId(user.getId());
     model.addAttribute(ATTR_PREVIOUS_REQUIREMENT_RESPONSES, previousRequirementResponses);
+    
+    model.addAttribute(ATTR_DOMAIN_COUNTS, countDomains(previousRequirementResponses));
 
     RequirementResponse requirementResponse = new RequirementResponse();
     requirementResponse.setUserId(user.getId());
     model.addAttribute(ATTR_REQUIREMENT_RESPONSE, requirementResponse);
 
     return PAGE_REQUIREMENTS_PHASE1;
+  }
+  
+  private Map<String, Integer> countDomains(RequirementResponse[] previousRequirementResponses) {
+	  Map<String, Integer> domainCounts = new LinkedHashMap<String, Integer>();
+	  domainCounts.put("Health", 0);
+	  domainCounts.put("Safety", 0);
+	  domainCounts.put("Energy", 0);
+	  domainCounts.put("Other", 0);
+	  
+	  for(int i=0; i<previousRequirementResponses.length; i++) {
+		  String domain = previousRequirementResponses[i].getApplicationDomain();
+		  Integer count = domainCounts.get(domain);
+		  if(count == null) {
+			  count = 1;
+		  }
+		  else {
+			  count++;
+		  }
+		  domainCounts.put(domain, count);
+	  }
+	  return domainCounts;
   }
 
   @RequestMapping(value = { "/" + PAGE_REQUIREMENTS_PHASE1 }, method = RequestMethod.POST)
@@ -484,12 +511,8 @@ public class AppController {
   private boolean isRequirementResponseValid(RequirementResponse requirementResponse,
       BindingResult result, ModelMap model) {
     boolean returnValue = true;
-    if (requirementResponse.getApplicationDomain().equals("--Select--")) {
-      returnValue = false;
-      FieldError error = new FieldError(ATTR_REQUIREMENT_RESPONSE, "applicationDomain",
-          messageSource.getMessage("mandatory.select", null, Locale.getDefault()));
-      result.addError(error);
-    } else if (requirementResponse.getApplicationDomain().equals("Other")
+     
+    if (requirementResponse.getApplicationDomain().equals("Other")
         && (requirementResponse.getApplicationDomainOther() == null || requirementResponse
             .getApplicationDomainOther().trim().length() == 0)) {
       returnValue = false;

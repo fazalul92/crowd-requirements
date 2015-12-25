@@ -81,8 +81,8 @@
    Domain</label>
   <div class="col-sm-5">
    <form:select class="form-control" path="applicationDomain"
-    id="domainSelect">
-    <option>--Select--</option>
+    id="domainSelect" required="required">
+    <option value="" selected disabled>Please select</option>
     <option>Health</option>
     <option>Safety</option>
     <option>Energy</option>
@@ -118,6 +118,13 @@
 
 <h3>Your Requirements</h3>
 
+<ul class="nav nav-pills">
+  <li><a href="#">Health <span class="badge">${domainCounts["Health"]}</span></a></li>
+  <li><a href="#">Safety <span class="badge">${domainCounts["Safety"]}</span></a></li>
+  <li><a href="#">Energy <span class="badge">${domainCounts["Energy"]}</span></a></li>
+  <li><a href="#">Other <span class="badge">${domainCounts["Other"]}</span></a></li>
+</ul>
+
 <div>
  <table class="table">
   <tr>
@@ -126,11 +133,11 @@
   </tr>
 
   <c:set var="count" value="0" scope="page" />
-  <c:forEach var="appDomain"
+  <%-- <c:forEach var="appDomain"
    items="Health,Safety,Energy,Entertainment,Other"
-   varStatus="domainLoop">
+   varStatus="domainLoop"> --%>
    <c:forEach var="previousRequirementResponse"
-    items="${previousRequirementResponses[appDomain]}"
+    items="${previousRequirementResponses}"
     varStatus="reqLoop">
     <tr>
      <td><c:set var="count" value="${count + 1}" scope="page" />
@@ -148,7 +155,7 @@
      </td>
     </tr>
    </c:forEach>
-  </c:forEach>
+  <%-- </c:forEach> --%>
 
  </table>
 </div>
