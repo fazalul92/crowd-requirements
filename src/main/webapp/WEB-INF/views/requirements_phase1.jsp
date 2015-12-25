@@ -12,7 +12,7 @@
 </ul>
 
 <h3>Main Task (1)</h3>
-<div class="bg-info" style="padding: 5px; border-radius: 5px;">
+<div class="bg-info text-justify" style="padding: 5px; border-radius: 5px;">
  <p>Your main task is to come up with Smart Home requirements. To do
   so, imagine what you would expect from a Smart Home. Below, we provide
   basic information about Smart Home technologies, but you may do
@@ -20,7 +20,9 @@
   technologies better.</p>
  <div>
   <div class="col-sm-8">
-   <h5>What is a Smart Home?</h5>
+   <blockquote style="font-size: 14px;">
+  
+   <h4>What is a Smart Home?</h4>
    <p>
     A Smart Home consists of smart things! Smart things are objects that
     can <b>sense</b> their surroundings, <b>compute</b> from the sensed
@@ -31,40 +33,43 @@
     cars are becoming smart things. The picture to the right shows some
     Smart Home sensors.
    </p>
+   
+   <h4>What is a Smart Home requirement?</h4>
+   <p>
+   A Smart Home requirement indicates what you expect a Smart Home to do.
+   A typical requirement is of the format "As a <b>role</b>, I want <b>feature</b>,
+   so that <b>benefit.</b>" Example Smart Home requirements include
+   </p>
+   <ul>
+    <li>As a parent (role), I want my smart home to buzz when my
+    child is close to an object that can potentially fall (feature), so
+    that an injury to the child is avoided (benefit)</li>
+    <li>As a home occupant (role), I want my smart home to make dog
+    barking sound when a person approaches the main door (feature), so
+    that thefts can be reduced even when we are away from home (benefit)</li>
+   </ul>
+   </blockquote>
   </div>
-  <div class="col-sm-4 text-right">
+  <div class="col-sm-4 text-center" style="margin-top: 10px;">
    <a
     href="https://storiesbywilliams.files.wordpress.com/2014/01/smarthome.jpg"
     title="Click here to enlarge" target="_blank"> <img
     src="https://storiesbywilliams.files.wordpress.com/2014/01/smarthome.jpg"
-    height=200px; />
-   </a> <small><a
-    href="http://storiesbywilliams.com/2014/01/20/tech-news-google-buys-nest-seeking-conscious-homes/">Image
-     Source</a></small>
+    height=220px; />
+   </a> 
+   <small>Click the image to enlarge it  
+   <a href="http://storiesbywilliams.com/2014/01/20/tech-news-google-buys-nest-seeking-conscious-homes/">
+     (Source)</a>
+   </small>
   </div>
  </div>
 
- <h5>What is a Smart Home requirement?</h5>
- <p>
-  A Smart Home requirement indicates what you expect a Smart Home to do.
-  A typical requirement is of the format "As a <b>role</b>, I want <b>feature</b>,
-  so that <b>benefit.</b>" Example Smart Home requirements include
- </p>
- <ul>
-  <li>As a parent (role), I want my smart home to buzz when my
-   child is close to an object that can potentially fall (feature), so
-   that an injury to the child is avoided (benefit)</li>
-  <li>As a home occupant (role), I want my smart home to make dog
-   barking sound when a person approaches the main door (feature), so
-   that thefts can be reduced even when we are away from home (benefit)</li>
- </ul>
-
- <p>
+ <p style="clear:left">
   In addition to the requirement, also identify the <b>application
    domain</b> of the requirement. The above requirements belong to the <b>safety</b>
   domain. Other domains of interest to us include <b>health</b>, <b>energy</b>,
-  and <b>entertainment</b>. Please try to limit the requirements to one
-  of these domain. If you must make an exception, choose the "other"
+  and <b>entertainment</b>. Please try to limit your requirements only to 
+  these domain. If you must make an exception, choose the "other"
   domain and provide an indicative name. If you think a requirement
   belongs to multiple domains, choose the most indicative domain.
  </p>
@@ -88,7 +93,7 @@
   25% of creative requirements, you will receive 20 cents bonus (up to a
   total of USD 1).
  </p>
-
+ 
 </div>
 
 
