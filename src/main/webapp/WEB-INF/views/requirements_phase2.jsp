@@ -12,10 +12,22 @@
 </ul>
 
 <h3>Main Task (2)</h3>
-<div class="bg-info" style="padding:5px; border-radius:5px;">
- <p>In this phase your task is to rate how feasible and novel are
-  the requirements that you listed in phase [alpha], and provide a
-  justification for your rating.</p>
+<div class="bg-info" style="padding: 5px; border-radius: 5px;">
+ <p>
+  In this phase, you will rate the creativity of your own requirements.
+  A creative requirement leads to <b>novel</b> and <b>useful</b>
+  product. Thus, rate both novelty and usefulness of your
+  requirements using the scale below. Please provide a honest
+  assessment. Your ratings will <b>NOT</b> affect any bonus, you may
+  receive.
+ </p>
+ <ol>
+  <li>Very low</li>
+  <li>Low</li>
+  <li>Medium</li>
+  <li>High</li>
+  <li>Very High</li>
+ </ol>
 </div>
 
 <h3>Your Requirements</h3>
@@ -27,7 +39,7 @@
    <tr>
     <th>#</th>
     <th class="col-sm-5 ">Requirements</th>
-    <th>Feasibility</th>
+    <th>Usefulness</th>
     <th>Novelty</th>
    </tr>
 
@@ -39,16 +51,17 @@
      name="requirementResponseId" id="requirementResponseId" />
     <tr>
      <td>${loop.index + 1}.</td>
-     <td><b>As a</b> ${jRequirementRatingResponse.requirementResponse.role},<br/>
-      <b>I want</b> ${jRequirementRatingResponse.requirementResponse.feature},<br/>
-      <b>so that</b> ${jRequirementRatingResponse.requirementResponse.benefit}.<br />
+     <td><b>As a</b>
+      ${jRequirementRatingResponse.requirementResponse.role},<br /> <b>I
+       want</b> ${jRequirementRatingResponse.requirementResponse.feature},<br />
+      <b>so that</b>
+      ${jRequirementRatingResponse.requirementResponse.benefit}.<br />
       Application Domain: <i>${jRequirementRatingResponse.requirementResponse.applicationDomain}</i>
       <br /> <c:set var="jTags"
        value="${fn:split(jRequirementRatingResponse.requirementResponse.tags,',')}" />
       <c:forEach var="jTag" items="${jTags}">
        <span class="badge">${jTag}</span>
-      </c:forEach>
-     </td>
+      </c:forEach></td>
      <td><div class="form-group radio">
        <c:forEach begin="1" end="5" varStatus="likertloop">
         <label> <form:radiobutton
@@ -68,16 +81,16 @@
     </tr>
    </c:forEach>
   </table>
-  
+
  </div>
  <div class="text-center">
-   <button type="submit" class="btn btn-primary btn-lg">Submit
-    Responses &raquo;</button>
-   <p>
-    <br> <b>Note:</b> After submitting the responses, you cannot
-    edit them again.
-   </p>
-  </div>
+  <button type="submit" class="btn btn-primary btn-lg">Submit
+   Responses &raquo;</button>
+  <p>
+   <br> <b>Note:</b> After submitting the responses, you cannot
+   edit them again.
+  </p>
+ </div>
 </form:form>
 
 <%@include file="footer.jsp"%>
