@@ -12,9 +12,19 @@
 </ul>
 
 <h3>Instructions</h3>
-<div class="bg-info" style="padding:5px; border-radius:5px;">
- <p class="text-justify">Smart home requirements collection...</p>
+<div class="bg-info" style="padding: 5px; border-radius: 5px;">
+ <p class="text-justify">
+  Welcome to the <b>Smart Home</b> study. This study consists of <b>six
+   steps</b>: three pre-surveys, two main surveys, and a post survey. You
+  are required to complete these steps sequentially. After six steps,
+  you will receive a <b>completion code</b>, which you must enter on the
+  Amazon MTurk site to receive a payment. There is <b>no partial
+   payment</b>. You must complete all steps to receive the payment. The main
+  tasks may involve <b>bonus payments</b> as you will see later.
+ </p>
 
+ <p class="text-justify">The following are some general
+  instructions.</p>
  <ul>
   <li><b>Do not</b> use the browser's <b>refresh</b>, <b>back</b>,
    or <b>forward</b> buttons.</li>
@@ -26,6 +36,9 @@
   </li>
   <li>Answering all questions is mandatory, unless explicitly
    marked as optional.</li>
+  <li>Do not close your browser window (this tab) before
+   completing. If you do so, you may have to start again from the
+   beginning.</li>
   <li>If something goes wrong (does not happen often), please start
    again from the beginning. If the problem persists, please contact <b>pmuruka
     AT ncsu.edu</b> with details of the problem.

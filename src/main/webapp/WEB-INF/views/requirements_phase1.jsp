@@ -11,33 +11,84 @@
  <li>Completion Code</li>
 </ul>
 
-<h3>Main Task(1)</h3>
+<h3>Main Task (1)</h3>
 <div class="bg-info" style="padding: 5px; border-radius: 5px;">
- <!-- <h4>Smart Home Study</h4> -->
- <ul>
-  <li><span class="badge">2</span>What should a smart home do to
-   enhance health and safety of its occupants?</li>
-  <li><span class="badge">0</span>What should a smart home do to
-   save energy?</li>
-  <li><span class="badge">7</span>What should a smart home do to
-   ensure occupants stay happy?</li>
- </ul>
+ <p>Your main task is to come up with Smart Home requirements. To do
+  so, imagine what you would expect from a Smart Home. Below, we provide
+  basic information about Smart Home technologies, but you may do
+  additional research (e.g., on the Internet) to understand these
+  technologies better.</p>
  <div>
   <div class="col-sm-8">
    <h5>What is a Smart Home?</h5>
-   <ul>
-    <li></li>
-    <li></li>
-    <li></li>
-   </ul>
+   <p>
+    A Smart Home consists of smart things! Smart things are objects that
+    can <b>sense</b> their surroundings, <b>compute</b> from the sensed
+    data, and <b>communicate</b> the computed results to humans or other
+    smart things. In addition to gadgets such as laptops and
+    smartphones, an increasing variety of household objects such as TVs,
+    light bulbs, heaters, stoves, doors and windows, sprinklers, and
+    cars are becoming smart things. The picture to the right shows some
+    Smart Home sensors.
+   </p>
   </div>
   <div class="col-sm-4 text-right">
-   <a href="https://storiesbywilliams.files.wordpress.com/2014/01/smarthome.jpg" title="Click here to enlarge" target="_blank"> 
-    <img src="https://storiesbywilliams.files.wordpress.com/2014/01/smarthome.jpg" height=200px;/>
-   </a>
-   <small><a href="http://storiesbywilliams.com/2014/01/20/tech-news-google-buys-nest-seeking-conscious-homes/">Image Source</a></small> 
+   <a
+    href="https://storiesbywilliams.files.wordpress.com/2014/01/smarthome.jpg"
+    title="Click here to enlarge" target="_blank"> <img
+    src="https://storiesbywilliams.files.wordpress.com/2014/01/smarthome.jpg"
+    height=200px; />
+   </a> <small><a
+    href="http://storiesbywilliams.com/2014/01/20/tech-news-google-buys-nest-seeking-conscious-homes/">Image
+     Source</a></small>
   </div>
  </div>
+
+ <h5>What is a Smart Home requirement?</h5>
+ <p>
+  A Smart Home requirement indicates what you expect a Smart Home to do.
+  A typical requirement is of the format "As a <b>role</b>, I want <b>feature</b>,
+  so that <b>benefit.</b>" Example Smart Home requirements include
+ </p>
+ <ul>
+  <li>As a parent (role), I want my smart home to buzz when my
+   child is close to an object that can potentially fall (feature), so
+   that an injury to the child is avoided (benefit)</li>
+  <li>As a home occupant (role), I want my smart home to make dog
+   barking sound when a person approaches the main door (feature), so
+   that thefts can be reduced even when we are away from home (benefit)</li>
+ </ul>
+
+ <p>
+  In addition to the requirement, also identify the <b>application
+   domain</b> of the requirement. The above requirements belong to the <b>safety</b>
+  domain. Other domains of interest to us include <b>health</b>, <b>energy</b>,
+  and <b>entertainment</b>. Please try to limit the requirements to one
+  of these domain. If you must make an exception, choose the "other"
+  domain and provide an indicative name. If you think a requirement
+  belongs to multiple domains, choose the most indicative domain.
+ </p>
+
+ <p>
+  <b>Important:</b> You must provide at least five requirements. After
+  adding five requirements, a link will appear at the bottom of the
+  page. You can use that link to navigate to the next page.
+ </p>
+
+ <p>
+  <b>Quantity Bonus:</b> Although five is the lower limit, you are
+  encouraged to give as many requirements as you can. If the number of
+  requirements you provide is in the top 25% among all participants, you
+  will receive a bonus payment of USD 1.
+ </p>
+
+ <p>
+  <b>Creativity Bonus:</b> Be creative! We will judge the creativity of
+  your requirements. For each of your requirements, which is in the top
+  25% of creative requirements, you will receive 20 cents bonus (up to a
+  total of USD 1).
+ </p>
+
 </div>
 
 

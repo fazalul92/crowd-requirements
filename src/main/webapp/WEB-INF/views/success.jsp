@@ -18,4 +18,6 @@
  </p>
 </div>
 
+<c:remove var="userEntity" scope="session" />
+
 <%@include file="footer.jsp"%>

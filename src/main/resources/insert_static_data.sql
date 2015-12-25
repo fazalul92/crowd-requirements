@@ -13,11 +13,13 @@ LOCK TABLES `presurvey_questions` WRITE;
 INSERT INTO `presurvey_questions` VALUES (1, 'What is your gender?', 'multiple_choice', 'Male|Female|Other'),
   (2, 'Which of the following categories includes your age?', 'multiple_choice', '18 to 24|25 to 34|35 to 45|45 to 54|55 or older'),
   (3, 'What is the highest level of school you have completed or the highest degree you have received?', 'multiple_choice', 'Less than high school degree|High school degree or equivalent (e.g., GED)|Some college but no degree|Bachelor degree|Graduate degree'),
-  (4, 'If you went to college, what was your major?', 'text', 'For example, computer science, mechanical engineering, psychology, music, law, etc.'),
-  (5, 'How familiar are you with concepts related to Computer Science or Information Technology (IT)?', 'multiple_choice', 'Very low familiarity|low familiarity|Medium familiarity|High familiarity|Very high familiarity'),
-  (6, 'If you worked for an IT company, how long did you do so?', 'multiple_choice', 'Did not work for IT |For less than a year|For one to five years|For more than five years'),
-  (7, 'How familiar are you with concepts such as Internet of Things, Smart Homes, and Smart Cities?', 'multiple_choice', 'Never heard the terms|Terms seem familiar|Read about the concepts a few times|Read about the concepts several times'),
-  (8, 'Please use the text box below if you need to clarify any of your answers above', 'text', 'Optional clarifications');
+  (4, 'If you went to college, what was your major?', 'text', 'For example, computer science, mechanical engineering, psychology, music, law, etc.'),  
+  (5, 'Have you worked for a technology company?', 'multiple_choice', 'No|Yes; for less than a year|Yes; for one to five years|Yes; for more than five years'),
+  (6, 'How do you rate your familiarity of concepts related to Computer Science, Information Techonology, and Computer Netowrks?', 'multiple_choice', 'Very low|Low|Medium|High|Very high'),
+  (7, 'How do you rate your familiarity of concepts related to Smart Homes, Smart Cities, and Internet of Things?', 'multiple_choice', 'Very low|Low|Medium|High|Very high'),
+  (8, 'Do you use any Smart Home technologies at your home?', 'multiple_choice', 'Yes|No|Not sure'),
+  (9, 'Please use the text box below if you need to clarify any of your answers above', 'text', 'Optional clarifications');
+
 /*!40000 ALTER TABLE `presurvey_questions` ENABLE KEYS */;
 UNLOCK TABLES;
   
