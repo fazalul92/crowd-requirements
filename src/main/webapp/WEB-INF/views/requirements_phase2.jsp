@@ -16,10 +16,9 @@
  <p>
   In this phase, you will rate the creativity of your own requirements.
   A creative requirement leads to <b>novel</b> and <b>useful</b>
-  product. Thus, rate both novelty and usefulness of your
-  requirements using the scale below. Please provide a honest
-  assessment. Your ratings will <b>NOT</b> affect any bonus, you may
-  receive.
+  product. Thus, rate both novelty and usefulness of your requirements
+  using the scale below. Please provide a honest assessment. Your self
+  assessment will <b>NOT</b> affect any bonus you may receive.
  </p>
  <ol>
   <li>Very low</li>

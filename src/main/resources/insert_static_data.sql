@@ -52,7 +52,7 @@ INSERT INTO `creativity_questions` VALUES
   (19,'Wide interests'),
   (20,'Inventive'),
   (21,'Original'),
-  (22,'Norrow interests'),
+  (22,'Narrow interests'),
   (23,'Reflective'),
   (24,'Sincere'),
   (25,'Resourceful'),

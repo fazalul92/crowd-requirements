@@ -350,6 +350,7 @@ public class AppController {
 	  domainCounts.put("Health", 0);
 	  domainCounts.put("Safety", 0);
 	  domainCounts.put("Energy", 0);
+	  domainCounts.put("Entertainment", 0);
 	  domainCounts.put("Other", 0);
 	  
 	  for(int i=0; i<previousRequirementResponses.length; i++) {
