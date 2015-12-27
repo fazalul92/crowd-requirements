@@ -29,6 +29,10 @@ public class User {
   @Column(name = "created_at", nullable = false)
   @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
   private LocalDateTime createdAt;
+  
+  @NotNull
+  @Column(name = "created_phase", nullable = false)
+  private int createdPhase;
 
   @Column(name = "completion_code")
   private String completionCode;
@@ -55,6 +59,14 @@ public class User {
 
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
+  }
+
+  public int getCreatedPhase() {
+    return createdPhase;
+  }
+
+  public void setCreatedPhase(int createdPhase) {
+    this.createdPhase = createdPhase;
   }
 
   public String getCompletionCode() {

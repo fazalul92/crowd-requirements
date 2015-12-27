@@ -48,6 +48,7 @@ import edu.ncsu.mas.platys.crowdre.service.PersonalityResponseService;
 import edu.ncsu.mas.platys.crowdre.service.CreativityResponseService;
 import edu.ncsu.mas.platys.crowdre.service.RequirementRatingResponseService;
 import edu.ncsu.mas.platys.crowdre.service.RequirementResponseService;
+import edu.ncsu.mas.platys.crowdre.service.RequirementSelectorService;
 import edu.ncsu.mas.platys.crowdre.service.UserService;
 import edu.ncsu.mas.platys.crowdre.util.RandomCodeGenerator;
 
@@ -94,6 +95,9 @@ public class AppController {
 
   @Autowired
   PostsurveyResponseService postsurveyResponseService;
+  
+  @Autowired
+  RequirementSelectorService requirementSelectorService;
 
   private static final String PAGE_SIGNIN = "signin";
   private static final String PAGE_SIGNIN_FAILURE = "signin_failure";
@@ -153,6 +157,9 @@ public class AppController {
   
   @RequestMapping(value = { "/", "/" + PAGE_SIGNIN }, method = RequestMethod.GET)
   public String showSignIn(ModelMap model) {
+    System.out.println(requirementSelectorService.getUserIds()); // TODO Remove
+    Double[] traits = requirementSelectorService.getPersonalityTraits(52);
+    System.out.println(traits[0] + "," + traits[1] + "," + traits[4]); // TODO Remove
     model.addAttribute(ATTR_USER, new User());
     return PAGE_SIGNIN;
   }
@@ -162,6 +169,7 @@ public class AppController {
       final RedirectAttributes redirectAttributes, HttpSession session) {
 
     user.setCreatedAt(LocalDateTime.now());
+    user.setCreatedPhase(Integer.parseInt(env.getProperty("study.phase")));
     session.setAttribute(USER_ENTITY, user);
     
     switch (isMturkIDValid(user.getMturkId())) {
@@ -345,28 +353,6 @@ public class AppController {
     return PAGE_REQUIREMENTS_PHASE1;
   }
   
-  private Map<String, Integer> countDomains(RequirementResponse[] previousRequirementResponses) {
-	  Map<String, Integer> domainCounts = new LinkedHashMap<String, Integer>();
-	  domainCounts.put("Health", 0);
-	  domainCounts.put("Safety", 0);
-	  domainCounts.put("Energy", 0);
-	  domainCounts.put("Entertainment", 0);
-	  domainCounts.put("Other", 0);
-	  
-	  for(int i=0; i<previousRequirementResponses.length; i++) {
-		  String domain = previousRequirementResponses[i].getApplicationDomain();
-		  Integer count = domainCounts.get(domain);
-		  if(count == null) {
-			  count = 1;
-		  }
-		  else {
-			  count++;
-		  }
-		  domainCounts.put(domain, count);
-	  }
-	  return domainCounts;
-  }
-
   @RequestMapping(value = { "/" + PAGE_REQUIREMENTS_PHASE1 }, method = RequestMethod.POST)
   public String processRequirementsPhase1Response(
       @ModelAttribute(ATTR_REQUIREMENT_RESPONSE) RequirementResponse requirementResponse,
@@ -477,6 +463,28 @@ public class AppController {
   @RequestMapping(value = { "/" + PAGE_SUCCESS }, method = RequestMethod.GET)
   public String showSuccess(ModelMap model) {
     return PAGE_SUCCESS;
+  }
+  
+  private Map<String, Integer> countDomains(RequirementResponse[] previousRequirementResponses) {
+    Map<String, Integer> domainCounts = new LinkedHashMap<String, Integer>();
+    domainCounts.put("Health", 0);
+    domainCounts.put("Safety", 0);
+    domainCounts.put("Energy", 0);
+    domainCounts.put("Entertainment", 0);
+    domainCounts.put("Other", 0);
+    
+    for(int i=0; i<previousRequirementResponses.length; i++) {
+      String domain = previousRequirementResponses[i].getApplicationDomain();
+      Integer count = domainCounts.get(domain);
+      if(count == null) {
+        count = 1;
+      }
+      else {
+        count++;
+      }
+      domainCounts.put(domain, count);
+    }
+    return domainCounts;
   }
   
   private int isMturkIDValid(String mturkID) {
