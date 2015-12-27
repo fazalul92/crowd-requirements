@@ -1,10 +1,18 @@
 package edu.ncsu.mas.platys.crowdre.service;
 
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
+
+import edu.ncsu.mas.platys.crowdre.model.RequirementResponse;
 
 public interface RequirementSelectorService {
-  public Set<Integer> getUserIds();
   public Map<Integer, Double[]> getPersonalityTraits();
-  Double[] getPersonalityTraits(int userId);
+
+  public Double[] getPersonalityTraits(int userId);
+
+  public List<RequirementResponse> getClosestRequirements(Double[] individualPersonalityTraits,
+      boolean ascending, int size);
+
+  public List<RequirementResponse> getClosestRequirementsFromRawScores(
+      Double[] individualPersonalityRawScores, boolean ascending, int size);
 }

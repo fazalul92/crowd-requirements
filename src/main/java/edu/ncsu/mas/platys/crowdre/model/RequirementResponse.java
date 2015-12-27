@@ -36,7 +36,6 @@ public class RequirementResponse {
   @Column(name = "benefit", nullable = false)
   private String benefit;
 
-
   @NotBlank
   @Column(name = "application_domain", nullable = false)
   private String applicationDomain;
@@ -52,6 +51,9 @@ public class RequirementResponse {
   @Column(name = "created_at", nullable = false)
   @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
   private LocalDateTime createdAt;
+
+  @Column(name = "show_other")
+  private int showOther;
 
   public int getId() {
     return id;
@@ -123,5 +125,13 @@ public class RequirementResponse {
 
   public void setCreatedAt(LocalDateTime createdAt) {
     this.createdAt = createdAt;
+  }
+
+  public int getShowOther() {
+    return showOther;
+  }
+
+  public void setShowOther(int showOther) {
+    this.showOther = showOther;
   }
 }

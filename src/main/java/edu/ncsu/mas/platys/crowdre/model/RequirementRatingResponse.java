@@ -25,6 +25,10 @@ public class RequirementRatingResponse {
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "requirement_id")
   private RequirementResponse requirementResponse;
+  
+  @NotNull
+  @Column(name = "user_id", nullable = false)
+  private int userId;
 
   @NotNull
   @Column(name = "novelty", nullable = false)
@@ -54,6 +58,14 @@ public class RequirementRatingResponse {
 
   public void setRequirementResponse(RequirementResponse requirementResponse) {
     this.requirementResponse = requirementResponse;
+  }
+
+  public int getUserId() {
+    return userId;
+  }
+
+  public void setUserId(int userId) {
+    this.userId = userId;
   }
 
   public int getNovelty() {

@@ -24,19 +24,25 @@ public class RequirementResponseDaoImpl extends AbstractDao<Integer, Requirement
   }
 
   @Override
-  public RequirementResponse[] findByUserId(int userId) {
+  public List<RequirementResponse> findByUserId(int userId) {
     Criteria criteria = getSession().createCriteria(RequirementResponse.class);
     criteria.add(Restrictions.eq("userId", userId));
     
     @SuppressWarnings("unchecked")
-    List<Object> responseList = criteria.list();
+    List<RequirementResponse> responseList = criteria.list();
     
-    RequirementResponse[] responseArray = new RequirementResponse[responseList.size()];
-    for (int i = 0; i < responseArray.length; i++) {
-      responseArray[i] = (RequirementResponse) responseList.get(i);
-    }
-    
-    return responseArray;
+    return responseList;
+  }
+  
+  @Override
+  public List<RequirementResponse> findToShowOtherByUserId(int userId) {
+    Criteria criteria = getSession().createCriteria(RequirementResponse.class);
+    criteria.add(Restrictions.eq("userId", userId)).add(Restrictions.eq("showOther", 1));
+
+    @SuppressWarnings("unchecked")
+    List<RequirementResponse> responseList = criteria.list();
+
+    return responseList;
   }
 
   @Override

@@ -126,6 +126,7 @@ CREATE TABLE `requirements` (
   `application_domain_other` varchar(256) NOT NULL,
   `tags` varchar(1024) DEFAULT NULL,
   `created_at` datetime NOT NULL,
+  `show_other` tinyint DEFAULT 1,
   PRIMARY KEY (`id`),
   FOREIGN KEY `FK_user_requirements_user` (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -133,9 +134,11 @@ CREATE TABLE `requirements` (
 CREATE TABLE `requirements_ratings` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `requirement_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `novelty` tinyint NOT NULL,
   `feasibility` tinyint NOT NULL,
   `created_at` datetime NOT NULL,
    PRIMARY KEY (`id`),
    FOREIGN KEY `FK_ratings_requirements_requirement` (`requirement_id`) REFERENCES `requirements` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+   FOREIGN KEY `FK_requirements_ratings_user` (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

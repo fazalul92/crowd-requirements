@@ -12,13 +12,26 @@
 </ul>
 
 <h3>Main Task (1)</h3>
+
 <div class="bg-info text-justify"
  style="padding: 5px; border-radius: 5px;">
  <p>Your main task is to come up with Smart Home requirements. To do
-  so, imagine what you would expect from a Smart Home. Below, we provide
-  basic information about Smart Home technologies, but you may do
-  additional research (e.g., on the Internet) to understand these
-  technologies better.</p>
+  so, imagine what you would expect from a Smart Home.</p>
+
+ <p>
+  <b>Creativity Bonus:</b> Be creative! We provide you some sample
+  requirements and your objective is to come up with <b>more
+   creative</b> requirements than the samples shown to you. A creative
+  requirement leads to products that are both to <b>useful</b> and <b>novel</b>.
+  For each of your requirements that is more creative than the ones
+  shown to you (as judged by us), you will receive a 20 cents <b>bonus</b>
+  (up to a maximum total of <b>USD 1</b>).
+ </p>
+
+ <p>Below, we provide basic information about Smart Home
+  technologies, but you may do additional research (e.g., on the
+  Internet) to understand these technologies better.</p>
+
  <div>
   <div class="col-sm-8">
    <blockquote style="font-size: 14px;">
@@ -39,24 +52,28 @@
     <p>
      A Smart Home requirement indicates what you expect a Smart Home to
      do. A typical requirement is of the format "As a <b>role</b>, I
-     want <b>feature</b>, so that <b>benefit.</b>" Example Smart Home
-     requirements include
+     want <b>feature</b>, so that <b>benefit.</b>" Example roles include
+     <i>home occupant</i>, <i>parent</i>, <i>neighbor</i>, and <i>nanny</i>.
+     You can imagine any role (even the ones you do not play in real
+     life).
     </p>
-    <ul>
-     <li>As a parent (role), I want my smart home to buzz when my
-      child is close to an object that can potentially fall (feature),
-      so that an injury to the child can be avoided (benefit)</li>
-     <li>As a home occupant (role), I want my smart home to make
-      dog barking sound when a person approaches the main door
-      (feature), so that thefts can be reduced even when we are away
-      from home (benefit)</li>
-    </ul>
-    <p>You can imagine any role (even the ones you do not play in
-     real life).</p>
+    <p>
+     For each requirement, also identify its <b>application domain</b>.
+     For example, the requirements above belong to the <b>safety</b>
+     domain. Other domains of interest to us include <b>health</b>, <b>energy</b>,
+     and <b>entertainment</b>. Please limit your requirements to these
+     four domains. If you must make an exception, choose the "other"
+     domain and provide an indicative name. If you think a requirement
+     belongs to multiple domains, choose the most indicative domain.
+    </p>
+
+    <p>
+     For each requirements, add a few <b>tags</b> (keywords, e.g.,
+     hashtags on Twitter), indicative of the requirement.
+    </p>
    </blockquote>
   </div>
-  <div class="col-sm-4 text-center"
-   style="margin-top: 10px; vertical-align: middle;">
+  <div class="col-sm-4 text-center" style="margin-top: 10px;">
    <a
     href="https://storiesbywilliams.files.wordpress.com/2014/01/smarthome.jpg"
     title="Click here to enlarge" target="_blank"> <img
@@ -69,36 +86,42 @@
   </div>
  </div>
 
- <p style="clear: left">
-  For each requirement, also identify its <b>application domain</b>. For
-  example, the requirements above belong to the <b>safety</b> domain.
-  Other domains of interest to us include <b>health</b>, <b>energy</b>,
-  and <b>entertainment</b>. Please limit your requirements to these four
-  domains. If you must make an exception, choose the "other" domain and
-  provide an indicative name. If you think a requirement belongs to
-  multiple domains, choose the most indicative domain.
- </p>
+ <h3 style="clear: left">Sample Smart Home Requirements</h3>
+
+ <table class="table">
+  <tr>
+   <th>#</th>
+   <th class="col-sm-11 ">Requirements</th>
+  </tr>
+
+  <c:set var="count" value="0" scope="page" />
+  <c:forEach var="othersRequirementResponse"
+   items="${othersRequirementResponses}" varStatus="reqLoop">
+   <tr>
+    <td><c:set var="count" value="${count + 1}" scope="page" />
+     ${count}.</td>
+    <td><b>As a</b> ${othersRequirementResponse.role},<br /> <b>I
+      want</b> ${othersRequirementResponse.feature},<br /> <b>so that</b>
+     ${othersRequirementResponse.benefit}.<br /> Application Domain: <i>${othersRequirementResponse.applicationDomain}</i><br />
+     Tags: <c:set var="tags"
+      value="${fn:split(othersRequirementResponse.tags,',')}" /> <c:forEach
+      var="tag" items="${tags}" varStatus="tagLoop">
+      <span class="badge">${tag}</span>
+     </c:forEach></td>
+   </tr>
+  </c:forEach>
+ </table>
 
  <p>
-  <b>Important:</b> You must provide <b>at least ten</b> requirements.
-  After adding ten requirements, a link will appear at the bottom of the
+  <b>Important:</b> You must provide <b>at least ten</b> new
+  requirements. After you do so, a link will appear at the bottom of the
   page. You can use that link to proceed to the next step.
  </p>
 
- <p>
-  <b>Quantity Bonus:</b> Although ten is the lower limit, you are
-  encouraged to give as many requirements as you can. If you are in <b>top
-   25%</b> among all participants ordered by the number of requirements, you
-  will receive a bonus payment of <b>USD 1</b>.
- </p>
-
- <p>
-  <b>Creativity Bonus:</b> Be creative! A creative requirement leads to
-  products that are both to <b>useful</b> and <b>novel</b>. For each of
-  your requirements, which is in the <b>top 25%</b> of creative
-  requirements (as judged by us), you will receive a 20 cents bonus (up
-  to a maximum total of <b>USD 1</b>).
- </p>
+ <p>The sample requirements are below (please ignore duplicates, if
+  any). Your requirements can be completely distinct from these samples,
+  combinations of those, or their advanced versions. But, your objective
+  is to come up with more creative requirements than those below.</p>
 
 </div>
 
@@ -179,7 +202,7 @@
  </div>
 </form:form>
 
-<h3>Your Requirements</h3>
+<h3>Your Smart Home Requirements</h3>
 
 <ul class="nav nav-pills">
  <li><a href="#">Health <span class="badge">${domainCounts["Health"]}</span></a></li>

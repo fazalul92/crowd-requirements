@@ -28,8 +28,13 @@ public class RequirementResponseServiceImpl implements RequirementResponseServic
   }
 
   @Override
-  public RequirementResponse[] findByUserId(int userId) {
+  public List<RequirementResponse> findByUserId(int userId) {
     return dao.findByUserId(userId);
+  }
+  
+  @Override
+  public List<RequirementResponse> findToShowOtherByUserId(int userId) {
+    return dao.findToShowOtherByUserId(userId);
   }
 
   @Override

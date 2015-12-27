@@ -14,11 +14,12 @@
 <h3>Main Task (2)</h3>
 <div class="bg-info" style="padding: 5px; border-radius: 5px;">
  <p>
-  In this phase, you will rate the creativity of your own requirements.
-  A creative requirement leads to <b>novel</b> and <b>useful</b>
-  product. Thus, rate both novelty and usefulness of your requirements
-  using the scale below. Please provide a honest assessment. Your self
-  assessment will <b>NOT</b> affect any bonus you may receive.
+  In this phase, you will rate the creativity of the requirements shown
+  to you and your own requirements. A creative requirement leads to <b>novel</b>
+  and <b>useful</b> product. Thus, rate both novelty and usefulness of
+  these requirements using the scale below. Please provide a honest
+  assessment. Your self assessment will <b>NOT</b> affect any bonus you
+  may receive.
  </p>
  <ol>
   <li>Very low</li>
@@ -29,7 +30,7 @@
  </ol>
 </div>
 
-<h3>Your Requirements</h3>
+<h3>Requirement Creativity Rating</h3>
 
 <form:form method="POST" modelAttribute="requirementRatingResponseForm">
 
