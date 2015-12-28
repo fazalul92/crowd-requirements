@@ -5,8 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.SortedSet;
+import java.util.TreeMap;
 
 import javax.annotation.PostConstruct;
 
@@ -44,7 +43,7 @@ public class RequirementSelectorServiceImpl implements RequirementSelectorServic
 
     // TODO Not sure if this is correct
     Session session = sessionFactory.openSession();
-    // Session session = sessionFactory.getCurrentSession(); // Didnt work
+    // Session session = sessionFactory.getCurrentSession(); // Didn't work
 
     initPeronsalityTraits(session);
 
@@ -82,34 +81,85 @@ public class RequirementSelectorServiceImpl implements RequirementSelectorServic
   }
 
   @Override
-  public List<RequirementResponse> getClosestRequirementsFromRawScores(
-      Double[] individualPersonalityRawScores, boolean ascending, int size) {
-    Double[] individualPersonalityTraits = PersonalityComputer
-        .computePersonalityTraits(individualPersonalityRawScores);
-    
-    return getClosestRequirements(individualPersonalityTraits, ascending, size);
-  }
-  
-  @Override
-  public List<RequirementResponse> getClosestRequirements(Double[] individualPersonalityTraits,
-      boolean ascending, int size) {
-    SortedSet<Entry<Integer, Double>> orderedDistanceSet;
-    if (ascending) {
-      orderedDistanceSet = PersonalityComputer.orderPersonalityScoresByDistance(
-          individualPersonalityTraits, userIdToersonalityTraits, true);
-    } else {
-      orderedDistanceSet = PersonalityComputer.orderPersonalityScoresByDistance(
-          individualPersonalityTraits, userIdToersonalityTraits, false);
+  public List<RequirementResponse> getOthersRequirementsFromRawScores(Double[] rawScores, int size) {
+
+    String selectionStrategy = env.getProperty("requirement.select.strategy");
+
+    if (selectionStrategy.endsWith("Personality")) {
+      Double[] individualPersonalityTraits = PersonalityComputer
+          .computePersonalityTraits(rawScores);
+      
+      return getOthersRequirementsBasedOnPersonality(individualPersonalityTraits,
+          selectionStrategy, size);
     }
 
+    throw new IllegalArgumentException(selectionStrategy + " is an invalid stragegy");
+  }
+
+  private List<RequirementResponse> getOthersRequirementsBasedOnPersonality(
+      Double[] individualPersonalityTraits, String strategy, int size) {
+
+    TreeMap<Double, List<Integer>> sortedDistanceToUserIdList = PersonalityComputer
+        .orderUserIdsByPersonalityDistance(individualPersonalityTraits, userIdToersonalityTraits);
+
+    List<Double> distances = new ArrayList<Double>();
+    distances.addAll(sortedDistanceToUserIdList.keySet());
+
     List<RequirementResponse> requirementResponseList = new ArrayList<RequirementResponse>();
-    for (Entry<Integer, Double> distanceEntry : orderedDistanceSet) {
-      requirementResponseList.addAll(requirementResponseService
-          .findToShowOtherByUserId(distanceEntry.getKey()));
-      if (requirementResponseList.size() >= 30) {
-        break;
+
+    if (strategy.equals("similarPersonality")) {
+      for (int i = 0; i < distances.size(); i++) {
+        List<Integer> userIdList = sortedDistanceToUserIdList.get(distances.get(i));
+        for (Integer userId : userIdList) {
+          requirementResponseList
+              .addAll(requirementResponseService.findToShowOtherByUserId(userId));
+        }
+        if (requirementResponseList.size() >= 30) {
+          break;
+        }
+      }
+    } else if (strategy.equals("dissimilarPersonality")) {
+      for (int i = distances.size() - 1; i >= 0; i--) {
+        List<Integer> userIdList = sortedDistanceToUserIdList.get(distances.get(i));
+        for (Integer userId : userIdList) {
+          requirementResponseList
+              .addAll(requirementResponseService.findToShowOtherByUserId(userId));
+        }
+        if (requirementResponseList.size() >= 30) {
+          break;
+        }
+      }
+    } else if (strategy.equals("mixedPersonality")) {
+      for (int i = 0; i <= (distances.size() / 2); i++) {
+        List<Integer> userIdList1 = sortedDistanceToUserIdList.get(distances.get(i));
+        for (Integer userId : userIdList1) {
+          requirementResponseList
+              .addAll(requirementResponseService.findToShowOtherByUserId(userId));
+        }
+        List<Integer> userIdList2 = sortedDistanceToUserIdList.get(distances.get(distances.size()
+            - i - 1));
+        for (Integer userId : userIdList2) {
+          requirementResponseList
+              .addAll(requirementResponseService.findToShowOtherByUserId(userId));
+        }
+        if (requirementResponseList.size() >= 30) {
+          break;
+        }
+      }
+    } else { //randomPersonality
+      Collections.shuffle(distances);
+      for (int i = 0; i < distances.size(); i++) {
+        List<Integer> userIdList = sortedDistanceToUserIdList.get(distances.get(i));
+        for (Integer userId : userIdList) {
+          requirementResponseList
+              .addAll(requirementResponseService.findToShowOtherByUserId(userId));
+        }
+        if (requirementResponseList.size() >= 30) {
+          break;
+        }
       }
     }
+
     Collections.shuffle(requirementResponseList);
 
     List<RequirementResponse> outRequirementResponseList = new ArrayList<RequirementResponse>();

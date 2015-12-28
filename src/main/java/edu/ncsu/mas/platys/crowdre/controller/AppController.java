@@ -358,8 +358,8 @@ public class AppController {
     
     if (othersRequirementResponses == null) {
       Double[] personalityRawScores = (Double[]) session.getAttribute(PERSONALITY_SCORES_ENTITY);
-      othersRequirementResponses = requirementSelectorService.getClosestRequirementsFromRawScores(
-          personalityRawScores, true, 10); // TODO Generalize this
+      othersRequirementResponses = requirementSelectorService.getOthersRequirementsFromRawScores(
+          personalityRawScores, 10);
       session.removeAttribute(PERSONALITY_SCORES_ENTITY);
       session.setAttribute(OTHER_REQUIREMENT_RESPONSES_ENTITY, othersRequirementResponses);
     }
@@ -396,8 +396,8 @@ public class AppController {
 
       if (othersRequirementResponses == null) {
         Double[] personalityRawScores = (Double[]) session.getAttribute(PERSONALITY_SCORES_ENTITY);
-        othersRequirementResponses = requirementSelectorService
-            .getClosestRequirementsFromRawScores(personalityRawScores, true, 10);
+        othersRequirementResponses = requirementSelectorService.getOthersRequirementsFromRawScores(
+            personalityRawScores, 10);
         session.removeAttribute(PERSONALITY_SCORES_ENTITY);
         session.setAttribute(OTHER_REQUIREMENT_RESPONSES_ENTITY, othersRequirementResponses);
       }

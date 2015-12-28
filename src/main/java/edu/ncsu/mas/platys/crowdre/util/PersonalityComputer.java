@@ -1,12 +1,11 @@
 package edu.ncsu.mas.platys.crowdre.util;
 
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.TreeMap;
+
 
 public class PersonalityComputer {
   /**
@@ -74,48 +73,22 @@ public class PersonalityComputer {
     return Math.sqrt(squaredDistance);
   }
 
-  public static SortedSet<Entry<Integer, Double>> orderPersonalityScoresByDistance(
-      Double[] srcScores, Map<Integer, Double[]> destMap, boolean ascending) {
-    Map<Integer, Double> distances = new HashMap<Integer, Double>();
+  public static TreeMap<Double, List<Integer>> orderUserIdsByPersonalityDistance(
+      Double[] srcScores, Map<Integer, Double[]> destMap) {
+
+    TreeMap<Double, List<Integer>> sortedDistances = new TreeMap<Double, List<Integer>>();
+
     for (Integer dest : destMap.keySet()) {
-      distances.put(dest, getPersonalityEuclideanDistance(srcScores, destMap.get(dest)));
+      Double distance = getPersonalityEuclideanDistance(srcScores, destMap.get(dest));
+
+      List<Integer> userIds = sortedDistances.get(distance);
+      if (userIds == null) {
+        userIds = new ArrayList<Integer>();
+        sortedDistances.put(distance, userIds);
+      }
+      userIds.add(dest);
     }
 
-    SortedSet<Entry<Integer, Double>> sortedDistances;
-    if (ascending) {
-      sortedDistances = entriesSortedByValuesAsc(distances);
-    } else {
-      sortedDistances = entriesSortedByValuesDsc(distances);
-    }
     return sortedDistances;
   }
-
-  private static <K, V extends Comparable<? super V>> SortedSet<Map.Entry<K, V>> entriesSortedByValuesAsc(
-      Map<K, V> map) {
-    SortedSet<Map.Entry<K, V>> sortedEntries = new TreeSet<Map.Entry<K, V>>(
-        new Comparator<Map.Entry<K, V>>() {
-          @Override
-          public int compare(Map.Entry<K, V> e1, Map.Entry<K, V> e2) {
-            int res = e1.getValue().compareTo(e2.getValue());
-            return res != 0 ? res : 1;
-          }
-        });
-    sortedEntries.addAll(map.entrySet());
-    return sortedEntries;
-  }
-
-  private static <K, V extends Comparable<? super V>> SortedSet<Map.Entry<K, V>> entriesSortedByValuesDsc(
-      Map<K, V> map) {
-    SortedSet<Map.Entry<K, V>> sortedEntries = new TreeSet<Map.Entry<K, V>>(
-        new Comparator<Map.Entry<K, V>>() {
-          @Override
-          public int compare(Map.Entry<K, V> e1, Map.Entry<K, V> e2) {
-            int res = e2.getValue().compareTo(e1.getValue());
-            return res != 0 ? res : 1;
-          }
-        });
-    sortedEntries.addAll(map.entrySet());
-    return sortedEntries;
-  }
-
 }

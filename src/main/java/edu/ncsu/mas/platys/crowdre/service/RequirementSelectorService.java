@@ -10,9 +10,5 @@ public interface RequirementSelectorService {
 
   public Double[] getPersonalityTraits(int userId);
 
-  public List<RequirementResponse> getClosestRequirements(Double[] individualPersonalityTraits,
-      boolean ascending, int size);
-
-  public List<RequirementResponse> getClosestRequirementsFromRawScores(
-      Double[] individualPersonalityRawScores, boolean ascending, int size);
+  public List<RequirementResponse> getOthersRequirementsFromRawScores(Double[] rawScores, int size);
 }
