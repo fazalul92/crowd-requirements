@@ -126,10 +126,9 @@ public class AppController {
   private static final String PAGE_SUCCESS = "success";
   private static final String PAGE_REDIRECT_SUCCESS = "redirect:success";
 
-  private static final String PAGE_ERROR = "error";
-
   private static final String USER_ENTITY = "userEntity";
   private static final String PERSONALITY_SCORES_ENTITY = "personalityScoresEntity";
+  private static final String CREATIVITY_SCORES_ENTITY = "creativityScoresEntity";
   private static final String OTHER_REQUIREMENT_RESPONSES_ENTITY = "otherRequirementResponsesEntity";
 
   private static final String ATTR_SIGN_FAILURE_REASON = "signinFailureReason";
@@ -234,18 +233,14 @@ public class AppController {
   public String processPresurveyResponse(
       @ModelAttribute(ATTR_PRESURVEY_RESPONSE_FORM) PresurveyResponseForm presurveyResponseForm,
       BindingResult result, ModelMap model, final RedirectAttributes redirectAttributes) {
-
-    if (isPresurveyResponseFormValid(presurveyResponseForm, result, model)) {
-      PresurveyResponse[] presurveyResponses = presurveyResponseForm.getPresurveyResponses();
-      for (int i = 0; i < presurveyResponses.length; i++) {
-        presurveyResponses[i].setCreatedAt(LocalDateTime.now());
-        presurveyResponseService.saveResponse(presurveyResponses[i]);
-      }
-      return PAGE_REDIRECT_PERSONALITY;
-    } else { // Page has errors
-      // This should never happen since this form is validated client side
-      return PAGE_ERROR;
+    // All validations are being done on the client side
+    
+    PresurveyResponse[] presurveyResponses = presurveyResponseForm.getPresurveyResponses();
+    for (int i = 0; i < presurveyResponses.length; i++) {
+      presurveyResponses[i].setCreatedAt(LocalDateTime.now());
+      presurveyResponseService.saveResponse(presurveyResponses[i]);
     }
+    return PAGE_REDIRECT_PERSONALITY;
   }
 
   @RequestMapping(value = { "/" + PAGE_PERSONALITY }, method = RequestMethod.GET)
@@ -278,25 +273,25 @@ public class AppController {
       @ModelAttribute(ATTR_PERSONALITY_RESPONSE_FORM) PersonalityResponseForm personalityResponseForm,
       BindingResult result, ModelMap model, final RedirectAttributes redirectAttributes,
       HttpSession session) {
+    // All validations are being done on the client side
+    
+    PersonalityResponse[] personalityResponses = personalityResponseForm.getPersonalityResponses();
+    for (int i = 0; i < personalityResponses.length; i++) {
+      personalityResponses[i].setCreatedAt(LocalDateTime.now());
+      personalityResponseService.saveResponse(personalityResponses[i]);
+    }
 
-    Double[] personalityScores = new Double[20];
-    if (isPersonalityResponseFormValid(personalityResponseForm, result, model)) {
-      PersonalityResponse[] personalityResponses = personalityResponseForm
-          .getPersonalityResponses();
+    String selectionStrategy = env.getProperty("requirement.select.strategy");
+    if (selectionStrategy.endsWith("Personality")) {
+      Double[] personalityScores = new Double[20];
       for (int i = 0; i < personalityResponses.length; i++) {
-        personalityResponses[i].setCreatedAt(LocalDateTime.now());
-        personalityResponseService.saveResponse(personalityResponses[i]);
-
         personalityScores[personalityResponses[i].getPersonalityQuestionId() - 1] = Double
             .parseDouble(personalityResponses[i].getDescription());
       }
       session.setAttribute(PERSONALITY_SCORES_ENTITY, personalityScores);
-
-      return PAGE_REDIRECT_CREATIVITY;
-    } else { // Page has errors
-      // This should never happen since this form is validated client side
-      return PAGE_ERROR;
     }
+
+    return PAGE_REDIRECT_CREATIVITY;
   }
 
   @RequestMapping(value = { "/" + PAGE_CREATIVITY }, method = RequestMethod.GET)
@@ -327,19 +322,27 @@ public class AppController {
   @RequestMapping(value = { "/" + PAGE_CREATIVITY }, method = RequestMethod.POST)
   public String processCreativityResponse(
       @ModelAttribute(ATTR_CREATIVITY_RESPONSE_FORM) CreativityResponseForm creativityResponseForm,
-      BindingResult result, ModelMap model, final RedirectAttributes redirectAttributes) {
+      BindingResult result, ModelMap model, final RedirectAttributes redirectAttributes,
+      HttpSession session) {
+    // All validations are being done on the client side
 
-    if (isCreativityResponseFormValid(creativityResponseForm, result, model)) {
-      CreativityResponse[] creativityResponses = creativityResponseForm.getCreativityResponses();
-      for (int i = 0; i < creativityResponses.length; i++) {
-        creativityResponses[i].setCreatedAt(LocalDateTime.now());
-        creativityResponseService.saveResponse(creativityResponses[i]);
-      }
-      return PAGE_REDIRECT_REQUIREMENTS_PHASE1;
-    } else { // Page has errors
-      // This should never happen since this form is validated client side
-      return PAGE_ERROR;
+    CreativityResponse[] creativityResponses = creativityResponseForm.getCreativityResponses();
+    for (int i = 0; i < creativityResponses.length; i++) {
+      creativityResponses[i].setCreatedAt(LocalDateTime.now());
+      creativityResponseService.saveResponse(creativityResponses[i]);
     }
+    
+    String selectionStrategy = env.getProperty("requirement.select.strategy");
+    if (selectionStrategy.endsWith("Creativity")) {
+      Double[] creativityScores = new Double[30];
+      for (int i = 0; i < creativityResponses.length; i++) {
+        creativityScores[creativityResponses[i].getCreativityQuestionId() - 1] = Double
+            .parseDouble(creativityResponses[i].getDescription());
+      }
+      session.setAttribute(CREATIVITY_SCORES_ENTITY, creativityScores);
+    }
+    
+    return PAGE_REDIRECT_REQUIREMENTS_PHASE1;
   }
 
   @RequestMapping(value = { "/" + PAGE_REQUIREMENTS_PHASE1 }, method = RequestMethod.GET)
@@ -355,15 +358,12 @@ public class AppController {
     @SuppressWarnings("unchecked")
     List<RequirementResponse> othersRequirementResponses = (List<RequirementResponse>) session
         .getAttribute(OTHER_REQUIREMENT_RESPONSES_ENTITY);
-    
+
     if (othersRequirementResponses == null) {
-      Double[] personalityRawScores = (Double[]) session.getAttribute(PERSONALITY_SCORES_ENTITY);
-      othersRequirementResponses = requirementSelectorService.getOthersRequirementsFromRawScores(
-          personalityRawScores, 10);
-      session.removeAttribute(PERSONALITY_SCORES_ENTITY);
+      othersRequirementResponses = getOthersRequirements(user.getId(), session);
       session.setAttribute(OTHER_REQUIREMENT_RESPONSES_ENTITY, othersRequirementResponses);
     }
-    
+
     model.addAttribute(ATTR_OTHERS_REQUIREMENT_RESPONSES, othersRequirementResponses);
 
     RequirementResponse requirementResponse = new RequirementResponse();
@@ -395,10 +395,7 @@ public class AppController {
           .getAttribute(OTHER_REQUIREMENT_RESPONSES_ENTITY);
 
       if (othersRequirementResponses == null) {
-        Double[] personalityRawScores = (Double[]) session.getAttribute(PERSONALITY_SCORES_ENTITY);
-        othersRequirementResponses = requirementSelectorService.getOthersRequirementsFromRawScores(
-            personalityRawScores, 10);
-        session.removeAttribute(PERSONALITY_SCORES_ENTITY);
+        othersRequirementResponses = getOthersRequirements(user.getId(), session);
         session.setAttribute(OTHER_REQUIREMENT_RESPONSES_ENTITY, othersRequirementResponses);
       }
 
@@ -444,29 +441,25 @@ public class AppController {
       @ModelAttribute(ATTR_REQUIREMENT_RATING_RESPONSE_FORM) RequirementRatingResponseForm responseForm,
       BindingResult result, ModelMap model, final RedirectAttributes redirectAttributes,
       HttpServletRequest request, HttpSession session) {
+    // All validations are being done on the client side
 
     User user = (User) session.getAttribute(USER_ENTITY);
-    
-    if (isRequirementRatingResponseFormValid(responseForm, result, model)) {
-      RequirementRatingResponse[] requirementRatingResponses = responseForm
-          .getRequirementRatingResponses();
-      for (int i = 0; i < requirementRatingResponses.length; i++) {
-        RequirementResponse requirementResponse = new RequirementResponse();
-        requirementResponse.setId(Integer.parseInt(request
-            .getParameter("requirementRatingResponses[" + i + "].requirementResponse.id")));
-        requirementRatingResponses[i].setCreatedAt(LocalDateTime.now());
-        requirementRatingResponses[i].setUserId(user.getId());
-        requirementRatingResponseService.saveResponse(requirementRatingResponses[i]);
-      }
 
-      user.setCompletionCode(randCodeGen.nextString());
-      userService.updateResponse(user);
-
-      return PAGE_REDIRECT_POSTSURVEY;
-    } else { // Page has errors
-      // This should never happen since this form is validated client side
-      return PAGE_ERROR;
+    RequirementRatingResponse[] requirementRatingResponses = responseForm
+        .getRequirementRatingResponses();
+    for (int i = 0; i < requirementRatingResponses.length; i++) {
+      RequirementResponse requirementResponse = new RequirementResponse();
+      requirementResponse.setId(Integer.parseInt(request.getParameter("requirementRatingResponses["
+          + i + "].requirementResponse.id")));
+      requirementRatingResponses[i].setCreatedAt(LocalDateTime.now());
+      requirementRatingResponses[i].setUserId(user.getId());
+      requirementRatingResponseService.saveResponse(requirementRatingResponses[i]);
     }
+
+    user.setCompletionCode(randCodeGen.nextString());
+    userService.updateResponse(user);
+
+    return PAGE_REDIRECT_POSTSURVEY;
   }
 
   @RequestMapping(value = { "/" + PAGE_POSTSURVEY }, method = RequestMethod.GET)
@@ -498,18 +491,14 @@ public class AppController {
   public String processPostsurveyResponse(
       @ModelAttribute(ATTR_POSTSURVEY_RESPONSE_FORM) PostsurveyResponseForm postsurveyResponseForm,
       BindingResult result, ModelMap model, final RedirectAttributes redirectAttributes) {
+    // All validations are being done on the client side
 
-    if (isPostsurveyResponseFormValid(postsurveyResponseForm, result, model)) {
-      PostsurveyResponse[] postsurveyResponses = postsurveyResponseForm.getPostsurveyResponses();
-      for (int i = 0; i < postsurveyResponses.length; i++) {
-        postsurveyResponses[i].setCreatedAt(LocalDateTime.now());
-        postsurveyResponseService.saveResponse(postsurveyResponses[i]);
-      }
-      return PAGE_REDIRECT_SUCCESS;
-    } else { // Page has errors
-      // This should never happen since this form is validated client side
-      return PAGE_ERROR;
+    PostsurveyResponse[] postsurveyResponses = postsurveyResponseForm.getPostsurveyResponses();
+    for (int i = 0; i < postsurveyResponses.length; i++) {
+      postsurveyResponses[i].setCreatedAt(LocalDateTime.now());
+      postsurveyResponseService.saveResponse(postsurveyResponses[i]);
     }
+    return PAGE_REDIRECT_SUCCESS;
   }
 
   @RequestMapping(value = { "/" + PAGE_SUCCESS }, method = RequestMethod.GET)
@@ -517,6 +506,27 @@ public class AppController {
     return PAGE_SUCCESS;
   }
 
+  private List<RequirementResponse> getOthersRequirements(Integer userId, HttpSession session) {
+    List<RequirementResponse> othersRequirementResponses;
+    String selectionStrategy = env.getProperty("requirement.select.strategy");
+    Double[] rawScores;
+    
+    if (selectionStrategy.endsWith("Personality")) {
+      rawScores = (Double[]) session.getAttribute(PERSONALITY_SCORES_ENTITY);
+      othersRequirementResponses = requirementSelectorService
+          .getOthersRequirementsBasedOnPersonality(rawScores, selectionStrategy, 10);
+      
+    } else if (selectionStrategy.endsWith("Creativity")) {
+      rawScores = (Double[]) session.getAttribute(CREATIVITY_SCORES_ENTITY);
+      othersRequirementResponses = requirementSelectorService
+          .getOthersRequirementsBasedOnCreativity(userId, rawScores, selectionStrategy, 10);
+      
+    } else {
+      throw new IllegalStateException(selectionStrategy + "is an invalid selection strategy");
+    }
+    return othersRequirementResponses;
+  }
+  
   private Map<String, Integer> countDomains(List<RequirementResponse> previousRequirementResponses) {
     Map<String, Integer> domainCounts = new LinkedHashMap<String, Integer>();
     domainCounts.put("Health", 0);
@@ -552,24 +562,6 @@ public class AppController {
     return MTURK_ID_VALID;
   }
 
-  private boolean isPresurveyResponseFormValid(PresurveyResponseForm presurveyResponseForm,
-      BindingResult result, ModelMap model) {
-    // All validations are being done on the client side
-    return true;
-  }
-
-  private boolean isPersonalityResponseFormValid(PersonalityResponseForm personalityResponseForm,
-      BindingResult result, ModelMap model) {
-    // All validations are being done on the client side
-    return true;
-  }
-
-  private boolean isCreativityResponseFormValid(CreativityResponseForm creativityResponseForm,
-      BindingResult result, ModelMap model) {
-    // All validations are being done on the client side
-    return true;
-  }
-
   private boolean isRequirementResponseValid(RequirementResponse requirementResponse,
       BindingResult result, ModelMap model) {
 
@@ -585,18 +577,5 @@ public class AppController {
     }
     // Other fields are validated on the client side
     return returnValue;
-  }
-
-  private boolean isRequirementRatingResponseFormValid(
-      RequirementRatingResponseForm requirementRatingResponseForm, BindingResult result,
-      ModelMap model) {
-    // All validations are being done on the client side
-    return true;
-  }
-
-  private boolean isPostsurveyResponseFormValid(PostsurveyResponseForm presurveyResponseForm,
-      BindingResult result, ModelMap model) {
-    // All validations are being done on the client side
-    return true;
   }
 }

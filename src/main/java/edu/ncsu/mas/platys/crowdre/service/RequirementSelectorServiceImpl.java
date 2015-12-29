@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import edu.ncsu.mas.platys.crowdre.model.RequirementResponse;
+import edu.ncsu.mas.platys.crowdre.util.CreativityComputer;
 import edu.ncsu.mas.platys.crowdre.util.PersonalityComputer;
 
 @Service("requirementSelectorService")
@@ -33,24 +34,35 @@ public class RequirementSelectorServiceImpl implements RequirementSelectorServic
   @Autowired
   RequirementResponseService requirementResponseService;
 
-  private final Map<Integer, Double[]> userIdToersonalityTraits = new HashMap<Integer, Double[]>();
-
   private Integer studyPhase;
+  
+  private String selectionStrategy;
+  
+  // TODO Move this to Personality Computer
+  private final Map<Integer, Double[]> otherUserIdToersonalityTraits = new HashMap<>();
+  
+  private CreativityComputer creativityComputer;
 
   @PostConstruct
   public void init() {
+    
     studyPhase = Integer.parseInt(env.getProperty("study.phase"));
-
+    selectionStrategy = env.getProperty("requirement.select.strategy");
+    
     // TODO Not sure if this is correct
     Session session = sessionFactory.openSession();
     // Session session = sessionFactory.getCurrentSession(); // Didn't work
 
-    initPeronsalityTraits(session);
+    if (selectionStrategy.endsWith("Personality")) {
+      initOthersPeronsalityTraits(session);
+    } else if (selectionStrategy.endsWith("Creativity")) {
+      initOthersCreativityScores(session);
+    }
 
     session.close();
   }
 
-  private List<Integer> getUserIds(Session session) {
+  private List<Integer> getOthersUserIds(Session session) {
     String queryStr = "select id as userId from users"
         + " where completion_code is not null and created_phase = " + (studyPhase - 1);
 
@@ -61,12 +73,12 @@ public class RequirementSelectorServiceImpl implements RequirementSelectorServic
     return users;
   }
 
-  private void initPeronsalityTraits(Session session) {
+  private void initOthersPeronsalityTraits(Session session) {
     StringBuffer queryStrBuffer = new StringBuffer();
     queryStrBuffer.append("select user_id as userId, personality_question_id as pqId, "
         + "description as rawScore from personality_questions_users where user_id in (");
 
-    List<Integer> userIds = getUserIds(session);
+    List<Integer> userIds = getOthersUserIds(session);
     for (Integer userId : userIds) {
       queryStrBuffer.append(userId + ",");
     }
@@ -77,30 +89,39 @@ public class RequirementSelectorServiceImpl implements RequirementSelectorServic
 
     @SuppressWarnings("unchecked")
     List<Object[]> resultList = (List<Object[]>) query.list();
-    userIdToersonalityTraits.putAll(PersonalityComputer.computePersonalityTraits(resultList));
+    otherUserIdToersonalityTraits.putAll(PersonalityComputer.computePersonalityTraits(resultList));
   }
 
-  @Override
-  public List<RequirementResponse> getOthersRequirementsFromRawScores(Double[] rawScores, int size) {
+  private void initOthersCreativityScores(Session session) {
+    StringBuffer queryStrBuffer = new StringBuffer();
+    queryStrBuffer.append("select user_id as userId, creativity_question_id as cqId, "
+        + "description as rawScore from creativity_questions_users where user_id in (");
 
-    String selectionStrategy = env.getProperty("requirement.select.strategy");
-
-    if (selectionStrategy.endsWith("Personality")) {
-      Double[] individualPersonalityTraits = PersonalityComputer
-          .computePersonalityTraits(rawScores);
-      
-      return getOthersRequirementsBasedOnPersonality(individualPersonalityTraits,
-          selectionStrategy, size);
+    List<Integer> userIds = getOthersUserIds(session);
+    for (Integer userId : userIds) {
+      queryStrBuffer.append(userId + ",");
     }
+    queryStrBuffer.replace(queryStrBuffer.length() - 1, queryStrBuffer.length(), ")");
 
-    throw new IllegalArgumentException(selectionStrategy + " is an invalid stragegy");
+    SQLQuery query = session.createSQLQuery(queryStrBuffer.toString()).addScalar("userId")
+        .addScalar("cqId").addScalar("rawScore");
+
+    @SuppressWarnings("unchecked")
+    List<Object[]> resultList = (List<Object[]>) query.list();
+    creativityComputer = new CreativityComputer();
+    creativityComputer.init(resultList);
   }
+  
+  @Override
+  public List<RequirementResponse> getOthersRequirementsBasedOnPersonality(Double[] rawScores,
+      String strategy, int size) {
+    
+    Double[] individualPersonalityTraits = PersonalityComputer
+        .computePersonalityTraits(rawScores);
 
-  private List<RequirementResponse> getOthersRequirementsBasedOnPersonality(
-      Double[] individualPersonalityTraits, String strategy, int size) {
 
     TreeMap<Double, List<Integer>> sortedDistanceToUserIdList = PersonalityComputer
-        .orderUserIdsByPersonalityDistance(individualPersonalityTraits, userIdToersonalityTraits);
+        .orderUserIdsByPersonalityDistance(individualPersonalityTraits, otherUserIdToersonalityTraits);
 
     List<Double> distances = new ArrayList<Double>();
     distances.addAll(sortedDistanceToUserIdList.keySet());
@@ -172,14 +193,33 @@ public class RequirementSelectorServiceImpl implements RequirementSelectorServic
 
     return outRequirementResponseList;
   }
-
+  
   @Override
-  public Map<Integer, Double[]> getPersonalityTraits() {
-    return userIdToersonalityTraits;
-  }
+  public List<RequirementResponse> getOthersRequirementsBasedOnCreativity(Integer userId,
+      Double[] rawScores, String strategy, int size) {
+    
+    List<Integer> otherUserIds = new ArrayList<>();
+    otherUserIds.addAll(creativityComputer.getOthersUserIds(userId, rawScores, strategy));
 
-  @Override
-  public Double[] getPersonalityTraits(int userId) {
-    return userIdToersonalityTraits.get(userId);
+    Collections.shuffle(otherUserIds);
+    List<RequirementResponse> requirementResponseList = new ArrayList<RequirementResponse>();
+    for (Integer otherUserId : otherUserIds) {
+      requirementResponseList.addAll(requirementResponseService
+          .findToShowOtherByUserId(otherUserId));
+      if (requirementResponseList.size() >= 30) {
+        break;
+      }
+    }
+    
+    Collections.shuffle(requirementResponseList);
+    List<RequirementResponse> outRequirementResponseList = new ArrayList<RequirementResponse>();
+    for (RequirementResponse requirementResponse : requirementResponseList) {
+      outRequirementResponseList.add(requirementResponse);
+      if (outRequirementResponseList.size() >= size) {
+        break;
+      }
+    }
+
+    return outRequirementResponseList;
   }
 }
