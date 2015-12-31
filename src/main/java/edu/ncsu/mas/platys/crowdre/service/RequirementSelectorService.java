@@ -11,4 +11,6 @@ public interface RequirementSelectorService {
   public List<RequirementResponse> getOthersRequirementsBasedOnCreativity(Integer userId,
       Double[] rawScores, String selectionStrategy, int size);
 
+  public List<RequirementResponse> getOthersRequirementsBasedOnPersonalityAndCreativity(
+      Integer userId, Double[] rawScores, String strategy, int size);
 }

@@ -43,7 +43,7 @@ public class CreativityComputer {
     Double userCreativityScore = computeCreativityScore(rawScores);
     String userBucket = findBucket(userCreativityScore);
     
-    if (strategy.equals("similarCreativity")) {
+    if (strategy.contains("similarCreativity")) {
       if (userBucket.equals("low")) {
         return lowCreativityBucket.keySet();
         
@@ -53,7 +53,7 @@ public class CreativityComputer {
       } else {
         return highCreativityBucket.keySet();
       }
-    } else if (strategy.equals("higherCreativity")) {
+    } else if (strategy.contains("higherCreativity")) {
       if (userBucket.equals("low")) {
         return mediumCreativityBucket.keySet();
         
@@ -64,7 +64,7 @@ public class CreativityComputer {
         System.out.println("Strategy = " + strategy + "; userId = " + userId);
         return highCreativityBucket.keySet();
       }      
-    } else if (strategy.equals("lowerCreativity")) {
+    } else if (strategy.contains("lowerCreativity")) {
       if (userBucket.equals("low")) {
         System.out.println("Strategy = " + strategy + "; userId = " + userId);
         return lowCreativityBucket.keySet();

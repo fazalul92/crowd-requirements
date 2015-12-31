@@ -282,7 +282,7 @@ public class AppController {
     }
 
     String selectionStrategy = env.getProperty("requirement.select.strategy");
-    if (selectionStrategy.endsWith("Personality")) {
+    if (selectionStrategy.contains("Personality")) {
       Double[] personalityScores = new Double[20];
       for (int i = 0; i < personalityResponses.length; i++) {
         personalityScores[personalityResponses[i].getPersonalityQuestionId() - 1] = Double
@@ -333,7 +333,7 @@ public class AppController {
     }
     
     String selectionStrategy = env.getProperty("requirement.select.strategy");
-    if (selectionStrategy.endsWith("Creativity")) {
+    if (selectionStrategy.contains("Creativity")) {
       Double[] creativityScores = new Double[30];
       for (int i = 0; i < creativityResponses.length; i++) {
         creativityScores[creativityResponses[i].getCreativityQuestionId() - 1] = Double
@@ -517,6 +517,12 @@ public class AppController {
           .getOthersRequirementsBasedOnPersonality(rawScores, selectionStrategy, 10);
       
     } else if (selectionStrategy.endsWith("Creativity")) {
+      rawScores = (Double[]) session.getAttribute(CREATIVITY_SCORES_ENTITY);
+      othersRequirementResponses = requirementSelectorService
+          .getOthersRequirementsBasedOnCreativity(userId, rawScores, selectionStrategy, 10);
+      
+    } else if (selectionStrategy.endsWith("Combo") && selectionStrategy.contains("Personality")
+        && selectionStrategy.contains("Creativity")) {
       rawScores = (Double[]) session.getAttribute(CREATIVITY_SCORES_ENTITY);
       othersRequirementResponses = requirementSelectorService
           .getOthersRequirementsBasedOnCreativity(userId, rawScores, selectionStrategy, 10);

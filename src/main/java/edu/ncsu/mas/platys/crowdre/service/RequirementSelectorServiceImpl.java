@@ -2,10 +2,7 @@ package edu.ncsu.mas.platys.crowdre.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import javax.annotation.PostConstruct;
 
@@ -37,9 +34,8 @@ public class RequirementSelectorServiceImpl implements RequirementSelectorServic
   private Integer studyPhase;
   
   private String selectionStrategy;
-  
-  // TODO Move this to Personality Computer
-  private final Map<Integer, Double[]> otherUserIdToersonalityTraits = new HashMap<>();
+    
+  private PersonalityComputer personalityComputer;
   
   private CreativityComputer creativityComputer;
 
@@ -55,8 +51,17 @@ public class RequirementSelectorServiceImpl implements RequirementSelectorServic
 
     if (selectionStrategy.endsWith("Personality")) {
       initOthersPeronsalityTraits(session);
+      
     } else if (selectionStrategy.endsWith("Creativity")) {
       initOthersCreativityScores(session);
+      
+    } else if (selectionStrategy.endsWith("Combo")) {
+      if (selectionStrategy.contains("Creativity")) {
+        initOthersPeronsalityTraits(session);
+      }
+      if (selectionStrategy.contains("Creativity")) {
+        initOthersCreativityScores(session);
+      }
     }
 
     session.close();
@@ -89,7 +94,9 @@ public class RequirementSelectorServiceImpl implements RequirementSelectorServic
 
     @SuppressWarnings("unchecked")
     List<Object[]> resultList = (List<Object[]>) query.list();
-    otherUserIdToersonalityTraits.putAll(PersonalityComputer.computePersonalityTraits(resultList));
+    personalityComputer = new PersonalityComputer();
+    personalityComputer.init(resultList);
+
   }
 
   private void initOthersCreativityScores(Session session) {
@@ -115,93 +122,38 @@ public class RequirementSelectorServiceImpl implements RequirementSelectorServic
   @Override
   public List<RequirementResponse> getOthersRequirementsBasedOnPersonality(Double[] rawScores,
       String strategy, int size) {
+
+    List<Integer> otherUserIds = personalityComputer.getOthersUserIds(rawScores, strategy);
     
-    Double[] individualPersonalityTraits = PersonalityComputer
-        .computePersonalityTraits(rawScores);
-
-
-    TreeMap<Double, List<Integer>> sortedDistanceToUserIdList = PersonalityComputer
-        .orderUserIdsByPersonalityDistance(individualPersonalityTraits, otherUserIdToersonalityTraits);
-
-    List<Double> distances = new ArrayList<Double>();
-    distances.addAll(sortedDistanceToUserIdList.keySet());
-
-    List<RequirementResponse> requirementResponseList = new ArrayList<RequirementResponse>();
-
-    if (strategy.equals("similarPersonality")) {
-      for (int i = 0; i < distances.size(); i++) {
-        List<Integer> userIdList = sortedDistanceToUserIdList.get(distances.get(i));
-        for (Integer userId : userIdList) {
-          requirementResponseList
-              .addAll(requirementResponseService.findToShowOtherByUserId(userId));
-        }
-        if (requirementResponseList.size() >= 30) {
-          break;
-        }
-      }
-    } else if (strategy.equals("dissimilarPersonality")) {
-      for (int i = distances.size() - 1; i >= 0; i--) {
-        List<Integer> userIdList = sortedDistanceToUserIdList.get(distances.get(i));
-        for (Integer userId : userIdList) {
-          requirementResponseList
-              .addAll(requirementResponseService.findToShowOtherByUserId(userId));
-        }
-        if (requirementResponseList.size() >= 30) {
-          break;
-        }
-      }
-    } else if (strategy.equals("mixedPersonality")) {
-      for (int i = 0; i <= (distances.size() / 2); i++) {
-        List<Integer> userIdList1 = sortedDistanceToUserIdList.get(distances.get(i));
-        for (Integer userId : userIdList1) {
-          requirementResponseList
-              .addAll(requirementResponseService.findToShowOtherByUserId(userId));
-        }
-        List<Integer> userIdList2 = sortedDistanceToUserIdList.get(distances.get(distances.size()
-            - i - 1));
-        for (Integer userId : userIdList2) {
-          requirementResponseList
-              .addAll(requirementResponseService.findToShowOtherByUserId(userId));
-        }
-        if (requirementResponseList.size() >= 30) {
-          break;
-        }
-      }
-    } else { //randomPersonality
-      Collections.shuffle(distances);
-      for (int i = 0; i < distances.size(); i++) {
-        List<Integer> userIdList = sortedDistanceToUserIdList.get(distances.get(i));
-        for (Integer userId : userIdList) {
-          requirementResponseList
-              .addAll(requirementResponseService.findToShowOtherByUserId(userId));
-        }
-        if (requirementResponseList.size() >= 30) {
-          break;
-        }
-      }
-    }
-
-    Collections.shuffle(requirementResponseList);
-
-    List<RequirementResponse> outRequirementResponseList = new ArrayList<RequirementResponse>();
-    for (RequirementResponse requirementResponse : requirementResponseList) {
-      outRequirementResponseList.add(requirementResponse);
-      if (outRequirementResponseList.size() >= size) {
-        break;
-      }
-    }
-
-    return outRequirementResponseList;
+    return getRequirementResponses(otherUserIds, size);
   }
   
   @Override
   public List<RequirementResponse> getOthersRequirementsBasedOnCreativity(Integer userId,
       Double[] rawScores, String strategy, int size) {
-    
+
     List<Integer> otherUserIds = new ArrayList<>();
     otherUserIds.addAll(creativityComputer.getOthersUserIds(userId, rawScores, strategy));
 
     Collections.shuffle(otherUserIds);
+
+    return getRequirementResponses(otherUserIds, size);
+  }
+  
+  @Override
+  public List<RequirementResponse> getOthersRequirementsBasedOnPersonalityAndCreativity(
+      Integer userId, Double[] rawScores, String strategy, int size) {
+    
+    List<Integer> otherUserIds = new ArrayList<>();
+    // The order of the following two operations is important
+    otherUserIds.addAll(personalityComputer.getOthersUserIds(rawScores, strategy));
+    otherUserIds.retainAll(creativityComputer.getOthersUserIds(userId, rawScores, strategy));
+    
+    return getRequirementResponses(otherUserIds, size);
+  }
+
+  private List<RequirementResponse> getRequirementResponses(List<Integer> otherUserIds, int size) {
+    
     List<RequirementResponse> requirementResponseList = new ArrayList<RequirementResponse>();
     for (Integer otherUserId : otherUserIds) {
       requirementResponseList.addAll(requirementResponseService
@@ -210,7 +162,7 @@ public class RequirementSelectorServiceImpl implements RequirementSelectorServic
         break;
       }
     }
-    
+
     Collections.shuffle(requirementResponseList);
     List<RequirementResponse> outRequirementResponseList = new ArrayList<RequirementResponse>();
     for (RequirementResponse requirementResponse : requirementResponseList) {

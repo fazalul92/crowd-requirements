@@ -1,6 +1,7 @@
 package edu.ncsu.mas.platys.crowdre.util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +9,64 @@ import java.util.TreeMap;
 
 
 public class PersonalityComputer {
+  
+  private final Map<Integer, Double[]> otherUserIdToersonalityTraits = new HashMap<>();
+
+  public void init(List<Object[]> resultList) {
+    otherUserIdToersonalityTraits.putAll(computePersonalityTraits(resultList));
+  }
+  
+  public List<Integer> getOthersUserIds(Double[] rawScores, String strategy) {
+
+    Double[] individualPersonalityTraits = computePersonalityTraits(rawScores);
+
+    TreeMap<Double, List<Integer>> sortedDistanceToUserIdList = orderUserIdsByPersonalityDistance(
+        individualPersonalityTraits, otherUserIdToersonalityTraits);
+
+    List<Double> distances = new ArrayList<Double>();
+    distances.addAll(sortedDistanceToUserIdList.keySet());
+
+    List<Integer> userIdsToReturn = new ArrayList<>();
+
+    if (strategy.contains("similarPersonality")) {
+      for (int i = 0; i < distances.size(); i++) {
+        List<Integer> userIdList = sortedDistanceToUserIdList.get(distances.get(i));
+        for (Integer userId : userIdList) {
+          userIdsToReturn.add(userId);
+        }
+      }
+    } else if (strategy.contains("dissimilarPersonality")) {
+      for (int i = distances.size() - 1; i >= 0; i--) {
+        List<Integer> userIdList = sortedDistanceToUserIdList.get(distances.get(i));
+        for (Integer userId : userIdList) {
+          userIdsToReturn.add(userId);
+        }
+      }
+    } else if (strategy.contains("mixedPersonality")) {
+      for (int i = 0; i <= (distances.size() / 2); i++) {
+        List<Integer> userIdList1 = sortedDistanceToUserIdList.get(distances.get(i));
+        for (Integer userId : userIdList1) {
+          userIdsToReturn.add(userId);
+        }
+        List<Integer> userIdList2 = sortedDistanceToUserIdList.get(distances.get(distances.size()
+            - i - 1));
+        for (Integer userId : userIdList2) {
+          userIdsToReturn.add(userId);
+        }
+      }
+    } else { // randomPersonality
+      Collections.shuffle(distances);
+      for (int i = 0; i < distances.size(); i++) {
+        List<Integer> userIdList = sortedDistanceToUserIdList.get(distances.get(i));
+        for (Integer userId : userIdList) {
+          userIdsToReturn.add(userId);
+        }
+      }
+    }
+
+    return userIdsToReturn;
+  }
+  
   /**
    * Reads personality scores
    * 
