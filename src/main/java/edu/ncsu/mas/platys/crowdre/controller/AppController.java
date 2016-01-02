@@ -456,6 +456,7 @@ public class AppController {
       requirementRatingResponseService.saveResponse(requirementRatingResponses[i]);
     }
 
+    // TODO: Should this not be during postsurvey processing?
     user.setCompletionCode(randCodeGen.nextString());
     userService.updateResponse(user);
 
