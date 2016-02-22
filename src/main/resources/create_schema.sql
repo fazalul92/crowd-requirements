@@ -142,3 +142,11 @@ CREATE TABLE `requirements_ratings` (
    FOREIGN KEY `FK_ratings_requirements_requirement` (`requirement_id`) REFERENCES `requirements` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
    FOREIGN KEY `FK_requirements_ratings_user` (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `requirements_tags` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `tag` varchar(100) NOT NULL,
+  `requirement_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY `FK_requirements_tags_requirements` (`requirement_id`) REFERENCES `requirements` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
