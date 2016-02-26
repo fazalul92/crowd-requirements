@@ -146,7 +146,20 @@ CREATE TABLE `requirements_ratings` (
 CREATE TABLE `requirements_tags` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `tag` varchar(100) NOT NULL,
+  `stemmed_tag` varchar(100) NOT NULL,
   `requirement_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   FOREIGN KEY `FK_requirements_tags_requirements` (`requirement_id`) REFERENCES `requirements` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `stemmed_requirements` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `req_id` int(11) NOT NULL,
+  `stemmed_role` varchar(256),
+  `stemmed_feature` varchar(4096),
+  `stemmed_benefit` varchar(4096),
+  `stemmed_tags` varchar(1024),
+  PRIMARY KEY (`id`),
+  FOREIGN KEY `FK_requirements_stemmed_reqid` (`req_id`) REFERENCES `requirements` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
