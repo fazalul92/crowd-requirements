@@ -137,6 +137,7 @@ CREATE TABLE `requirements_ratings` (
   `user_id` int(11) NOT NULL,
   `novelty` tinyint NOT NULL,
   `feasibility` tinyint NOT NULL,
+  `clarity` tinyint NOT NULL,
   `created_at` datetime NOT NULL,
    PRIMARY KEY (`id`),
    FOREIGN KEY `FK_ratings_requirements_requirement` (`requirement_id`) REFERENCES `requirements` (`id`) ON DELETE CASCADE ON UPDATE CASCADE

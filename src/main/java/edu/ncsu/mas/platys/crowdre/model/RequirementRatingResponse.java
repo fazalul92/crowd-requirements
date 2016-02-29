@@ -39,6 +39,11 @@ public class RequirementRatingResponse {
   private int feasibility;
 
   @NotNull
+  @Column(name = "clarity", nullable = false)
+  private int clarity;
+
+  
+  @NotNull
   @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
   @Column(name = "created_at", nullable = false)
   @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
@@ -84,6 +89,15 @@ public class RequirementRatingResponse {
     this.feasibility = feasibility;
   }
 
+  public int getClarity() {
+	    return clarity;
+	  }
+
+	  public void setClarity(int clarity) {
+	    this.clarity = clarity;
+	  }
+  
+  
   public LocalDateTime getCreatedAt() {
     return createdAt;
   }
