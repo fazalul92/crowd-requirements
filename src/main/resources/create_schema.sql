@@ -164,3 +164,13 @@ CREATE TABLE `stemmed_requirements` (
   FOREIGN KEY `FK_requirements_stemmed_reqid` (`req_id`) REFERENCES `requirements` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `requirements_bundles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `application_domain_1` varchar(256) NOT NULL,
+  `req_ids_1` varchar(512) NOT NULL,
+  `application_domain_2` varchar(256) NOT NULL,
+  `req_ids_2` varchar(512) NOT NULL,
+  `application_domain_3` varchar(256) NOT NULL,
+  `req_ids_3` varchar(512) NOT NULL,
+   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
