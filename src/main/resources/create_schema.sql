@@ -3,10 +3,10 @@ CREATE TABLE `users` (
   `mturk_id` varchar(20) NOT NULL,
   `created_at` datetime NOT NULL,
   `created_phase` tinyint NOT NULL,
+  `created_batch` tinyint,
   `completion_code` VARCHAR(20),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 
 CREATE TABLE `creativity_questions` (
   `id` int(11) NOT NULL  AUTO_INCREMENT,
