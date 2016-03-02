@@ -1,10 +1,11 @@
 package edu.ncsu.mas.platys.crowdre.controller;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -35,6 +36,7 @@ import edu.ncsu.mas.platys.crowdre.model.PersonalityQuestion;
 import edu.ncsu.mas.platys.crowdre.model.CreativityQuestion;
 import edu.ncsu.mas.platys.crowdre.model.RequirementRatingResponse;
 import edu.ncsu.mas.platys.crowdre.model.RequirementResponse;
+import edu.ncsu.mas.platys.crowdre.model.RequirementsBundle;
 import edu.ncsu.mas.platys.crowdre.model.User;
 import edu.ncsu.mas.platys.crowdre.model.PresurveyResponse;
 import edu.ncsu.mas.platys.crowdre.model.PersonalityResponse;
@@ -50,6 +52,7 @@ import edu.ncsu.mas.platys.crowdre.service.CreativityResponseService;
 import edu.ncsu.mas.platys.crowdre.service.RequirementRatingResponseService;
 import edu.ncsu.mas.platys.crowdre.service.RequirementResponseService;
 import edu.ncsu.mas.platys.crowdre.service.RequirementSelectorService;
+import edu.ncsu.mas.platys.crowdre.service.RequirementsBundleService;
 import edu.ncsu.mas.platys.crowdre.service.UserService;
 import edu.ncsu.mas.platys.crowdre.util.RandomCodeGenerator;
 
@@ -89,6 +92,9 @@ public class Phase2AppController {
   RequirementResponseService requirementResponseService;
 
   @Autowired
+  RequirementsBundleService requirementsBundleService;
+
+  @Autowired
   RequirementRatingResponseService requirementRatingResponseService;
 
   @Autowired
@@ -117,8 +123,6 @@ public class Phase2AppController {
   private static final String PAGE_REDIRECT_REQUIREMENTS_PHASE2 = "redirect:requirements_phase2";
 
   private static final String PAGE_REQUIREMENTS_RATINGS = "requirements_ratings";
-  // private static final String PAGE_REDIRECT_REQUIREMENTS_PHASE2 =
-  // "redirect:requirements_phase2";
 
   private static final String PAGE_POSTSURVEY = "postsurvey";
   private static final String PAGE_REDIRECT_POSTSURVEY = "redirect:postsurvey";
@@ -129,7 +133,8 @@ public class Phase2AppController {
   private static final String USER_ENTITY = "userEntity";
   private static final String PERSONALITY_SCORES_ENTITY = "personalityScoresEntity";
   private static final String CREATIVITY_SCORES_ENTITY = "creativityScoresEntity";
-  private static final String OTHER_REQUIREMENT_RESPONSES_ENTITY = "otherRequirementResponsesEntity";
+  private static final String RATING_STEP_ENTITY = "ratingStepEntity";
+  private static final String REQUIREMENTS_BUNDLE_ENTITY = "requirementsBundleEntity";
 
   private static final String ATTR_SIGN_FAILURE_REASON = "signinFailureReason";
   private static final String ATTR_USER = "user";
@@ -157,7 +162,11 @@ public class Phase2AppController {
   private static final int MTURK_ID_COMPLETED = 2;
 
   private final RandomCodeGenerator randCodeGen = new RandomCodeGenerator(8);
-
+  
+  private final List<Integer> bundleIds = new ArrayList<Integer>();
+  
+  private final Random bundlePickerRand = new Random();
+  
   @RequestMapping(value = { "/", "/" + PAGE_SIGNIN }, method = RequestMethod.GET)
   public String showSignIn(ModelMap model) {
     model.addAttribute(ATTR_USER, new User());
@@ -386,24 +395,37 @@ public class Phase2AppController {
   @RequestMapping(value = { "/" + PAGE_REQUIREMENTS_RATINGS }, method = RequestMethod.GET)
   public String showRequirementsRatings(ModelMap model, HttpSession session) {
 
-    User user = (User) session.getAttribute(USER_ENTITY);
+    Integer ratingStep = (Integer) session.getAttribute(RATING_STEP_ENTITY);
+    RequirementsBundle requirementsBundle;
+    if (ratingStep == null) {
+      ratingStep = 1;
+      requirementsBundle = getNextBundle();
+      session.setAttribute(REQUIREMENTS_BUNDLE_ENTITY, requirementsBundle);
+    } else {
+      requirementsBundle = (RequirementsBundle) session.getAttribute(REQUIREMENTS_BUNDLE_ENTITY);
+      ratingStep++;
+    }
+    session.setAttribute(RATING_STEP_ENTITY, ratingStep);
 
-    @SuppressWarnings("unchecked")
-    List<RequirementResponse> othersRequirementResponses = (List<RequirementResponse>) session
-        .getAttribute(OTHER_REQUIREMENT_RESPONSES_ENTITY);
-    session.removeAttribute(OTHER_REQUIREMENT_RESPONSES_ENTITY);
-
-    List<RequirementResponse> previousRequirementResponses = requirementResponseService
-        .findByUserId(user.getId());
-
-    previousRequirementResponses.addAll(othersRequirementResponses);
-    Collections.shuffle(previousRequirementResponses);
-
-    RequirementRatingResponse[] ratingResponses = new RequirementRatingResponse[previousRequirementResponses
+    String reqIds;
+    if (ratingStep == 1) {
+      reqIds = requirementsBundle.getRequirementIds1();
+    } else if (ratingStep == 2) {
+      reqIds = requirementsBundle.getRequirementIds2();
+    } else if (ratingStep == 3){
+      reqIds = requirementsBundle.getRequirementIds3();
+    } else {
+      throw new IllegalStateException("Rating step should not have been " + ratingStep);
+    }
+    
+    List<RequirementResponse> othersRequirementResponses = new ArrayList<RequirementResponse>();
+    othersRequirementResponses.addAll(requirementResponseService.findByIds(reqIds));
+    
+    RequirementRatingResponse[] ratingResponses = new RequirementRatingResponse[othersRequirementResponses
         .size()];
     for (int i = 0; i < ratingResponses.length; i++) {
       ratingResponses[i] = new RequirementRatingResponse();
-      ratingResponses[i].setRequirementResponse(previousRequirementResponses.get(i));
+      ratingResponses[i].setRequirementResponse(othersRequirementResponses.get(i));
     }
 
     RequirementRatingResponseForm responseForm = new RequirementRatingResponseForm();
@@ -433,11 +455,12 @@ public class Phase2AppController {
       requirementRatingResponseService.saveResponse(requirementRatingResponses[i]);
     }
 
-    // TODO: Should this not be during postsurvey processing?
-    user.setCompletionCode(randCodeGen.nextString());
-    userService.updateResponse(user);
-
-    return PAGE_REDIRECT_POSTSURVEY;
+    Integer ratingStep = (Integer) session.getAttribute(RATING_STEP_ENTITY);
+    if (ratingStep < 3) {
+      return PAGE_REQUIREMENTS_RATINGS;
+    } else {
+      return PAGE_REDIRECT_POSTSURVEY;
+    }
   }
 
   @RequestMapping(value = { "/" + PAGE_POSTSURVEY }, method = RequestMethod.GET)
@@ -468,7 +491,8 @@ public class Phase2AppController {
   @RequestMapping(value = { "/" + PAGE_POSTSURVEY }, method = RequestMethod.POST)
   public String processPostsurveyResponse(
       @ModelAttribute(ATTR_POSTSURVEY_RESPONSE_FORM) PostsurveyResponseForm postsurveyResponseForm,
-      BindingResult result, ModelMap model, final RedirectAttributes redirectAttributes) {
+      BindingResult result, ModelMap model, final RedirectAttributes redirectAttributes,
+      HttpServletRequest request, HttpSession session) {
     // All validations are being done on the client side
 
     PostsurveyResponse[] postsurveyResponses = postsurveyResponseForm.getPostsurveyResponses();
@@ -476,6 +500,11 @@ public class Phase2AppController {
       postsurveyResponses[i].setCreatedAt(LocalDateTime.now());
       postsurveyResponseService.saveResponse(postsurveyResponses[i]);
     }
+    
+    User user = (User) session.getAttribute(USER_ENTITY);
+    user.setCompletionCode(randCodeGen.nextString());
+    userService.updateResponse(user);
+
     return PAGE_REDIRECT_SUCCESS;
   }
 
@@ -534,5 +563,19 @@ public class Phase2AppController {
     }
     // Other fields are validated on the client side
     return returnValue;
+  }
+  
+  private RequirementsBundle getNextBundle() {
+    if (bundleIds.size() == 0) {
+      bundleIds.addAll(requirementsBundleService.getRequirementBundleIds(1));
+    }
+    int bundleId;
+    if (bundleIds.size() > 0) {
+      bundleId = bundleIds.get(bundlePickerRand.nextInt(bundleIds.size()));
+    } else {
+      int numBundle = (int) requirementsBundleService.getCount();
+      bundleId = bundleIds.get(bundlePickerRand.nextInt(numBundle));
+    }
+    return requirementsBundleService.findById(bundleId);
   }
 }

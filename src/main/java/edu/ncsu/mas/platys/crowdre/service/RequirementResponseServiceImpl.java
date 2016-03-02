@@ -23,6 +23,11 @@ public class RequirementResponseServiceImpl implements RequirementResponseServic
   }
 
   @Override
+  public List<RequirementResponse> findByIds(String csvIds) {
+    return dao.findByIds(csvIds);
+  }
+
+  @Override
   public void saveResponse(RequirementResponse response) {
     dao.saveResponse(response);
   }

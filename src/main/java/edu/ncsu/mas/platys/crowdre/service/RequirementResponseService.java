@@ -7,6 +7,7 @@ import edu.ncsu.mas.platys.crowdre.model.RequirementResponse;
 
 public interface RequirementResponseService {
   RequirementResponse findById(int id);
+  List<RequirementResponse> findByIds(String csvIds);
   List<RequirementResponse> findByUserId(int userId);
   List<RequirementResponse> findToShowOtherByUserId(int userId);
   Map<String, List<RequirementResponse>> findByUserIdAndGroupByDomain(int userId);

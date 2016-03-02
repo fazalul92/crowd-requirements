@@ -24,6 +24,24 @@ public class RequirementResponseDaoImpl extends AbstractDao<Integer, Requirement
   }
 
   @Override
+  public List<RequirementResponse> findByIds(String csvIds) {
+    String[] ids = csvIds.split(",");
+    List<Integer> idList = new ArrayList<Integer>();
+    for (String id : ids) {
+      idList.add(Integer.parseInt(id.trim()));
+    }
+    
+    Criteria criteria = getSession().createCriteria(RequirementResponse.class);
+    criteria.add(Restrictions.in("id", idList));
+    
+    @SuppressWarnings("unchecked")
+    List<RequirementResponse> responseList = criteria.list();
+    
+    return responseList;
+
+  }
+  
+  @Override
   public List<RequirementResponse> findByUserId(int userId) {
     Criteria criteria = getSession().createCriteria(RequirementResponse.class);
     criteria.add(Restrictions.eq("userId", userId));
