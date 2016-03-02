@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -39,6 +40,10 @@ public class RequirementsBundle {
   @NotBlank
   @Column(name = "req_ids_3", nullable = false)
   private String requirementIds3;
+  
+  @NotNull
+  @Column(name = "num_completed", nullable = false)
+  private int numCompleted;
 
   public int getId() {
     return id;
@@ -94,5 +99,13 @@ public class RequirementsBundle {
 
   public void setRequirementIds3(String requirementIds3) {
     this.requirementIds3 = requirementIds3;
+  }
+
+  public int getNumCompleted() {
+    return numCompleted;
+  }
+
+  public void setNumCompleted(int numCompleted) {
+    this.numCompleted = numCompleted;
   }
 }

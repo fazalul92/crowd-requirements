@@ -140,7 +140,7 @@ CREATE TABLE `requirements_ratings` (
   `clarity` tinyint NOT NULL,
   `created_at` datetime NOT NULL,
    PRIMARY KEY (`id`),
-   FOREIGN KEY `FK_ratings_requirements_requirement` (`requirement_id`) REFERENCES `requirements` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+   FOREIGN KEY `FK_ratings_requirements_requirement` (`requirement_id`) REFERENCES `requirements` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
    FOREIGN KEY `FK_requirements_ratings_user` (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -172,5 +172,6 @@ CREATE TABLE `requirements_bundles` (
   `req_ids_2` varchar(512) NOT NULL,
   `application_domain_3` varchar(256) NOT NULL,
   `req_ids_3` varchar(512) NOT NULL,
+  `num_completed` int(11) NOT NULL DEFAULT 0,
    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

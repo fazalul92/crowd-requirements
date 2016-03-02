@@ -54,9 +54,9 @@ import edu.ncsu.mas.platys.crowdre.service.UserService;
 import edu.ncsu.mas.platys.crowdre.util.RandomCodeGenerator;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("phase1")
 @PropertySource("classpath:application.properties")
-public class AppController {
+public class Phase1AppController {
 
   @Autowired
   MessageSource messageSource;

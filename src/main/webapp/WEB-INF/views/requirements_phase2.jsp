@@ -24,7 +24,7 @@
   also ask you to take a moment to come up with a few (at least three)
   smart home requirements before proceeding to the rating tasks.</p>
 
- <div>
+ <div class="row">
   <div class="col-sm-8">
    <blockquote style="font-size: 14px;">
 
@@ -204,7 +204,7 @@
 <c:if test="${count >= 3}">
  <div class="text-center">
   <h4>
-   <a href="/crowd-requirements/phase2/requirements_ratings"
+   <a href="/crowd-requirements/requirements_ratings"
     onclick='return confirm("Are you done adding all requirements? If yes, click OK and proceed to the next step. If no, click Cancel and add more requirements.")'>
     Proceed to next phase &raquo; </a>
   </h4>

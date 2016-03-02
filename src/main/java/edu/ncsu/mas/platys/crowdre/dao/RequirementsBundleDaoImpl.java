@@ -27,15 +27,14 @@ public class RequirementsBundleDaoImpl extends AbstractDao<Integer, Requirements
   @Override
   public List<Integer> getRequirementBundleIds(int completionTarget) {
     List<Integer> bundleIds = new ArrayList<Integer>();
-    Query query = getSession().createSQLQuery("select id from requirements_bundle"
+    Query query = getSession().createSQLQuery("select id from requirements_bundles"
         + " where num_completed < :upperBound and num_completed >= :lowerBound");
     query.setInteger("lowerBound", completionTarget - 1);
     query.setInteger("upperBound", completionTarget);
     
     Iterator<?> itr = query.list().iterator();
     while (itr.hasNext()) {
-      Object[] tuple = (Object[]) itr.next();
-      bundleIds.add((Integer) tuple[0]);
+      bundleIds.add((Integer) itr.next());
     }
     return bundleIds;
   }
@@ -43,7 +42,7 @@ public class RequirementsBundleDaoImpl extends AbstractDao<Integer, Requirements
   @Override
   public void incrementNumCompleted(int bundleId) {
     Query query = getSession().createSQLQuery(
-        "update requerements_bundles set num_completed = num_completed + 1 where id = :id");
+        "update requirements_bundles set num_completed = num_completed + 1 where id = :id");
     query.setInteger("id", bundleId);
     query.executeUpdate();
   }

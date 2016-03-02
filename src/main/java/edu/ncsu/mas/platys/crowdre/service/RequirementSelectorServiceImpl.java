@@ -78,43 +78,51 @@ public class RequirementSelectorServiceImpl implements RequirementSelectorServic
     return users;
   }
 
+  @SuppressWarnings("unchecked")
   private void initOthersPeronsalityTraits(Session session) {
     StringBuffer queryStrBuffer = new StringBuffer();
     queryStrBuffer.append("select user_id as userId, personality_question_id as pqId, "
         + "description as rawScore from personality_questions_users where user_id in (");
 
+    List<Object[]> resultList = new ArrayList<Object[]>();
+
     List<Integer> userIds = getOthersUserIds(session);
-    for (Integer userId : userIds) {
-      queryStrBuffer.append(userId + ",");
+    if (userIds.size() > 0) {
+      for (Integer userId : userIds) {
+        queryStrBuffer.append(userId + ",");
+      }
+      queryStrBuffer.replace(queryStrBuffer.length() - 1, queryStrBuffer.length(), ")");
+
+      SQLQuery query = session.createSQLQuery(queryStrBuffer.toString()).addScalar("userId")
+          .addScalar("pqId").addScalar("rawScore");
+      resultList.addAll((List<Object[]>) query.list());
     }
-    queryStrBuffer.replace(queryStrBuffer.length() - 1, queryStrBuffer.length(), ")");
-
-    SQLQuery query = session.createSQLQuery(queryStrBuffer.toString()).addScalar("userId")
-        .addScalar("pqId").addScalar("rawScore");
-
-    @SuppressWarnings("unchecked")
-    List<Object[]> resultList = (List<Object[]>) query.list();
+    
     personalityComputer = new PersonalityComputer();
     personalityComputer.init(resultList);
-
   }
 
+  @SuppressWarnings("unchecked")
   private void initOthersCreativityScores(Session session) {
     StringBuffer queryStrBuffer = new StringBuffer();
     queryStrBuffer.append("select user_id as userId, creativity_question_id as cqId, "
         + "description as rawScore from creativity_questions_users where user_id in (");
 
+    List<Object[]> resultList = new ArrayList<Object[]>();
+
     List<Integer> userIds = getOthersUserIds(session);
-    for (Integer userId : userIds) {
-      queryStrBuffer.append(userId + ",");
+    if (userIds.size() > 0) {
+      for (Integer userId : userIds) {
+        queryStrBuffer.append(userId + ",");
+      }
+      queryStrBuffer.replace(queryStrBuffer.length() - 1, queryStrBuffer.length(), ")");
+
+      SQLQuery query = session.createSQLQuery(queryStrBuffer.toString()).addScalar("userId")
+          .addScalar("cqId").addScalar("rawScore");
+
+      resultList.addAll((List<Object[]>) query.list());
     }
-    queryStrBuffer.replace(queryStrBuffer.length() - 1, queryStrBuffer.length(), ")");
-
-    SQLQuery query = session.createSQLQuery(queryStrBuffer.toString()).addScalar("userId")
-        .addScalar("cqId").addScalar("rawScore");
-
-    @SuppressWarnings("unchecked")
-    List<Object[]> resultList = (List<Object[]>) query.list();
+    
     creativityComputer = new CreativityComputer();
     creativityComputer.init(resultList);
   }

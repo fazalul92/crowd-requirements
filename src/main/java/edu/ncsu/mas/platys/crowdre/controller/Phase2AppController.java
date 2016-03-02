@@ -51,13 +51,13 @@ import edu.ncsu.mas.platys.crowdre.service.PersonalityResponseService;
 import edu.ncsu.mas.platys.crowdre.service.CreativityResponseService;
 import edu.ncsu.mas.platys.crowdre.service.RequirementRatingResponseService;
 import edu.ncsu.mas.platys.crowdre.service.RequirementResponseService;
-import edu.ncsu.mas.platys.crowdre.service.RequirementSelectorService;
 import edu.ncsu.mas.platys.crowdre.service.RequirementsBundleService;
 import edu.ncsu.mas.platys.crowdre.service.UserService;
 import edu.ncsu.mas.platys.crowdre.util.RandomCodeGenerator;
 
 @Controller
-@RequestMapping("phase2")
+/*@RequestMapping(value = { "/", "phase2" })*/
+@RequestMapping("/")
 @PropertySource("classpath:application.properties")
 public class Phase2AppController {
 
@@ -103,9 +103,6 @@ public class Phase2AppController {
   @Autowired
   PostsurveyResponseService postsurveyResponseService;
 
-  @Autowired
-  RequirementSelectorService requirementSelectorService;
-
   private static final String PAGE_SIGNIN = "signin";
   private static final String PAGE_SIGNIN_FAILURE = "signin_failure";
   private static final String PAGE_REDIRECT_SIGNIN_FAILURE = "redirect:signin_failure";
@@ -123,7 +120,8 @@ public class Phase2AppController {
   private static final String PAGE_REDIRECT_REQUIREMENTS_PHASE2 = "redirect:requirements_phase2";
 
   private static final String PAGE_REQUIREMENTS_RATINGS = "requirements_ratings";
-
+  private static final String PAGE_REDIRECT_REQUIREMENTS_RATINGS = "redirect:requirements_ratings";
+  
   private static final String PAGE_POSTSURVEY = "postsurvey";
   private static final String PAGE_REDIRECT_POSTSURVEY = "redirect:postsurvey";
 
@@ -397,6 +395,7 @@ public class Phase2AppController {
 
     Integer ratingStep = (Integer) session.getAttribute(RATING_STEP_ENTITY);
     RequirementsBundle requirementsBundle;
+    System.out.println("Rating step here: " + ratingStep); //TODO Remove
     if (ratingStep == null) {
       ratingStep = 1;
       requirementsBundle = getNextBundle();
@@ -456,8 +455,11 @@ public class Phase2AppController {
     }
 
     Integer ratingStep = (Integer) session.getAttribute(RATING_STEP_ENTITY);
+    System.out.println("Rating step: " + ratingStep); //TODO Remove
     if (ratingStep < 3) {
-      return PAGE_REQUIREMENTS_RATINGS;
+      /*ratingStep++;
+      session.setAttribute(RATING_STEP_ENTITY, ratingStep);*/
+      return PAGE_REDIRECT_REQUIREMENTS_RATINGS;
     } else {
       return PAGE_REDIRECT_POSTSURVEY;
     }
@@ -504,6 +506,10 @@ public class Phase2AppController {
     User user = (User) session.getAttribute(USER_ENTITY);
     user.setCompletionCode(randCodeGen.nextString());
     userService.updateResponse(user);
+    
+    RequirementsBundle requirementsBundle = (RequirementsBundle) session
+        .getAttribute(REQUIREMENTS_BUNDLE_ENTITY);
+    requirementsBundleService.incrementNumCompleted(requirementsBundle.getId());
 
     return PAGE_REDIRECT_SUCCESS;
   }
