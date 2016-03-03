@@ -23,7 +23,7 @@
   <dt>Clarity:</dt>
   <dd>A clear requirement is unambiguous and provides an
    appropriate level of detail.</dd>
-  <dt>Useful:</dt>
+  <dt>Usefulness:</dt>
   <dd>A useful requirement leads to products that provide value or
    utility to their users.</dd>
   <dt>Novelty:</dt>

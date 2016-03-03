@@ -128,6 +128,7 @@ CREATE TABLE `requirements` (
   `tags` varchar(1024) DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `show_other` tinyint DEFAULT 1,
+  `duplicate_of` int(11) DEFAULT 0,
   PRIMARY KEY (`id`),
   FOREIGN KEY `FK_user_requirements_user` (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
