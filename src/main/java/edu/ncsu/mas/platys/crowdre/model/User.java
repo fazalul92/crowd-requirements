@@ -34,6 +34,9 @@ public class User {
   @Column(name = "created_phase", nullable = false)
   private int createdPhase;
 
+  @Column(name = "rating_bundle")
+  private int ratingBundle;
+
   @Column(name = "completion_code")
   private String completionCode;
 
@@ -67,6 +70,14 @@ public class User {
 
   public void setCreatedPhase(int createdPhase) {
     this.createdPhase = createdPhase;
+  }
+
+  public int getRatingBundle() {
+    return ratingBundle;
+  }
+
+  public void setRatingBundle(int ratingBundle) {
+    this.ratingBundle = ratingBundle;
   }
 
   public String getCompletionCode() {

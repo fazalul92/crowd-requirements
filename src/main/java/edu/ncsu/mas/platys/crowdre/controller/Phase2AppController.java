@@ -395,7 +395,6 @@ public class Phase2AppController {
 
     Integer ratingStep = (Integer) session.getAttribute(RATING_STEP_ENTITY);
     RequirementsBundle requirementsBundle;
-    System.out.println("Rating step here: " + ratingStep); //TODO Remove
     if (ratingStep == null) {
       ratingStep = 1;
       requirementsBundle = getNextBundle();
@@ -455,7 +454,6 @@ public class Phase2AppController {
     }
 
     Integer ratingStep = (Integer) session.getAttribute(RATING_STEP_ENTITY);
-    System.out.println("Rating step: " + ratingStep); //TODO Remove
     if (ratingStep < 3) {
       /*ratingStep++;
       session.setAttribute(RATING_STEP_ENTITY, ratingStep);*/
@@ -503,14 +501,15 @@ public class Phase2AppController {
       postsurveyResponseService.saveResponse(postsurveyResponses[i]);
     }
     
-    User user = (User) session.getAttribute(USER_ENTITY);
-    user.setCompletionCode(randCodeGen.nextString());
-    userService.updateResponse(user);
-    
     RequirementsBundle requirementsBundle = (RequirementsBundle) session
         .getAttribute(REQUIREMENTS_BUNDLE_ENTITY);
     requirementsBundleService.incrementNumCompleted(requirementsBundle.getId());
 
+    User user = (User) session.getAttribute(USER_ENTITY);
+    user.setCompletionCode(randCodeGen.nextString());
+    user.setRatingBundle(requirementsBundle.getId());
+    userService.updateResponse(user);
+    
     return PAGE_REDIRECT_SUCCESS;
   }
 

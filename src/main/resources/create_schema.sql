@@ -4,6 +4,7 @@ CREATE TABLE `users` (
   `created_at` datetime NOT NULL,
   `created_phase` tinyint NOT NULL,
   `created_batch` tinyint,
+  `rating_bundle` int(11) NOT NULL DEFAULT 0,
   `completion_code` VARCHAR(20),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

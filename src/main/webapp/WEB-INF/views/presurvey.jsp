@@ -19,8 +19,7 @@
   are required to complete these steps sequentially. After six steps,
   you will receive a <b>completion code</b>, which you must enter on the
   Amazon MTurk site to receive a payment. There is <b>no partial
-   payment</b>. You must complete all steps to receive the payment. The main
-  tasks may involve <b>bonus payments</b> as you will see later.
+   payment</b>. You must complete all steps to receive the payment.
  </p>
 
  <p class="text-justify">The following are some general

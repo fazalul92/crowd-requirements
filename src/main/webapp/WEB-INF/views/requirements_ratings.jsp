@@ -14,23 +14,32 @@
 <h3>Main Task (2)</h3>
 <div class="bg-info" style="padding: 5px; border-radius: 5px;">
  <p>
-  In this phase, you will rate the creativity and clarity of the requirements shown
-  to you and your own requirements. A creative requirement leads to <b>novel</b>
-  and <b>useful</b> product. A clear requirement ***. Thus, rate novelty, usefulness and clarity of
-  these requirements using the scale below. Please provide a honest
-  assessment. Your self assessment will <b>NOT</b> affect any bonus you
-  may receive.
+  In this phase, you will review requirements provided by others and
+  rate them. You will be shown a <b>total of 30</b> requirements in <b>three
+   batches</b> of 10 each. You will rate each requirement's clarity,
+  usefulness, and novelty. Please provide a honest assessment.
  </p>
- <ol>
-  <li>Very low</li>
-  <li>Low</li>
-  <li>Medium</li>
-  <li>High</li>
-  <li>Very High</li>
- </ol>
+ <dl class="dl-horizontal">
+  <dt>Clarity:</dt>
+  <dd>A clear requirement is unambiguous and provides an
+   appropriate level of detail.</dd>
+  <dt>Useful:</dt>
+  <dd>A useful requirement leads to products that provide value or
+   utility to their users.</dd>
+  <dt>Novelty:</dt>
+  <dd>A novel requirement is one a user finds as original,
+   unexpected, i.e., something that is not commonplace, mundane, or
+   conventional.</dd>
+ </dl>
+
+ <p>
+  Rate each of these attributes for each requirement on a scale of: <b>(1)
+   very low</b>, <b>(2) low</b>, <b>(3) medium</b>, <b>(4) high</b>, and <b>(5)
+   very high</b>.
+ </p>
 </div>
 
-<h3>Requirement Creativity and Clarity Rating</h3>
+<h3>Requirement Rating: Batch ${sessionScope.ratingStepEntity} of 3</h3>
 
 <form:form method="POST" modelAttribute="requirementRatingResponseForm">
 

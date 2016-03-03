@@ -16,13 +16,13 @@
 <div class="bg-info text-justify"
  style="padding: 5px; border-radius: 5px;">
  <p>Your main task is to read Smart Home requirements provided by
-  others and rate them. You will do so in the next three pages.</p>
+  others and rate them. You will do so in the next page.</p>
 
  <p>In this page, we will provide you with basic information about
-  smart homes and requirements, but you may do additional research
-  (e.g., on the Internet) to understand these technologies better. We
-  also ask you to take a moment to come up with a few (at least three)
-  smart home requirements before proceeding to the rating tasks.</p>
+  smart homes and requirements (you may do additional research, e.g., on
+  the Internet). Take a moment to reflect on smart homes and come up
+  with a few (at least three) smart home requirements before proceeding
+  to the next page.</p>
 
  <div class="row">
   <div class="col-sm-8">
@@ -47,11 +47,16 @@
      want <b>feature</b>, so that <b>benefit.</b>" Example roles include
      <i>home occupant</i>, <i>parent</i>, <i>neighbor</i>, and <i>nanny</i>.
      You can imagine any role (even the ones you do not play in real
-     life).
+     life). An example smart home requirement is
     </p>
+    <ul>
+     <li>As a parent (role), I want my smart home to buzz when my
+      child is close to an object that can potentially fall (feature),
+      so that an injury to the child can be avoided (benefit)</li>
+    </ul>
     <p>
      For each requirement, also identify its <b>application domain</b>.
-     For example, the requirements above belong to the <b>safety</b>
+     For example, the requirement above belongs to the <b>safety</b>
      domain. Other domains of interest to us include <b>health</b>, <b>energy</b>,
      and <b>entertainment</b>. If your requirement belongs to a
      different domain, choose the "other" domain and provide an
@@ -204,9 +209,8 @@
 <c:if test="${count >= 3}">
  <div class="text-center">
   <h4>
-   <a href="/crowd-requirements/requirements_ratings"
-    onclick='return confirm("Are you done adding all requirements? If yes, click OK and proceed to the next step. If no, click Cancel and add more requirements.")'>
-    Proceed to next phase &raquo; </a>
+   <a href="/crowd-requirements/requirements_ratings"> Proceed to
+    the next phase &raquo; </a>
   </h4>
  </div>
 </c:if>
