@@ -572,7 +572,8 @@ public class Phase2AppController {
   
   private RequirementsBundle getNextBundle() {
     if (bundleIds.size() == 0) {
-      bundleIds.addAll(requirementsBundleService.getRequirementBundleIds(1));
+      Integer ratingTarget = Integer.parseInt(env.getProperty("rating.target").trim());
+      bundleIds.addAll(requirementsBundleService.getRequirementBundleIds(ratingTarget));
     }
     int bundleId;
     if (bundleIds.size() > 0) {

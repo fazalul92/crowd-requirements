@@ -48,9 +48,9 @@
    <tr>
     <th>#</th>
     <th class="col-sm-5 ">Requirements</th>
+    <th>Clarity</th>
     <th>Usefulness</th>
     <th>Novelty</th>
-    <th>Clarity</th>
    </tr>
 
    <c:forEach var="jRequirementRatingResponse"
@@ -72,15 +72,15 @@
       <c:forEach var="jTag" items="${jTags}">
        <span class="badge">${jTag}</span>
       </c:forEach></td>
-     <td><div class="form-group radio">
+      <td><div class="form-group radio">
        <c:forEach begin="1" end="5" varStatus="likertloop">
         <label> <form:radiobutton
-          path="requirementRatingResponses[${loop.index}].novelty"
+          path="requirementRatingResponses[${loop.index}].clarity"
           value="${likertloop.index}" required="required" />${likertloop.index}
         </label>
        </c:forEach>
       </div></td>
-     <td><div class="form-group radio">
+      <td><div class="form-group radio">
        <c:forEach begin="1" end="5" varStatus="likertloop">
         <label> <form:radiobutton
           path="requirementRatingResponses[${loop.index}].feasibility"
@@ -91,7 +91,7 @@
       <td><div class="form-group radio">
        <c:forEach begin="1" end="5" varStatus="likertloop">
         <label> <form:radiobutton
-          path="requirementRatingResponses[${loop.index}].clarity"
+          path="requirementRatingResponses[${loop.index}].novelty"
           value="${likertloop.index}" required="required" />${likertloop.index}
         </label>
        </c:forEach>
