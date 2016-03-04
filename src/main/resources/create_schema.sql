@@ -55,7 +55,7 @@ CREATE TABLE `postsurvey_questions_users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `postsurvey_question_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `description` varchar(255) DEFAULT NULL,
+  `description` varchar(1024) DEFAULT NULL,
   `created_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   FOREIGN KEY `FK_postsurvey_questions_user_user` (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
