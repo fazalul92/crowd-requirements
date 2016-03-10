@@ -20,7 +20,7 @@ public class RequirementsBundleDaoImpl extends AbstractDao<Integer, Requirements
 
   @Override
   public long getCount() {
-    Query query = getSession().createSQLQuery("select count(id) from scenario_bundle");
+    Query query = getSession().createSQLQuery("select count(id) from requirements_bundles");
     return ((BigInteger) query.uniqueResult()).longValue();
   }
   

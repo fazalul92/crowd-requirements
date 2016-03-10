@@ -510,7 +510,10 @@ public class Phase2AppController {
     user.setRatingBundle(requirementsBundle.getId());
     userService.updateResponse(user);
     
-    bundleIds.remove(requirementsBundle.getId());
+    int bunndleIdIdx = bundleIds.indexOf(requirementsBundle.getId());
+    if (bunndleIdIdx != -1) {
+      bundleIds.remove(bunndleIdIdx);
+    }
     
     return PAGE_REDIRECT_SUCCESS;
   }
