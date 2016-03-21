@@ -117,8 +117,8 @@ public class PersonalityComputer {
     }
 
     for (int i = 0; i < 5; i++) {
-      traits[i] = (personalityRawScores[i] + (5 - personalityRawScores[i + 5])
-          + personalityRawScores[i + 10] + (5 - personalityRawScores[i + 15])) / 4;
+      traits[i] = (personalityRawScores[i] + (6 - personalityRawScores[i + 5])
+          + personalityRawScores[i + 10] + (6 - personalityRawScores[i + 15])) / 4;
     }
 
     return traits;

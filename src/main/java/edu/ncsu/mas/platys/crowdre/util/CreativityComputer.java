@@ -166,7 +166,7 @@ public class CreativityComputer {
     }
 
     for (int i = 0; i < 30; i++) {
-      creativityScore += positiveAttributes[i] ? rawScores[i] : (5 - rawScores[i]);
+      creativityScore += positiveAttributes[i] ? rawScores[i] : (6 - rawScores[i]);
     }
 
     return (creativityScore / 30);
